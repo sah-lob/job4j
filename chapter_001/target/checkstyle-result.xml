@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.11.2">
+<file name="/Users/alexanderlobachev/Программирование/GitHub/job4j/chapter_001/src/main/java/ru/job4j/calculate/Calculate.java">
+</file>
+<file name="/Users/alexanderlobachev/Программирование/GitHub/job4j/chapter_001/src/main/java/ru/job4j/calculate/package-info.java">
+</file>
+<file name="/Users/alexanderlobachev/Программирование/GitHub/job4j/chapter_001/src/test/java/ru/job4j/calculate/CalculateTest.java">
+</file>
+<file name="/Users/alexanderlobachev/Программирование/GitHub/job4j/chapter_001/src/test/java/ru/job4j/calculate/package-info.java">
+</file>
+</checkstyle>
