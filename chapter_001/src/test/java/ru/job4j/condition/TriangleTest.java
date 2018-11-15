@@ -23,7 +23,7 @@ public class TriangleTest {
     }
 
     @Test
-    public void whenOneOfSidesEquallyZero(){
+    public void whenOneOfSidesEquallyZero() {
         Point a = new Point(0, 0);
         Point b = new Point(0, 0);
         Point c = new Point(2, 0);

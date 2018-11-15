@@ -10,8 +10,8 @@ public class Max {
      * @param second - второе число
      * @return - наибольшее число.
      */
-    public int max(int first, int second){
-        return first>second ? first : second;
+    public int max(int first, int second) {
+        return first > second ? first : second;
     }
 
     /**
@@ -21,9 +21,9 @@ public class Max {
      * @param third - третье число.
      * @return - наибольшее из трех чисел.
      */
-    public int max(int first, int second, int third){
+    public int max(int first, int second, int third) {
         int temp = this.max(first, second);
-        return this.max(temp,third);
+        return this.max(temp, third);
     }
 
 }

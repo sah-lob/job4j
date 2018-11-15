@@ -35,18 +35,18 @@ public class CalculatorTest {
     }
 
     @Test
-    public void whenDivisionFourtoTwoThenTwo(){
+    public void whenDivisionFourtoTwoThenTwo() {
         Calculator calc = new Calculator();
-        calc.division(4D,2D);
+        calc.division(4D, 2D);
         double result = calc.getResult();
         double expected = 2D;
         assertThat(result, is(expected));
     }
 
     @Test
-    public void whenDivisionFourtoZeroThenZero(){
+    public void whenDivisionFourtoZeroThenZero() {
         Calculator calc = new Calculator();
-        calc.division(4D,0D);
+        calc.division(4D, 0D);
         double result = calc.getResult();
         double expected = 0;
         assertThat(result, is(expected));

@@ -22,38 +22,37 @@ public class MaxTest {
     }
 
     @Test
-    public void whenFirstAndSecondIsTwo(){
+    public void whenFirstAndSecondIsTwo() {
         Max maxim = new Max();
-        int result = maxim.max(2,2);
+        int result = maxim.max(2, 2);
         assertThat(result, is(2));
     }
 
     @Test
-    public void whenFirstBiggerSecondAndThird(){
+    public void whenFirstBiggerSecondAndThird() {
         Max max = new Max();
-        int result = max.max(78,3,3);
-        assertThat(result,is(78));
+        int result = max.max(78, 3, 3);
+        assertThat(result, is(78));
     }
 
     @Test
-    public void whenSecondBiggerFirstAndThird(){
+    public void whenSecondBiggerFirstAndThird() {
         Max max = new Max();
-        int result = max.max(3,78,3);
-        assertThat(result,is(78));
+        int result = max.max(3, 78, 3);
+        assertThat(result, is(78));
     }
 
     @Test
-    public void whenThirdBiggerFirstAndSecond(){
+    public void whenThirdBiggerFirstAndSecond() {
         Max max = new Max();
-        int result = max.max(3,3,78);
-        assertThat(result,is(78));
+        int result = max.max(3, 3, 78);
+        assertThat(result, is(78));
     }
 
     @Test
-    public void whenFirstSecondThirdIsFive(){
+    public void whenFirstSecondThirdIsFive() {
         Max max = new Max();
-        int result = max.max(5,5,5);
-        assertThat(result,is(5));
+        int result = max.max(5, 5, 5);
+        assertThat(result, is(5));
     }
-
 }

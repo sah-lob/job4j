@@ -21,15 +21,15 @@ public class ConverterTest {
     }
 
     @Test
-    public void when1DollarToRublesThen60(){
+    public void when1DollarToRublesThen60() {
         Converter converter = new Converter();
         int result = converter.dollarsToRuble(1);
-        assertThat(result,is(60));
+        assertThat(result, is(60));
     }
     @Test
-    public void when1EuroToRublesThen70(){
+    public void when1EuroToRublesThen70() {
         Converter converter = new Converter();
         int result = converter.euroToRuble(1);
-        assertThat(result,is(70));
+        assertThat(result, is(70));
     }
 }
