@@ -11,7 +11,7 @@ public class Factorial {
      */
     public int calc(int n) {
         if (n < 2) {
-            return n;
+            return 1;
         } else {
             n = n * calc(n - 1);
         }

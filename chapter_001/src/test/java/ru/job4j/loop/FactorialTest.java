@@ -20,4 +20,11 @@ public class FactorialTest {
         int result = f.calc(10);
         assertThat(result, is(3628800));
     }
+
+    @Test
+    public void factorialOf0Is1() {
+        Factorial f = new Factorial();
+        int result = f.calc(0);
+        assertThat(result, is(1));
+    }
 }
