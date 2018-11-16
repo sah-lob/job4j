@@ -1,6 +1,16 @@
 package ru.job4j.loop;
 
+/**
+ * Создание шахматного поля.
+ */
 public class Board {
+
+    /**
+     * Метод рисующие шахмотное поле с нужными размарами.
+     * @param width - ширина поля.
+     * @param height - высота поля.
+     * @return - возвращается строка с шахматным полем.
+     */
     public String paint(int width, int height) {
         StringBuilder screen = new StringBuilder();
         String ln = System.lineSeparator();
