@@ -1,13 +1,14 @@
 package ru.job4j.array;
 
-import java.util.ArrayList;
+
+import java.util.Arrays;
 
 /**
  * Удаление дубликатов.
  */
 public class ArrayDuplicate {
 
-    ArrayList<String> arrayList = new ArrayList<>();
+    String[] newArryay = new String[0];
 
 
     /**
@@ -18,10 +19,11 @@ public class ArrayDuplicate {
     public String[] remove(String[] array) {
         for (String s:array) {
             if (!checkDup(s)) {
-                arrayList.add(s);
+                newArryay = Arrays.copyOf(newArryay, newArryay.length + 1);
+                newArryay[newArryay.length - 1] = s;
             }
         }
-        array = arrayList.toArray(new String[0]);
+        array = newArryay;
         return array;
     }
 
@@ -34,11 +36,13 @@ public class ArrayDuplicate {
 
         boolean flag = false;
 
-        for (String s: arrayList) {
+        if (newArryay.length > 0) {
+        for (String s: newArryay) {
             if (s.equals(st)) {
                 flag = true;
                 break;
             }
+        }
         }
         return flag;
     }
