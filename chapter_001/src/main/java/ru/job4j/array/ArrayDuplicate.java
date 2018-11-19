@@ -18,17 +18,17 @@ public class ArrayDuplicate {
         int num = 0;
         for (int i = 0; i < array.length; i++) {
             boolean flag = false;
-            for (int j = 0; j < num ; j++) {
-                if(array[j].equals(array[i])){
+            for (int j = 0; j < num; j++) {
+                if (array[j].equals(array[i])) {
                     flag = true;
                 }
             }
-            if(!flag){
+            if (!flag) {
                 array[num] = array[i];
                 num++;
             }
         }
 
-        return Arrays.copyOf(array,num);
+        return Arrays.copyOf(array, num);
     }
 }
