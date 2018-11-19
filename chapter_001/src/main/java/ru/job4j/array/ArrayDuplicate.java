@@ -8,42 +8,27 @@ import java.util.Arrays;
  */
 public class ArrayDuplicate {
 
-    String[] newArryay = new String[0];
-
-
     /**
      * метод удалет дубликаты в массиве.
      * @param array массив, в котором надо удалить дубликаты.
      * @return массив без дубликатов.
      */
     public String[] remove(String[] array) {
-        for (String s:array) {
-            if (!checkDup(s)) {
-                newArryay = Arrays.copyOf(newArryay, newArryay.length + 1);
-                newArryay[newArryay.length - 1] = s;
+
+        int num = 0;
+        for (int i = 0; i < array.length; i++) {
+            boolean flag = false;
+            for (int j = 0; j < num ; j++) {
+                if(array[j].equals(array[i])){
+                    flag = true;
+                }
+            }
+            if(!flag){
+                array[num] = array[i];
+                num++;
             }
         }
-        array = newArryay;
-        return array;
-    }
 
-    /**
-     * метод проверяет, есть ли уже в новом списке такой элемент.
-     * @param st элемент.
-     * @return Существует элемент или нет.
-     */
-    public boolean checkDup(String st) {
-
-        boolean flag = false;
-
-        if (newArryay.length > 0) {
-        for (String s: newArryay) {
-            if (s.equals(st)) {
-                flag = true;
-                break;
-            }
-        }
-        }
-        return flag;
+        return Arrays.copyOf(array,num);
     }
 }
