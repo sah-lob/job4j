@@ -13,9 +13,7 @@ public class Counter {
      * @return - сумма чисел в диапазоне.
      */
     public int add(int start, int finish) {
-
         int summ = 0;
-
         for (int i = start; i <= finish; i++) {
             summ = i % 2 == 0 ? summ + i : summ;
         }

@@ -14,7 +14,6 @@ public class ArrayDuplicate {
      * @return массив без дубликатов.
      */
     public String[] remove(String[] array) {
-
         int num = 0;
         for (int i = 0; i < array.length; i++) {
             boolean flag = false;
@@ -28,7 +27,6 @@ public class ArrayDuplicate {
                 num++;
             }
         }
-
         return Arrays.copyOf(array, num);
     }
 }

@@ -16,7 +16,6 @@ public class ArrayMerging {
         int[] newArray = new int[array1.length + array2.length];
         int num1 = 0;
         int num2 = 0;
-
         for (int i = 0; i < newArray.length; i++) {
             if (num1 < array1.length - 1 && num2 < array2.length) {
                 if (array1[num1] <= array2[num2]) {
