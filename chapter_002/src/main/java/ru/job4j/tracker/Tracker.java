@@ -93,34 +93,44 @@ public class Tracker {
 
     /**
      * Замена имени в заявки.
-     * @param id - id заявки, в которой меняется имя.
-     * @param newitem - Заявка с измененным именем.
+     * @param st - id или имя заявки.
+     * @param newName - новое имя.
      */
-    public void replace(String id, Item newitem) {
-        String newName = newitem.getName();
-        findById(id).setName(newName);
+    public void replace(String st, String newName) {
+       st = nameOrIdToId(st);
+       findById(st).setName(newName);
     }
 
     /**
      * Удаление заявки.
-     * @param id - id заявки, которую нужно удалить.
+     * @param st - id или имя заявки, которую нужно удалить.
      */
-    public boolean delete(String id) {
+    public boolean delete(String st) {
+        String id = nameOrIdToId(st);
         boolean result = false;
         Item deleteItem = findById(id);
-        if (deleteItem != null) {
-            for (int indx = 0; indx < this.position; indx++) {
-                if (this.items[indx].getId().equals(deleteItem.getId())) {
-                    result = true;
-                    this.items[indx] = null;
-                    this.position--;
-                    for (int offset = indx; offset < this.position; offset++) {
-                        this.items[offset] = this.items[offset + 1];
-                    }
-                    break;
-                }
+
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == deleteItem) {
+                items[i] = items[position - 1];
+                items[position - 1] = null;
+                position--;
+                result = true;
+                break;
             }
         }
         return result;
+    }
+
+    /**
+     * Преобразовывает имя или id в id.
+     * @param st имя заявки или id.
+     * @return id заявки.
+     */
+    public String nameOrIdToId(String st) {
+        if (!st.matches("[-+]?\\d+")) {
+            st = findByName(st).getId();
+        }
+        return st;
     }
 }
