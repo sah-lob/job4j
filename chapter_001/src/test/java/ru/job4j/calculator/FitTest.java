@@ -19,4 +19,5 @@ public class FitTest {
         double weight = fit.womanWeight(170);
         assertThat(weight, closeTo(69.0, 0.1));
     }
+
 }
