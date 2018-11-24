@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 public class StartUI {
 
+    //0   Имя заявки  Описание заявки да комментарий 1 нет 3 Имя заявки 6
+
     private static final String ADD = "0";
     private static final String SHOW = "1";
     private static final String EDIT = "2";
@@ -21,7 +23,7 @@ public class StartUI {
     /**
      * Конструктор.
      */
-    private StartUI(Input input, Tracker tracker) {
+    public StartUI(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
@@ -29,7 +31,7 @@ public class StartUI {
     /**
      * Основой цикл программы.
      */
-    private void init() {
+    public void init() {
         boolean exit = false;
         while (!exit) {
             this.showMenu();
@@ -74,7 +76,7 @@ public class StartUI {
         System.out.println("Id заявки: " + item.getId());
         System.out.println("Описание заявки: " + item.getDesc());
         System.out.println(String.format("Текущая дата и время: %tc", item.getDateOfCreation()));
-        if (item.getComments().size()>0){
+        if (item.getComments().size() > 0) {
             System.out.println();
             System.out.println("Комментарии: ");
             System.out.println();
@@ -154,15 +156,15 @@ public class StartUI {
      * Метод добавляет комментарии в заявку, если они есть у пользователя.
      * @param item заявка, в которую будут добавлены комментарии.
      */
-    private void haveComments(Item item){
-        if(this.input.ask("Есть ли у вас комментарии? (да,нет)").equals("да")){
+    private void haveComments(Item item) {
+        if (this.input.ask("Есть ли у вас комментарии? (да,нет)").equals("да")) {
         boolean haveComments = true;
-            while (haveComments){
+            while (haveComments) {
             String comment = this.input.ask("Напишите комментарий.");
             ArrayList<String> comments = item.getComments();
             comments.add(comment);
             item.setComments(comments);
-            if(this.input.ask("Есть ли у вас еще один комментармй? (да,нет)").equals("нет")){
+            if (this.input.ask("Есть ли у вас еще один комментармй? (да,нет)").equals("нет")) {
                 haveComments = false;
             }
             }
