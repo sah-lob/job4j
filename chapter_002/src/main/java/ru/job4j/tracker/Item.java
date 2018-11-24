@@ -1,23 +1,40 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * Заявка
+ *
+ * Включает в себя:
+ * id - id заявки
+ * name - имя заявки
+ * desc - описание заявки
+ * dateOfCreation - дата создания заявки
+ * commtnts - комментарии, оставленные к заявке.
+ */
 public class Item {
 
     private String id;
     private String name;
     private String desc;
-    private long created;
-    private String[] comments;
+    private Date dateOfCreation;
+    private ArrayList<String> comments;
 
-    public Item(String name, String desc, long created) {
-        this.name = name;
-        this.desc = desc;
-        this.created = created;
-    }
-
+    /**
+     * Конструктор.
+     */
     public Item(String name, String desc) {
         this.name = name;
         this.desc = desc;
+        this.dateOfCreation = new Date();
+        this.comments = new ArrayList<>();
     }
+
+
+    /**
+     *Ниже идут геттеры и сеттеры.
+     */
 
     public void setId(String generateId) {
         id = generateId;
@@ -39,23 +56,15 @@ public class Item {
         return desc;
     }
 
-    public long getCreated() {
-        return created;
-    }
-
-    public String[] getComments() {
+    public ArrayList<String> getComments() {
         return comments;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public void setCreated(long created) {
-        this.created = created;
-    }
-
-    public void setComments(String[] comments) {
+    public void setComments(ArrayList<String> comments) {
         this.comments = comments;
+    }
+
+    public Date getDateOfCreation() {
+        return dateOfCreation;
     }
 }
