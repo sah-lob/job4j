@@ -119,14 +119,13 @@ public class StartUITest {
      */
     public String menu() {
         StringBuilder pic = new StringBuilder();
-        pic.append("Меню.\n"
-                + "0. Add new Item\n"
+        pic.append("0. Add new Item\n"
                 + "1. Show all items\n"
                 + "2. Edit item\n"
                 + "3. Delete item\n"
-                + "4. Find item by Id\n"
+                + "4. Find item by id\n"
                 + "5. Find items by name\n"
-                + "6. Exit Program");
+                + "6. Exit");
         return pic.toString();
     }
 
