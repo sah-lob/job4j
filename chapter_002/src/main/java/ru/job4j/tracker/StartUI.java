@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 public class StartUI {
 
+    //2
+
     //0   Имя заявки  Описание заявки да комментарий 1 нет 3 Имя заявки 6
 
     private static final String ADD = "0";
@@ -64,7 +66,6 @@ public class StartUI {
         Item item = new Item(name, desc);
         this.tracker.add(item);
         haveComments(item);
-        showItem(item);
     }
     /**
      * Метод выводит на экран переданную заявку.
@@ -107,21 +108,16 @@ public class StartUI {
      * Добавляет комментарии, если орни есть.
      */
     private void editItem() {
-        String id = tracker.nameOrIdToId(this.input.ask("Введите имя или id заявки, которую вы хотите изменить."));
-        String newName = id;
-        if (this.input.ask("Вы хотите изменить имя? (да, нет)").equals("да")) {
-            newName = this.input.ask("Введите новое имя заявки: ");
-            tracker.replace(id, newName);
-        }
-        id = tracker.nameOrIdToId(newName);
-        haveComments(tracker.findById(id));
+        String changingId = this.input.ask("Введите имя или id заявки, которую вы хотите заменить.");
+        String id = this.input.ask("Введите имя или id заявки, на которую вы хотите заменить.");
+        tracker.replace(changingId, tracker.findById(id));
     }
 
     /**
      * Метод спрашивает имя метода и удаляет его.
      */
     private void deleteItem() {
-        tracker.delete(this.input.ask("Введите имя или id заявки, которую вы хотите изменить."));
+        tracker.delete(this.input.ask("Введите имя или id заявки, которую вы хотите удалить."));
     }
 
     /**
@@ -135,7 +131,9 @@ public class StartUI {
      * Метод выводит найденную по имени заявку.
      */
     private void findByName() {
-        showItem(tracker.findByName(this.input.ask("Ведите Имя: ")));
+        for (Item item : tracker.findByName(this.input.ask("Ведите Имя: "))) {
+            showItem(item);
+        }
 }
 
     /**

@@ -57,12 +57,26 @@ public class Tracker {
      * @param name имя заявки.
      * @return - найденная заявка.
      */
-    public Item findByName(String name) {
-        Item result = null;
+    public Item[] findByName(String name) {
+
+        Item[] result;
+        int len = 0;
+
         for (Item item: items) {
-            if (item != null && item.getName().equals(name)) {
-                result = item;
-                break;
+            if (item != null) {
+                if (item.getName().equals(name)) {
+                    len++;
+                }
+            }
+        }
+        result = new Item[len];
+        len = 0;
+        for (Item item: items) {
+            if (item != null) {
+                if (item.getName().equals(name)) {
+                    result[len] = item;
+                    len++;
+                }
             }
         }
         return result;
@@ -93,20 +107,23 @@ public class Tracker {
 
     /**
      * Замена имени в заявки.
-     * @param st - id или имя заявки.
-     * @param newName - новое имя.
+     * @param id - id заявки.
+     * @param item - другая заявка.
      */
-    public void replace(String st, String newName) {
-       st = nameOrIdToId(st);
-       findById(st).setName(newName);
+    public void replace(String id, Item item) {
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].getId().equals(id)) {
+                items[i] = item;
+                break;
+            }
+        }
     }
 
     /**
      * Удаление заявки.
-     * @param st - id или имя заявки, которую нужно удалить.
+     * @param id - id или, которую нужно удалить.
      */
-    public boolean delete(String st) {
-        String id = nameOrIdToId(st);
+    public boolean delete(String id) {
         boolean result = false;
         Item deleteItem = findById(id);
 
@@ -120,17 +137,5 @@ public class Tracker {
             }
         }
         return result;
-    }
-
-    /**
-     * Преобразовывает имя или id в id.
-     * @param st имя заявки или id.
-     * @return id заявки.
-     */
-    public String nameOrIdToId(String st) {
-        if (!st.matches("[-+]?\\d+")) {
-            st = findByName(st).getId();
-        }
-        return st;
     }
 }
