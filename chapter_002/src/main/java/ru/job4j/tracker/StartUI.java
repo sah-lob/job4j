@@ -32,7 +32,7 @@ public class StartUI {
         }
         do {
             menu.show();
-            menu.select(Integer.parseInt(input.ask("  Select:")));
+            menu.select(input.ask("  Select:", range));
         } while (!menu.exit());
     }
 
@@ -41,6 +41,6 @@ public class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }
