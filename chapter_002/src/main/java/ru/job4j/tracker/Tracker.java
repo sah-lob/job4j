@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -87,22 +88,7 @@ public class Tracker {
      * @return список заявок.
      */
     public Item[] findAll() {
-        int numOfItems = 0;
-        for (Item item: items) {
-            if (item != null) {
-                numOfItems++;
-            }
-        }
-        Item[] result = new Item[numOfItems];
-        numOfItems = 0;
-
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                result[numOfItems] = items[i];
-                numOfItems++;
-            }
-        }
-        return result;
+        return Arrays.copyOf(this.items,this.position);
     }
 
     /**
@@ -111,7 +97,7 @@ public class Tracker {
      * @param item - другая заявка.
      */
     public void replace(String id, Item item) {
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < position; i++) {
             if (items[i].getId().equals(id)) {
                 items[i] = item;
                 break;
@@ -123,19 +109,13 @@ public class Tracker {
      * Удаление заявки.
      * @param id - id или, которую нужно удалить.
      */
-    public boolean delete(String id) {
-        boolean result = false;
-        Item deleteItem = findById(id);
-
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] == deleteItem) {
-                items[i] = items[position - 1];
-                items[position - 1] = null;
+    public void delete(String id) {
+        for (int i = 0; i < position; i++) {
+            if (items[i].getId().equals(id)) {
+                System.arraycopy(items, i + 1 , items, i, position - 1 - i);
                 position--;
-                result = true;
                 break;
             }
         }
-        return result;
     }
 }

@@ -60,6 +60,7 @@ public class TreckerTest {
         Item item = new Item("test1", "testDescription");
         tracker.add(item);
         tracker.delete(item.getId());
-        assertNull(tracker.findById(item.getId()));
+
+        assertThat(tracker.findAll().length,is(0));
     }
 }

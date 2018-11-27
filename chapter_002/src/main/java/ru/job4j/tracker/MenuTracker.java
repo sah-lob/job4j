@@ -127,32 +127,9 @@ public class MenuTracker {
     }
 
     /**
-     * Класс отвечающий за изменение заявки.
-     */
-    private class EditItem implements UserAction {
-
-        @Override
-        public int key() {
-            return Integer.parseInt(EDIT);
-        }
-
-        @Override
-        public void execute(Input input, Tracker tracker) {
-            String changingId = input.ask("Введите имя или id заявки, которую вы хотите заменить.");
-            String id = input.ask("Введите имя или id заявки, на которую вы хотите заменить.");
-            tracker.replace(changingId, tracker.findById(id));
-        }
-
-        @Override
-        public String info() {
-            return  key() + ". Edit item";
-        }
-    }
-
-    /**
      * Класс отвечающий за удаление заявки.
      */
-    private class DeleteItem implements UserAction {
+    private static class DeleteItem implements UserAction {
 
         @Override
         public int key() {
@@ -280,5 +257,28 @@ public class MenuTracker {
      */
     public boolean exit() {
         return this.exit;
+    }
+}
+
+/**
+ * Класс отвечающий за изменение заявки.
+ */
+class EditItem implements UserAction {
+
+    @Override
+    public int key() {
+        return 2;
+    }
+
+    @Override
+    public void execute(Input input, Tracker tracker) {
+        String changingId = input.ask("Введите имя или id заявки, которую вы хотите заменить.");
+        String id = input.ask("Введите имя или id заявки, на которую вы хотите заменить.");
+        tracker.replace(changingId, tracker.findById(id));
+    }
+
+    @Override
+    public String info() {
+        return  key() + ". Edit item";
     }
 }
