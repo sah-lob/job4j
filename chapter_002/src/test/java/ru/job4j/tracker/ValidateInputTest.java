@@ -48,4 +48,20 @@ public class ValidateInputTest {
                 )
         );
     }
+
+    @Test
+    public void whenWrongInputFromMenu() {
+        ValidateInput input = new ValidateInput(
+                new StubInput(new String[] {"-3", "1"})
+        );
+        List<Integer> range = new ArrayList<>();
+        range.add(1);
+        input.ask("Enter", range);
+        assertThat(
+                this.mem.toString(),
+                is(
+                        String.format("Please select key from menu.%n")
+                )
+        );
+    }
 }

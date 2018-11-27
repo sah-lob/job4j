@@ -103,6 +103,7 @@ public class Tracker {
                 break;
             }
         }
+        item.setId(id);
     }
 
     /**
