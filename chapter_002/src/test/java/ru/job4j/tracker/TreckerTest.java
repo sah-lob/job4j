@@ -61,6 +61,6 @@ public class TreckerTest {
         tracker.add(item);
         tracker.delete(item.getId());
 
-        assertThat(tracker.findAll().length,is(0));
+        assertThat(tracker.findAll().length, is(0));
     }
 }

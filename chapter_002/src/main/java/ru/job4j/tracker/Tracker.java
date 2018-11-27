@@ -88,7 +88,7 @@ public class Tracker {
      * @return список заявок.
      */
     public Item[] findAll() {
-        return Arrays.copyOf(this.items,this.position);
+        return Arrays.copyOf(this.items, this.position);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Tracker {
     public void delete(String id) {
         for (int i = 0; i < position; i++) {
             if (items[i].getId().equals(id)) {
-                System.arraycopy(items, i + 1 , items, i, position - 1 - i);
+                System.arraycopy(items, i + 1, items, i, position - 1 - i);
                 position--;
                 break;
             }
