@@ -47,10 +47,10 @@ public class StubInput implements Input {
                 break;
             }
         }
-        if (exist) {
-            return key;
-        } else {
+        if (!exist) {
             throw new MenuOutException("Ошибка в диаппазоне.");
+        } else {
+            return key;
         }
     }
 }

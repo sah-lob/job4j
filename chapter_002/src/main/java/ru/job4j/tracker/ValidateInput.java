@@ -18,6 +18,7 @@ public class ValidateInput implements Input {
     public int ask(String question, List<Integer> range) {
         boolean invalid = true;
         int value = -1;
+
         do {
             try {
                 value = this.input.ask(question, range);
