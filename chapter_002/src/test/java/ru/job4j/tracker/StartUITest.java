@@ -66,11 +66,11 @@ public class StartUITest {
         System.setOut(new PrintStream(this.out));
         new StartUI(input, tracker).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + "\n"
-                + "Существующие заявки:\n" + "\n"
-                + "Заявка номер: 1\n" + "\n" + "\n"
+        pic.append(menu() + System.lineSeparator()
+                + "Существующие заявки:" + System.lineSeparator() + System.lineSeparator()
+                + "Заявка номер: 1" + System.lineSeparator() + System.lineSeparator() + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 0)
-                + menu() + "\n");
+                + menu() + System.lineSeparator());
         String result = pic.toString();
         assertThat(new String(out.toByteArray()), is(result));
     }
@@ -87,9 +87,9 @@ public class StartUITest {
         System.setOut(new PrintStream(this.out));
         new StartUI(input, tracker).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + "\n\n"
+        pic.append(menu() + System.lineSeparator() + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 0)
-                + menu() + "\n");
+                + menu() + System.lineSeparator());
         String result = pic.toString();
         assertThat(new String(out.toByteArray()), is(result));
     }
@@ -106,10 +106,10 @@ public class StartUITest {
         System.setOut(new PrintStream(this.out));
         new StartUI(input, tracker).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + "\n\n"
-                + showItem(name, tracker, desc, comment, 0) + "\n"
+        pic.append(menu() + System.lineSeparator() + System.lineSeparator()
+                + showItem(name, tracker, desc, comment, 0) + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 1)
-                + menu() + "\n");
+                + menu() + System.lineSeparator());
         String result = pic.toString();
         assertThat(new String(out.toByteArray()), is(result));
     }
@@ -119,12 +119,12 @@ public class StartUITest {
      */
     public String menu() {
         StringBuilder pic = new StringBuilder();
-        pic.append("0. Add new Item\n"
-                + "1. Show all items\n"
-                + "2. Edit item\n"
-                + "3. Delete item\n"
-                + "4. Find item by id\n"
-                + "5. Find items by name\n"
+        pic.append("0. Add new Item" + System.lineSeparator()
+                + "1. Show all items" + System.lineSeparator()
+                + "2. Edit item" + System.lineSeparator()
+                + "3. Delete item" + System.lineSeparator()
+                + "4. Find item by id" + System.lineSeparator()
+                + "5. Find items by name" + System.lineSeparator()
                 + "6. Exit");
         return pic.toString();
     }
@@ -139,12 +139,12 @@ public class StartUITest {
      */
     public String showItem(String name, Tracker tracker, String desc, String comment, int numOfItem) {
         StringBuilder pic = new StringBuilder();
-        pic.append("Заявка с именем: " + name + "\n"
-                + "Id заявки: " + tracker.findAll()[numOfItem].getId() + "\n"
-                + "Описание заявки: " + desc + "\n"
-                + String.format("Текущая дата и время: %tc", tracker.findAll()[numOfItem].getDateOfCreation()) + "\n" + "\n"
-                + "Комментарии: \n" + "\n"
-                + comment + "\n\n\n");
+        pic.append("Заявка с именем: " + name + System.lineSeparator()
+                + "Id заявки: " + tracker.findAll()[numOfItem].getId() + System.lineSeparator()
+                + "Описание заявки: " + desc + System.lineSeparator()
+                + String.format("Текущая дата и время: %tc", tracker.findAll()[numOfItem].getDateOfCreation()) + System.lineSeparator() + System.lineSeparator()
+                + "Комментарии: " + System.lineSeparator() + System.lineSeparator()
+                + comment + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
         return pic.toString();
     }
 }
