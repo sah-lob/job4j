@@ -12,13 +12,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import ru.job4j.chess.firuges.Cell;
-import ru.job4j.chess.firuges.Figure;
-import ru.job4j.chess.firuges.black.*;
-import ru.job4j.chess.firuges.white.*;
+import ru.job4j.chess.firuges.*;
+
+import java.util.ArrayList;
+
 
 public class Chess extends Application {
+
     private static final String JOB4J = "Шахматы на www.job4j.ru";
+    private ArrayList<Rectangle> rectangles = new ArrayList<>();
     private final int size = 8;
     private final Logic logic = new Logic();
 
@@ -39,6 +41,7 @@ public class Chess extends Application {
 
     private Rectangle buildFigure(int x, int y, int size, String image) {
         Rectangle rect = new Rectangle();
+        rectangles.add(rect);
         rect.setX(x);
         rect.setY(y);
         rect.setHeight(size);
@@ -46,6 +49,10 @@ public class Chess extends Application {
         Image img = new Image(this.getClass().getClassLoader().getResource(image).toString());
         rect.setFill(new ImagePattern(img));
         final Rectangle momento = new Rectangle(x, y);
+        momento.setX(x);
+        momento.setY(y);
+
+
         rect.setOnDragDetected(
                 event -> {
                     momento.setX(event.getX());
@@ -58,11 +65,15 @@ public class Chess extends Application {
                     rect.setY(event.getY() - size / 2);
                 }
         );
+
         rect.setOnMouseReleased(
                 event -> {
-                    if (logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()))) {
+                    Cell c1 = findBy(event.getX(), event.getY());
+                    if (logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()), this.rectangles)) {
                         rect.setX(((int) event.getX() / 40) * 40 + 5);
                         rect.setY(((int) event.getY() / 40) * 40 + 5);
+                        momento.setX(((int) event.getX() / 40) * 40 + 5);
+                        momento.setY(((int) event.getY() / 40) * 40 + 5);
                     } else {
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
@@ -114,41 +125,41 @@ public class Chess extends Application {
     }
 
     private void buildBlackTeam(Group grid) {
-        this.add(new PawnBlack(Cell.A7), grid);
-        this.add(new PawnBlack(Cell.B7), grid);
-        this.add(new PawnBlack(Cell.C7), grid);
-        this.add(new PawnBlack(Cell.D7), grid);
-        this.add(new PawnBlack(Cell.E7), grid);
-        this.add(new PawnBlack(Cell.F7), grid);
-        this.add(new PawnBlack(Cell.G7), grid);
-        this.add(new PawnBlack(Cell.H7), grid);
-        this.add(new RookBlack(Cell.A8), grid);
-        this.add(new KnightBlack(Cell.B8), grid);
-        this.add(new BishopBlack(Cell.C8), grid);
-        this.add(new QeenBlack(Cell.D8), grid);
-        this.add(new KingBlack(Cell.E8), grid);
-        this.add(new BishopBlack(Cell.F8), grid);
-        this.add(new KnightBlack(Cell.G8), grid);
-        this.add(new RookBlack(Cell.H8), grid);
+        this.add(new Pawn(Cell.A7, false), grid);
+        this.add(new Pawn(Cell.B7, false), grid);
+        this.add(new Pawn(Cell.C7, false), grid);
+        this.add(new Pawn(Cell.D7, false), grid);
+        this.add(new Pawn(Cell.E7, false), grid);
+        this.add(new Pawn(Cell.F7, false), grid);
+        this.add(new Pawn(Cell.G7, false), grid);
+        this.add(new Pawn(Cell.H7, false), grid);
+        this.add(new Rook(Cell.A8, false), grid);
+        this.add(new Knight(Cell.B8, false), grid);
+        this.add(new Bishop(Cell.C8, false), grid);
+        this.add(new Queen(Cell.E8, true), grid);
+        this.add(new King(Cell.D8, false), grid);
+        this.add(new Bishop(Cell.F8, false), grid);
+        this.add(new Knight(Cell.G8, false), grid);
+        this.add(new Rook(Cell.H8, false), grid);
     }
 
     public void buildWhiteTeam(Group grid) {
-        this.add(new PawnWhite(Cell.A2), grid);
-        this.add(new PawnWhite(Cell.B2), grid);
-        this.add(new PawnWhite(Cell.C2), grid);
-        this.add(new PawnWhite(Cell.D2), grid);
-        this.add(new PawnWhite(Cell.E2), grid);
-        this.add(new PawnWhite(Cell.F2), grid);
-        this.add(new PawnWhite(Cell.G2), grid);
-        this.add(new PawnWhite(Cell.H2), grid);
-        this.add(new RookWhite(Cell.A1), grid);
-        this.add(new KnightWhite(Cell.B1), grid);
-        this.add(new BishopWhite(Cell.C1), grid);
-        this.add(new QeenWhite(Cell.D1), grid);
-        this.add(new KingWhite(Cell.E1), grid);
-        this.add(new BishopWhite(Cell.F1), grid);
-        this.add(new KnightWhite(Cell.G1), grid);
-        this.add(new RookWhite(Cell.H1), grid);
+        this.add(new Pawn(Cell.A2, true), grid);
+        this.add(new Pawn(Cell.B2, true), grid);
+        this.add(new Pawn(Cell.C2, true), grid);
+        this.add(new Pawn(Cell.D2, true), grid);
+        this.add(new Pawn(Cell.E2, true), grid);
+        this.add(new Pawn(Cell.F2, true), grid);
+        this.add(new Pawn(Cell.G2, true), grid);
+        this.add(new Pawn(Cell.H2, true), grid);
+        this.add(new Rook(Cell.A1, true), grid);
+        this.add(new Knight(Cell.B1, true), grid);
+        this.add(new Bishop(Cell.C1, true), grid);
+        this.add(new Queen(Cell.E1, true), grid);
+        this.add(new King(Cell.D1, true), grid);
+        this.add(new Bishop(Cell.F1, true), grid);
+        this.add(new Knight(Cell.G1, true), grid);
+        this.add(new Rook(Cell.H1, true), grid);
     }
 
     public void add(Figure figure, Group grid) {
@@ -175,5 +186,18 @@ public class Chess extends Application {
             }
         }
         return rst;
+    }
+
+    public static boolean findByCell(int x, int y) {
+        boolean flag = false;
+        for (Cell cell : Cell.values()) {
+            if (cell.x == x && cell.y == y) {
+                if (cell.getFigure() == null) {
+                    flag = true;
+                }
+                break;
+            }
+        }
+        return flag;
     }
 }
