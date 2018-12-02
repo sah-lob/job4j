@@ -7,7 +7,6 @@ import ru.job4j.chess.firuges.Figure;
 import java.util.ArrayList;
 
 /**
- * //TODO add comments.
  *
  * @author Alexander Lobachev (sah-lob@ya.ru)
  * @version $Id$
@@ -29,7 +28,11 @@ public class Logic {
     public boolean move(Cell source, Cell dest, ArrayList<Rectangle> rectangles) {
 
         boolean rst = false;
-        if (whiteFigureMove == source.getFigure().isWhiteColor()) {
+        if (whiteFigureMove == source.getFigure().isWhiteColor() && !checkmate) {
+            if (check) {
+                mateControl(source.getFigure().isWhiteColor());
+                System.out.println("А я уже тута");
+            }
             int index = this.findBy(source);
             if (index != -1) {
                 Cell[] steps = this.figures[index].way(source, dest, false);
@@ -54,7 +57,7 @@ public class Logic {
             if (rst) {
             whiteFigureMove = !whiteFigureMove;
             }
-            checkControl(dest.getFigure().isWhiteColor(), rectangles);
+            checkControl(dest.getFigure().isWhiteColor());
         }
         return rst;
     }
@@ -77,11 +80,14 @@ public class Logic {
         return rst;
     }
 
-    public boolean checkControl(boolean attackColor, ArrayList<Rectangle> rectangles) {
-
+    /**
+     * Метод проверяет, не поставила ли фигура шаг.
+     * @param attackColor цвет фигуры, которая перединулась.
+     * @return результат проверки.
+     */
+    public boolean checkControl(boolean attackColor) {
         ArrayList<Figure> yourfigures = new ArrayList<>();
         Cell enemyKingCell = null;
-
         for (Figure f : figures) {
             if (f != null) {
                 if (f.isWhiteColor() == attackColor) {
@@ -92,7 +98,6 @@ public class Logic {
                 }
             }
         }
-
         for (Figure figure: yourfigures) {
             if (wayCheck(figure.position(), enemyKingCell)) {
                 System.out.println("++++++++++++++++++++++++++++++++++++++++");
@@ -103,9 +108,15 @@ public class Logic {
                 check = true;
             }
         }
-        return false;
+        return true;
     }
 
+    /**
+     * Метод проверяет может ли фигура передвинутсья со своего места, до места, где стоит вражеский король.
+     * @param source место, где стоит фигура.
+     * @param dest место, где стоит король.
+     * @return результат проверки.
+     */
     public boolean wayCheck(Cell source, Cell dest) {
         boolean rst = false;
             int index = this.findBy(source);
@@ -118,10 +129,16 @@ public class Logic {
         return rst;
     }
 
+    /**
+     * Список с пустыми клетками от фигуры, которая поставила шаг(мат), до короля.
+     * Сначала проверяется как именно фигура поставила шаг королю: поодигонали или по прямой линии.
+     *
+     * @param source - клетка, на которой стоит фигура.
+     * @param dest - клетка, на которой стоит вражеский король.
+     * @return лист с клетками.
+     */
     public ArrayList<Cell> cellsOnThePathFromACheckShapeToTheKing(Cell source, Cell dest) {
-
         ArrayList<Cell> cells = new ArrayList<>();
-
         // шаг поставили слон, королева или пешка.
         if (Math.abs(source.y - dest.y) == Math.abs(source.x - dest.x)) {
             int n = 0;
@@ -164,7 +181,35 @@ public class Logic {
                 }
             }
         }
-
         return cells;
+    }
+
+    public boolean mateControl(boolean attackColor) {
+        if(check){
+            System.out.println("Я в метдое проверки на мет.");
+        }
+//        ArrayList<Figure> yourfigures = new ArrayList<>();
+//        Cell enemyKingCell = null;
+//        for (Figure f : figures) {
+//            if (f != null) {
+//                if (f.isWhiteColor() == attackColor) {
+//                    yourfigures.add(f);
+//                }
+//                if (f.isWhiteColor() != attackColor && f.getClass().getSimpleName().equals("King")) {
+//                    enemyKingCell = f.position();
+//                }
+//            }
+//        }
+//        for (Figure figure: yourfigures) {
+//            if (wayCheck(figure.position(), enemyKingCell)) {
+//                System.out.println("++++++++++++++++++++++++++++++++++++++++");
+//
+//                for (Cell c: cellsOnThePathFromACheckShapeToTheKing(figure.position(), enemyKingCell)) {
+//                    System.out.println(c);
+//                }
+//                check = true;
+//            }
+//        }
+        return false;
     }
 }
