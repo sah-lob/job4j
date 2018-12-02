@@ -23,6 +23,8 @@ public class Chess extends Application {
     private ArrayList<Rectangle> rectangles = new ArrayList<>();
     private final int size = 8;
     private final Logic logic = new Logic();
+    private boolean win = false;
+    Group grid = this.buildGrid();
 
     private Rectangle buildRectangle(int x, int y, int size, boolean white) {
         Rectangle rect = new Rectangle();
@@ -68,7 +70,6 @@ public class Chess extends Application {
 
         rect.setOnMouseReleased(
                 event -> {
-                    Cell c1 = findBy(event.getX(), event.getY());
                     if (logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()), this.rectangles)) {
                         rect.setX(((int) event.getX() / 40) * 40 + 5);
                         rect.setY(((int) event.getY() / 40) * 40 + 5);
@@ -77,6 +78,9 @@ public class Chess extends Application {
                     } else {
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
+                    }
+                    if (win) {
+                        this.gameOverImages(grid);
                     }
                 }
         );
@@ -117,49 +121,48 @@ public class Chess extends Application {
     }
 
     private void refresh(final BorderPane border) {
-        Group grid = this.buildGrid();
         this.logic.clean();
         border.setCenter(grid);
-        this.buildWhiteTeam(grid);
         this.buildBlackTeam(grid);
+        this.buildWhiteTeam(grid);
     }
 
     private void buildBlackTeam(Group grid) {
-        this.add(new Pawn(Cell.A7, false), grid);
-        this.add(new Pawn(Cell.B7, false), grid);
-        this.add(new Pawn(Cell.C7, false), grid);
-        this.add(new Pawn(Cell.D7, false), grid);
-        this.add(new Pawn(Cell.E7, false), grid);
-        this.add(new Pawn(Cell.F7, false), grid);
-        this.add(new Pawn(Cell.G7, false), grid);
-        this.add(new Pawn(Cell.H7, false), grid);
-        this.add(new Rook(Cell.A8, false), grid);
-        this.add(new Knight(Cell.B8, false), grid);
-        this.add(new Bishop(Cell.C8, false), grid);
-        this.add(new Queen(Cell.E8, true), grid);
-        this.add(new King(Cell.D8, false), grid);
-        this.add(new Bishop(Cell.F8, false), grid);
-        this.add(new Knight(Cell.G8, false), grid);
-        this.add(new Rook(Cell.H8, false), grid);
+        this.add(new Pawn(Cell.A2, false), grid);
+        this.add(new Pawn(Cell.B2, false), grid);
+        this.add(new Pawn(Cell.C2, false), grid);
+        this.add(new Pawn(Cell.D2, false), grid);
+        this.add(new Pawn(Cell.E2, false), grid);
+        this.add(new Pawn(Cell.F2, false), grid);
+        this.add(new Pawn(Cell.G2, false), grid);
+        this.add(new Pawn(Cell.H2, false), grid);
+        this.add(new Rook(Cell.A1, false), grid);
+        this.add(new Knight(Cell.B1, false), grid);
+        this.add(new Bishop(Cell.C1, false), grid);
+        this.add(new Queen(Cell.D1, false), grid);
+        this.add(new King(Cell.E1, false), grid);
+        this.add(new Bishop(Cell.F1, false), grid);
+        this.add(new Knight(Cell.G1, false), grid);
+        this.add(new Rook(Cell.H1, false), grid);
     }
 
     public void buildWhiteTeam(Group grid) {
-        this.add(new Pawn(Cell.A2, true), grid);
-        this.add(new Pawn(Cell.B2, true), grid);
-        this.add(new Pawn(Cell.C2, true), grid);
-        this.add(new Pawn(Cell.D2, true), grid);
-        this.add(new Pawn(Cell.E2, true), grid);
-        this.add(new Pawn(Cell.F2, true), grid);
-        this.add(new Pawn(Cell.G2, true), grid);
-        this.add(new Pawn(Cell.H2, true), grid);
-        this.add(new Rook(Cell.A1, true), grid);
-        this.add(new Knight(Cell.B1, true), grid);
-        this.add(new Bishop(Cell.C1, true), grid);
-        this.add(new Queen(Cell.E1, true), grid);
-        this.add(new King(Cell.D1, true), grid);
-        this.add(new Bishop(Cell.F1, true), grid);
-        this.add(new Knight(Cell.G1, true), grid);
-        this.add(new Rook(Cell.H1, true), grid);
+        this.add(new Pawn(Cell.A7, true), grid);
+        this.add(new Pawn(Cell.B7, true), grid);
+        this.add(new Pawn(Cell.C7, true), grid);
+        this.add(new Pawn(Cell.D7, true), grid);
+        this.add(new Pawn(Cell.E7, true), grid);
+        this.add(new Pawn(Cell.F7, true), grid);
+        this.add(new Pawn(Cell.G7, true), grid);
+        this.add(new Pawn(Cell.H7, true), grid);
+        this.add(new Rook(Cell.A8, true), grid);
+        this.add(new Knight(Cell.B8, true), grid);
+        this.add(new Bishop(Cell.C8, true), grid);
+        this.add(new Queen(Cell.D8, true), grid);
+        this.add(new King(Cell.E8, true), grid);
+        this.add(new Bishop(Cell.F8, true), grid);
+        this.add(new Knight(Cell.G8, true), grid);
+        this.add(new Rook(Cell.H8, true), grid);
     }
 
     public void add(Figure figure, Group grid) {
@@ -199,5 +202,47 @@ public class Chess extends Application {
             }
         }
         return flag;
+    }
+
+    public static Cell findCell(int x, int y) {
+        Cell c = null;
+        for (Cell cell : Cell.values()) {
+            if (cell.x == x && cell.y == y) {
+                c = cell;
+            }
+        }
+        return c;
+    }
+
+    public void gameOverImages(Group grid) {
+
+        if (1 == 1) {
+            this.addGameOver(new GameOver(Cell.C4, "W"), grid);
+            this.addGameOver(new GameOver(Cell.D4, "H"), grid);
+            this.addGameOver(new GameOver(Cell.E4, "I"), grid);
+            this.addGameOver(new GameOver(Cell.F4, "T"), grid);
+            this.addGameOver(new GameOver(Cell.G4, "E"), grid);
+        } else {
+            this.addGameOver(new GameOver(Cell.C4, "B"), grid);
+            this.addGameOver(new GameOver(Cell.D4, "L"), grid);
+            this.addGameOver(new GameOver(Cell.E4, "A"), grid);
+            this.addGameOver(new GameOver(Cell.F4, "C"), grid);
+            this.addGameOver(new GameOver(Cell.G4, "K"), grid);
+        }
+        this.addGameOver(new GameOver(Cell.D5, "w_small"), grid);
+        this.addGameOver(new GameOver(Cell.E5, "I"), grid);
+        this.addGameOver(new GameOver(Cell.F5, "N"), grid);
+    }
+
+    public void addGameOver(GameOver gameOver, Group grid) {
+        Cell position = gameOver.position();
+        grid.getChildren().add(
+                this.buildFigure(
+                        position.x * 40 + 5,
+                        position.y * 40 + 5,
+                        30,
+                        gameOver.icon()
+                )
+        );
     }
 }

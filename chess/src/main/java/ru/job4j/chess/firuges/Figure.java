@@ -5,7 +5,7 @@ package ru.job4j.chess.firuges;
 
      public abstract Cell position();
 
-     public abstract Cell[] way(Cell source, Cell dest);
+     public abstract Cell[] way(Cell source, Cell dest, boolean check);
 
    public String icon() {
         return String.format(
