@@ -16,7 +16,9 @@ import ru.job4j.chess.firuges.*;
 
 import java.util.ArrayList;
 
-
+/**
+ * Шахматы.
+ */
 public class Chess extends Application {
 
     private static final String JOB4J = "Шахматы на www.job4j.ru";
@@ -24,8 +26,18 @@ public class Chess extends Application {
     private final int size = 8;
     private final Logic logic = new Logic();
     private boolean win = false;
+    public static boolean checkmate = false;
+    public static boolean check = false;
     Group grid = this.buildGrid();
 
+    /**
+     * Метод отвечает за построение прямоугольников шахматной доски и их заполнение.
+     * @param x координата x.
+     * @param y координата y.
+     * @param size размер клетки
+     * @param white
+     * @return
+     */
     private Rectangle buildRectangle(int x, int y, int size, boolean white) {
         Rectangle rect = new Rectangle();
         rect.setX(x * size);
@@ -40,6 +52,7 @@ public class Chess extends Application {
         rect.setStroke(Color.BLACK);
         return rect;
     }
+
 
     private Rectangle buildFigure(int x, int y, int size, String image) {
         Rectangle rect = new Rectangle();
@@ -79,7 +92,7 @@ public class Chess extends Application {
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
                     }
-                    if (win) {
+                    if (checkmate) {
                         this.gameOverImages(grid);
                     }
                 }
@@ -87,7 +100,10 @@ public class Chess extends Application {
         return rect;
     }
 
-    private Group buildGrid() {
+    /**
+     * Отображение поля.
+     */
+    public Group  buildGrid() {
         Group panel = new Group();
         for (int y = 0; y != this.size; y++) {
             for (int x = 0; x != this.size; x++) {
@@ -120,13 +136,21 @@ public class Chess extends Application {
         this.refresh(border);
     }
 
+    /**
+     * метод отвеяает за перезапуск программы.
+     * @param border
+     */
     private void refresh(final BorderPane border) {
         this.logic.clean();
         border.setCenter(grid);
-        this.buildBlackTeam(grid);
         this.buildWhiteTeam(grid);
+        this.buildBlackTeam(grid);
     }
 
+    /**
+     * Создание черной команды
+     * @param grid поле
+     */
     private void buildBlackTeam(Group grid) {
         this.add(new Pawn(Cell.A2, false), grid);
         this.add(new Pawn(Cell.B2, false), grid);
@@ -146,6 +170,10 @@ public class Chess extends Application {
         this.add(new Rook(Cell.H1, false), grid);
     }
 
+    /**
+     * Создание белой командры
+     * @param grid поле
+     */
     public void buildWhiteTeam(Group grid) {
         this.add(new Pawn(Cell.A7, true), grid);
         this.add(new Pawn(Cell.B7, true), grid);
@@ -165,6 +193,11 @@ public class Chess extends Application {
         this.add(new Rook(Cell.H8, true), grid);
     }
 
+    /**
+     * Метод отвечает за дабовление новой фигуры.
+     * @param figure Новая фигура.
+     * @param grid
+     */
     public void add(Figure figure, Group grid) {
         this.logic.add(figure);
         Cell position = figure.position();
@@ -178,6 +211,12 @@ public class Chess extends Application {
         );
     }
 
+    /**
+     * Поиск по поля по координатам x,y.
+     * @param graphX координата X.
+     * @param graphY координата Y.
+     * @return поле, соответствующее координатам.
+     */
     private Cell findBy(double graphX, double graphY) {
         Cell rst = Cell.A1;
         int x = (int) graphX / 40;
@@ -191,6 +230,12 @@ public class Chess extends Application {
         return rst;
     }
 
+
+    /**
+     * Проверка, стоит ли фигура на клетке по координатам.
+     * @param x координата x.
+     * @param y координата y.
+     */
     public static boolean findByCell(int x, int y) {
         boolean flag = false;
         for (Cell cell : Cell.values()) {
@@ -214,9 +259,17 @@ public class Chess extends Application {
         return c;
     }
 
+    /**
+     * Создание победной надписи.
+     * @param grid поле
+     */
     public void gameOverImages(Group grid) {
 
-        if (1 == 1) {
+        for (Rectangle r:rectangles) {
+            r.setFill(null);
+        }
+
+        if (!logic.isWhiteFigureMove()) {
             this.addGameOver(new GameOver(Cell.C4, "W"), grid);
             this.addGameOver(new GameOver(Cell.D4, "H"), grid);
             this.addGameOver(new GameOver(Cell.E4, "I"), grid);
@@ -234,6 +287,11 @@ public class Chess extends Application {
         this.addGameOver(new GameOver(Cell.F5, "N"), grid);
     }
 
+    /**
+     * Добавление букв победной надписи на поле.
+     * @param gameOver Класс с буквами.
+     * @param grid поле.
+     */
     public void addGameOver(GameOver gameOver, Group grid) {
         Cell position = gameOver.position();
         grid.getChildren().add(
@@ -245,4 +303,10 @@ public class Chess extends Application {
                 )
         );
     }
+
+    public ArrayList<Rectangle> getRectangles() {
+        return rectangles;
+    }
 }
+
+

@@ -1,5 +1,8 @@
 package ru.job4j.chess.firuges;
 
+/**
+ * Дама
+ */
 public class Queen extends Figure {
 
     private final Cell position;
@@ -46,6 +49,10 @@ public class Queen extends Figure {
     @Override
     public boolean isWhiteColor() {
         return whiteColor;
+    }
+
+    public void setWhiteColor(boolean whiteColor) {
+        this.whiteColor = whiteColor;
     }
 
     public String icon() {

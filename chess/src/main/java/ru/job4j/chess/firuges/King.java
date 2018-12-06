@@ -1,5 +1,9 @@
 package ru.job4j.chess.firuges;
 
+
+/**
+ * Король
+ */
 public class King extends Figure {
 
     private final Cell position;
@@ -21,7 +25,6 @@ public class King extends Figure {
         Cell[] steps = new Cell[0];
         if (dest.getFigure() == null || dest.getFigure().isWhiteColor() != whiteColor) {
             if ((Math.abs(dest.x - source.x) <= 1 && Math.abs(dest.y - source.y) <= 1)) {
-                System.out.println(source.y);
                 steps = new Cell[] {
                         dest
                 };
@@ -41,6 +44,10 @@ public class King extends Figure {
     @Override
     public boolean isWhiteColor() {
         return whiteColor;
+    }
+
+    public void setWhiteColor(boolean whiteColor) {
+        this.whiteColor = whiteColor;
     }
 
     public String icon() {

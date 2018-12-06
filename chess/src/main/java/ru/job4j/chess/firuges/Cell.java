@@ -1,5 +1,8 @@
 package ru.job4j.chess.firuges;
 
+/**
+ * Клетки поля.
+ */
 public enum Cell {
     A1(0, 0, null), A2(0, 1, null), A3(0, 2, null), A4(0, 3, null), A5(0, 4, null), A6(0, 5, null), A7(0, 6, null), A8(0, 7, null),
     B1(1, 0, null), B2(1, 1, null), B3(1, 2, null), B4(1, 3, null), B5(1, 4, null), B6(1, 5, null), B7(1, 6, null), B8(1, 7, null),

@@ -7,7 +7,7 @@ import ru.job4j.chess.firuges.Figure;
 import java.util.ArrayList;
 
 /**
- *
+ * Класс отвечает за логику программы.
  * @author Alexander Lobachev (sah-lob@ya.ru)
  * @version $Id$
  * @since 0.1
@@ -17,25 +17,41 @@ public class Logic {
     Figure[] figures = new Figure[32];
     private int index = 0;
     private boolean whiteFigureMove = true;
-    private boolean check = false;
-    private boolean checkmate = false;
-    private boolean stalemate = false;
+    private ArrayList<Cell> matesells = new ArrayList<>();
 
+    /**
+     * Метод добавляет фигруру в массив с фигурами.
+     * @param figure
+     */
     public void add(Figure figure) {
         this.figures[this.index++] = figure;
     }
 
+
+    /**
+     * Метод отвечачает за движение фигуры.
+     * Если фигуру можно переместить, она перемещается, метоод возвращает true.
+     *
+     * Метод проверяет какого цвета фигура может ходить.
+     * Метод проверяет может ли фигура встать на место, которое пользователь хочет ее переместить.
+     * Метод заканчивает игру, если был поставлен мат.
+     *
+     * @param source - клетка на которой стояла фигура.
+     * @param dest - клетка на которую пользователь хочет переместить фигуру.
+     * @param rectangles - Списо прямоугольников, на которых находятся фигуры.
+     * @return возвращает true если фигуру можно переместить.
+     */
     public boolean move(Cell source, Cell dest, ArrayList<Rectangle> rectangles) {
 
         boolean rst = false;
-        if (whiteFigureMove == source.getFigure().isWhiteColor() && !checkmate) {
-            if (check) {
-                mateControl(source.getFigure().isWhiteColor());
-                System.out.println("А я уже тута");
-            }
-            int index = this.findBy(source);
-            if (index != -1) {
-                Cell[] steps = this.figures[index].way(source, dest, false);
+
+        int index = this.findBy(source);
+
+        if (whiteFigureMove == figures[index].isWhiteColor() && !Chess.checkmate) {
+
+            if (figures[index] != null) {
+
+                Cell[] steps = figures[index].way(source, dest, false);
                 if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
                     if (dest.getFigure() != null) {
                         for (int i = 0; i < figures.length; i++) {
@@ -50,25 +66,50 @@ public class Logic {
                             }
                         }
                     }
+
+                    if (index >= 0) {
+                        this.figures[index] = this.figures[index].copy(dest);
+                    }
                     rst = true;
-                    this.figures[index] = this.figures[index].copy(dest);
                 }
             }
             if (rst) {
             whiteFigureMove = !whiteFigureMove;
             }
-            checkControl(dest.getFigure().isWhiteColor());
+
+            if (dest.getFigure() != null) {
+                if (checkControl(dest.getFigure().isWhiteColor())) {
+                    Chess.check = true;
+                    Chess.checkmate = mateControl(!dest.getFigure().isWhiteColor());
+                } else {
+                    Chess.check = false;
+                }
+            }
         }
         return rst;
     }
 
+    /**
+     * Метод удаляет всю логику текущей игры и начинает новую
+     */
     public void clean() {
-        for (int position = 0; position != this.figures.length; position++) {
-            this.figures[position] = null;
+        for (Cell cell: Cell.values()) {
+            cell.figure = null;
         }
+        matesells = new ArrayList<>();
+
+        for (Figure f: figures) {
+            f = null;
+        }
+
         this.index = 0;
     }
 
+    /**
+     * Программа ищет фигуру по клетке.
+     * @param cell
+     * @return
+     */
     private int findBy(Cell cell) {
         int rst = -1;
         for (int index = 0; index != this.figures.length; index++) {
@@ -86,7 +127,9 @@ public class Logic {
      * @return результат проверки.
      */
     public boolean checkControl(boolean attackColor) {
+
         ArrayList<Figure> yourfigures = new ArrayList<>();
+        boolean b = false;
         Cell enemyKingCell = null;
         for (Figure f : figures) {
             if (f != null) {
@@ -100,15 +143,15 @@ public class Logic {
         }
         for (Figure figure: yourfigures) {
             if (wayCheck(figure.position(), enemyKingCell)) {
-                System.out.println("++++++++++++++++++++++++++++++++++++++++");
-
-                for (Cell c: cellsOnThePathFromACheckShapeToTheKing(figure.position(), enemyKingCell)) {
-                    System.out.println(c);
-                }
-                check = true;
+                matesells = cellsOnThePathFromACheckShapeToTheKing(figure.position(), enemyKingCell);
+                Chess.check = true;
+                b = true;
+                break;
+            } else {
+                Chess.check = false;
             }
         }
-        return true;
+        return b;
     }
 
     /**
@@ -119,7 +162,9 @@ public class Logic {
      */
     public boolean wayCheck(Cell source, Cell dest) {
         boolean rst = false;
-            int index = this.findBy(source);
+
+        int index = this.findBy(source);
+
             if (index != -1) {
                 Cell[] steps = this.figures[index].way(source, dest, true);
                 if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
@@ -181,35 +226,136 @@ public class Logic {
                 }
             }
         }
+        cells.add(source);
         return cells;
     }
 
-    public boolean mateControl(boolean attackColor) {
-        if(check){
-            System.out.println("Я в метдое проверки на мет.");
+    /**
+     * Метод проверяет поставлен ли мат королю.
+     * @param defenderColor Цвет защищающийхся фигур.
+     * @return мат или не мат.
+     */
+    public boolean mateControl(boolean defenderColor) {
+        ArrayList<Figure> protectedfigures = new ArrayList<>();
+        ArrayList<Figure> attackFigures = new ArrayList<>();
+
+        for (Figure f : figures) {
+            if (f != null) {
+                if (f.isWhiteColor() == defenderColor) {
+                    protectedfigures.add(f);
+                } else {
+                    attackFigures.add(f);
+                }
+            }
         }
-//        ArrayList<Figure> yourfigures = new ArrayList<>();
-//        Cell enemyKingCell = null;
-//        for (Figure f : figures) {
-//            if (f != null) {
-//                if (f.isWhiteColor() == attackColor) {
-//                    yourfigures.add(f);
-//                }
-//                if (f.isWhiteColor() != attackColor && f.getClass().getSimpleName().equals("King")) {
-//                    enemyKingCell = f.position();
-//                }
-//            }
-//        }
-//        for (Figure figure: yourfigures) {
-//            if (wayCheck(figure.position(), enemyKingCell)) {
-//                System.out.println("++++++++++++++++++++++++++++++++++++++++");
-//
-//                for (Cell c: cellsOnThePathFromACheckShapeToTheKing(figure.position(), enemyKingCell)) {
-//                    System.out.println(c);
-//                }
-//                check = true;
-//            }
-//        }
-        return false;
+
+        boolean mate = true;
+        // если можно съесть фигуру или встать на путь.
+        for (Figure figure: protectedfigures) {
+            if (!figure.getClass().getSimpleName().equals("King")) {
+                for (int i = 0; i < matesells.size(); i++) {
+                    if (wayCheck(figure.position(), matesells.get(i))) {
+                        mate = false;
+                        break;
+                    }
+                }
+            }
+            if (figure.getClass().getSimpleName().equals("King")) {
+                if (availableCellsForKing(figure.position(), attackFigures)) {
+                    mate = false;
+                }
+            }
+        }
+        return mate;
     }
+
+    /**
+     * Метод проверяет, есть ли куда уйти королю от мата. Метод вызывается при шаге.
+     *
+     * Метод проверяет:
+     *       - можно ли съесть фигуру, которая поставила шаг
+     *       - есть ли рядом свободные поля, которые не защищены атакующими фигурами.
+     * @param cell
+     * @param attackFigures
+     * @return
+     */
+    public boolean availableCellsForKing(Cell cell, ArrayList<Figure> attackFigures) {
+
+        boolean availableCellsForKing = false;
+        boolean eatCheckFigure = false;
+
+
+
+        // Возможные подя отъода короля.
+        ArrayList<Cell> availableCells = new ArrayList<>();
+
+        // Перебор полей рядом с королем.
+        for (int i = cell.x - 1; i <= cell.x + 1; i++) {
+            for (int j = cell.y - 1; j <= cell.y + 1; j++) {
+
+                // Поле, которое находится вокруг короля.
+
+                Cell perhapsASuitableField = Chess.findCell(i, j);
+
+                // Оставляем только существующие поля вокруг короля.
+                if (perhapsASuitableField != null && perhapsASuitableField != cell) {
+                    //Проверка на то, защищают ли белую фигуру, чтобы она была съедена королем.
+                    if (perhapsASuitableField.figure != null) {
+                        // Проверка является ли цвет фигуры на поле сеll1 от фигуры короля.
+                        if (perhapsASuitableField.figure.isWhiteColor() != cell.figure.isWhiteColor()) {
+
+                            // Смена цвета фигуры, чтобы проверить защиту фигуры своими фигурами.
+                            matesells.get(matesells.size() - 1).figure.setWhiteColor(!matesells.get(matesells.size() - 1).figure.isWhiteColor());
+
+                            // Перебор фигур, которые атакуют.
+                            for (Figure f:attackFigures) {
+                                // Если фигура защищина, то король ее не сможет скушать.
+                                if (wayCheck(f.position(), matesells.get(matesells.size() - 1))) {
+                                    eatCheckFigure = true;
+                                }
+                            }
+                            // Смена цвета фигуры обратно.
+                            matesells.get(matesells.size() - 1).figure.setWhiteColor(!matesells.get(matesells.size() - 1).figure.isWhiteColor());
+                        }
+                    }
+                    // Если король может
+                    boolean freeCellDefend = false;
+                    if (wayCheck(cell, perhapsASuitableField) && perhapsASuitableField != matesells.get(matesells.size() - 1)) {
+                        for (Figure f: attackFigures) {
+                            if (wayCheck(f.position(), perhapsASuitableField)) {
+                                freeCellDefend = true;
+                            }
+                        }
+                        if (!freeCellDefend) {
+                            availableCells.add(perhapsASuitableField);
+                        }
+                    }
+                }
+            }
+        }
+        if (!eatCheckFigure) {
+            availableCellsForKing = true;
+        }
+        if (availableCells.size() > 0) {
+            availableCellsForKing = true;
+        }
+        return availableCellsForKing;
+    }
+
+    /**
+     * Геттер, возврощает очередь хождения фигуры.
+     * @return
+     */
+    public boolean isWhiteFigureMove() {
+        return whiteFigureMove;
+    }
+
+    /**
+     * Сеттер для выбора какая фигура ходит.
+     * @param whiteFigureMove
+     */
+    public void setWhiteFigureMove(boolean whiteFigureMove) {
+        this.whiteFigureMove = whiteFigureMove;
+    }
+
 }

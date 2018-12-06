@@ -2,6 +2,10 @@ package ru.job4j.chess.firuges;
 
 import ru.job4j.chess.Chess;
 
+
+/**
+ * Слон.
+ */
 public class Bishop extends Figure {
 
     private final Cell position;
@@ -49,6 +53,10 @@ public class Bishop extends Figure {
     @Override
     public boolean isWhiteColor() {
         return whiteColor;
+    }
+
+    public void setWhiteColor(boolean whiteColor) {
+        this.whiteColor = whiteColor;
     }
 
     public String icon() {

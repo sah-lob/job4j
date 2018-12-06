@@ -17,4 +17,6 @@ package ru.job4j.chess.firuges;
    public abstract Figure copy(Cell dest);
 
      public abstract boolean isWhiteColor();
+
+     public abstract void setWhiteColor(boolean whiteColor);
  }

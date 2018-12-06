@@ -1,5 +1,8 @@
 package ru.job4j.chess.firuges;
 
+/**
+ * Надпись конец игры.
+ */
 public class GameOver {
 
     private final Cell position;

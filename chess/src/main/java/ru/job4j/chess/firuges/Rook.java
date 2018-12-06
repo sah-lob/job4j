@@ -2,6 +2,9 @@ package ru.job4j.chess.firuges;
 
 import ru.job4j.chess.Chess;
 
+/**
+ * Ладья
+ */
 public class Rook extends Figure {
 
     private final Cell position;
@@ -24,7 +27,11 @@ public class Rook extends Figure {
         boolean flag = false;
         Cell[] steps = new Cell[0];
 
-        if (dest.getFigure() == null || dest.getFigure().isWhiteColor() != whiteColor) {
+        if (dest.getFigure() == null) {
+            if ((source.y != dest.y && source.x == dest.x) || (source.x != dest.x && source.y == dest.y)) {
+                flag = checkToOtherFigure(source, dest);
+            }
+        } else if (dest.getFigure().isWhiteColor() != whiteColor) {
             if ((source.y != dest.y && source.x == dest.x) || (source.x != dest.x && source.y == dest.y)) {
                 flag = checkToOtherFigure(source, dest);
             }
@@ -44,6 +51,10 @@ public class Rook extends Figure {
     @Override
     public boolean isWhiteColor() {
         return whiteColor;
+    }
+
+    public void setWhiteColor(boolean whiteColor) {
+        this.whiteColor = whiteColor;
     }
 
     @Override

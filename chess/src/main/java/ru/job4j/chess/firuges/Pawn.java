@@ -1,7 +1,15 @@
 package ru.job4j.chess.firuges;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import ru.job4j.chess.Chess;
 
+import java.awt.*;
+
+
+/**
+ * Пешка.
+ */
 public class Pawn extends Figure {
 
     private final Cell position;
@@ -68,12 +76,20 @@ public class Pawn extends Figure {
 
     @Override
     public Figure copy(Cell dest) {
+        if (puwnToQueen(dest)) {
+            return new Queen(dest, whiteColor);
+        } else {
         return new Pawn(dest, whiteColor);
+        }
     }
 
     @Override
     public boolean isWhiteColor() {
         return whiteColor;
+    }
+
+    public void setWhiteColor(boolean whiteColor) {
+        this.whiteColor = whiteColor;
     }
 
     @Override
@@ -84,6 +100,28 @@ public class Pawn extends Figure {
             return "PawnBlack.png";
         }
 
+    }
+
+    public boolean puwnToQueen(Cell dest) {
+        boolean flag = false;
+        if (dest == Cell.A1
+                || dest == Cell.B1
+                || dest == Cell.C1
+                || dest == Cell.D1
+                || dest == Cell.E1
+                || dest == Cell.G1
+                || dest == Cell.H1
+                || dest == Cell.A8
+                || dest == Cell.B8
+                || dest == Cell.C8
+                || dest == Cell.D8
+                || dest == Cell.E8
+                || dest == Cell.F8
+                || dest == Cell.G8
+                || dest == Cell.H8) {
+            flag = true;
+        }
+        return flag;
     }
 }
 
