@@ -1,6 +1,7 @@
 package ru.job4j.chess.firuges;
 
 import ru.job4j.chess.Chess;
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 
 /**
@@ -28,20 +29,26 @@ public class Bishop extends Figure {
         Cell[] steps = new Cell[0];
         boolean flag = false;
             if (dest.getFigure() == null || dest.getFigure().isWhiteColor() != whiteColor) {
-            if (Math.abs(source.y - dest.y) == Math.abs(source.x - dest.x)) {
-                if (checkToOtherFigure(source, dest)) {
-                    flag = true;
+                if (Math.abs(source.y - dest.y) == Math.abs(source.x - dest.x)) {
+                    if (checkToOtherFigure(source, dest)) {
+                        flag = true;
+                    }
+                }
+            } else {
+                try {
+                    throw new ImpossibleMoveException("Там находится фигура тогоже цвета.");
+                } catch (ImpossibleMoveException e) {
+                    e.printStackTrace();
                 }
             }
-        }
-        if (flag) {
-            steps = new Cell[] {
-                    dest
-            };
-            if (!check) {
-            this.position.setFigure(null);
+            if (flag) {
+                steps = new Cell[] {
+                        dest
+                };
+                if (!check) {
+                this.position.setFigure(null);
+                }
             }
-        }
         return steps;
     }
 

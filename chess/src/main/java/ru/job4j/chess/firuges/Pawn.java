@@ -1,8 +1,7 @@
 package ru.job4j.chess.firuges;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
 import ru.job4j.chess.Chess;
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 import java.awt.*;
 
@@ -60,6 +59,13 @@ public class Pawn extends Figure {
         } else if (dest.getFigure().isWhiteColor() != whiteColor) {
             if (source.y == dest.y + const1 && Math.abs(source.x - dest.x) == 1) {
                 flag = true;
+            }
+        }
+        else {
+            try {
+                throw new ImpossibleMoveException("Там находится фигура аналогичного цвета.");
+            } catch (ImpossibleMoveException e) {
+                e.printStackTrace();
             }
         }
         if (flag) {

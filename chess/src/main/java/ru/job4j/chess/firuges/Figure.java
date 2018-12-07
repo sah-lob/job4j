@@ -1,6 +1,8 @@
 package ru.job4j.chess.firuges;
 
- public abstract class Figure {
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
+
+public abstract class Figure {
 
 
      public abstract Cell position();

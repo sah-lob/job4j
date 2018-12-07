@@ -1,6 +1,8 @@
 package ru.job4j.chess;
 
 import javafx.scene.shape.Rectangle;
+import ru.job4j.chess.exceptions.FigureNotFoundException;
+import ru.job4j.chess.exceptions.OccupiedCellException;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
@@ -169,6 +171,8 @@ public class Logic {
                 Cell[] steps = this.figures[index].way(source, dest, true);
                 if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
                     rst = true;
+                } else {
+                    new OccupiedCellException("Такой ход невозможен.");
                 }
             }
         return rst;
@@ -183,6 +187,7 @@ public class Logic {
      * @return лист с клетками.
      */
     public ArrayList<Cell> cellsOnThePathFromACheckShapeToTheKing(Cell source, Cell dest) {
+
         ArrayList<Cell> cells = new ArrayList<>();
         // шаг поставили слон, королева или пешка.
         if (Math.abs(source.y - dest.y) == Math.abs(source.x - dest.x)) {
@@ -245,6 +250,12 @@ public class Logic {
                     protectedfigures.add(f);
                 } else {
                     attackFigures.add(f);
+                }
+            } else {
+                try {
+                    throw new FigureNotFoundException("Фигура не найдена");
+                } catch (FigureNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }

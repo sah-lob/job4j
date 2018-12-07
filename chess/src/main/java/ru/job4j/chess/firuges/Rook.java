@@ -1,6 +1,7 @@
 package ru.job4j.chess.firuges;
 
 import ru.job4j.chess.Chess;
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 /**
  * Ладья
@@ -34,6 +35,12 @@ public class Rook extends Figure {
         } else if (dest.getFigure().isWhiteColor() != whiteColor) {
             if ((source.y != dest.y && source.x == dest.x) || (source.x != dest.x && source.y == dest.y)) {
                 flag = checkToOtherFigure(source, dest);
+            }
+        }  else {
+            try {
+                throw new ImpossibleMoveException("Там находится фигура аналогичного цвета.");
+            } catch (ImpossibleMoveException e) {
+                e.printStackTrace();
             }
         }
         if (flag) {

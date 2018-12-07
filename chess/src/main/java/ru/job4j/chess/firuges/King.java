@@ -1,6 +1,8 @@
 package ru.job4j.chess.firuges;
 
 
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
+
 /**
  * Король
  */
@@ -31,6 +33,12 @@ public class King extends Figure {
                 if (!check) {
                     this.position.setFigure(null);
                 }
+            }
+        } else {
+            try {
+                throw new ImpossibleMoveException("Там находится фигура аналогичного цвета.");
+            } catch (ImpossibleMoveException e) {
+                e.printStackTrace();
             }
         }
         return steps;

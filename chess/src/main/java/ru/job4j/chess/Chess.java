@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import ru.job4j.chess.exceptions.FigureNotFoundException;
 import ru.job4j.chess.firuges.*;
 
 import java.util.ArrayList;
@@ -242,6 +243,11 @@ public class Chess extends Application {
             if (cell.x == x && cell.y == y) {
                 if (cell.getFigure() == null) {
                     flag = true;
+                    try {
+                        throw new FigureNotFoundException("Фигуры на " + cell + " нет");
+                    } catch (FigureNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
