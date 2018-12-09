@@ -60,8 +60,7 @@ public class Pawn extends Figure {
             if (source.y == dest.y + const1 && Math.abs(source.x - dest.x) == 1) {
                 flag = true;
             }
-        }
-        else {
+        } else {
             try {
                 throw new ImpossibleMoveException("Там находится фигура аналогичного цвета.");
             } catch (ImpossibleMoveException e) {
