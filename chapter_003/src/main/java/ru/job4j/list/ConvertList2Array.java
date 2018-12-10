@@ -1,8 +1,10 @@
 package ru.job4j.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConvertList2Array {
+
     public int[][] toArray(List<Integer> list, int rows) {
 
         int cells = (int) Math.ceil((double) list.size() / (double) rows);
@@ -17,5 +19,15 @@ public class ConvertList2Array {
             }
         }
         return array;
+    }
+
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] mas: list) {
+            for (int i: mas) {
+                result.add(i);
+            }
+        }
+        return result;
     }
 }
