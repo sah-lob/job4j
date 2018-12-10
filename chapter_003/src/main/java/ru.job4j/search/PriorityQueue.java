@@ -25,7 +25,7 @@ public class PriorityQueue {
                 }
             }
             if (!place) {
-               tasks.add((tasks.size()),task);
+               tasks.add((tasks.size()), task);
             }
         }
     }
