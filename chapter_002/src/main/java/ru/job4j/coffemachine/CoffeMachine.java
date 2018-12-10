@@ -11,27 +11,19 @@ public class CoffeMachine {
         changes[1] = price;
     }
 
-    public Integer[] iWantACapOfCoffe() {
+    public Integer[] change() {
 
         int delivery = changes[0] - changes[1];
-
         ArrayList<Integer> manyCoins = new ArrayList<>();
+        int[] coins = new int[]{10,5,2,1};
 
-            while (delivery > 0) {
-                if (delivery >= 10) {
-                    delivery -= 10;
-                    manyCoins.add(10);
-                } else if (delivery >= 5) {
-                    delivery -= 5;
-                    manyCoins.add(5);
-                } else if (delivery >= 2) {
-                    delivery -= 2;
-                    manyCoins.add(2);
-                } else {
-                    delivery -= 1;
-                    manyCoins.add(1);
-                }
+
+        for (int coin: coins) {
+            while (delivery >= coin) {
+                delivery -= coin;
+                manyCoins.add(coin);
             }
+        }
         return manyCoins.toArray(new Integer[0]);
     }
 }

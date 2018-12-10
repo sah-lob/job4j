@@ -12,7 +12,7 @@ public class CoffeMachineTest {
     public void coffeFor35() {
         CoffeMachine coffeMachine = new CoffeMachine(50, 35);
         Integer[] mas = new Integer[]{10, 5};
-        Integer[] result = coffeMachine.iWantACapOfCoffe();
+        Integer[] result = coffeMachine.change();
         assertThat(result, is(mas));
     }
 
@@ -20,7 +20,7 @@ public class CoffeMachineTest {
     public void coffeFor54() {
         CoffeMachine coffeMachine = new CoffeMachine(72, 54);
         Integer[] mas = new Integer[]{10, 5, 2, 1};
-        Integer[] result = coffeMachine.iWantACapOfCoffe();
+        Integer[] result = coffeMachine.change();
         assertThat(result, is(mas));
     }
 
@@ -28,7 +28,7 @@ public class CoffeMachineTest {
     public void coffeFor35WitoutMoney() {
         CoffeMachine coffeMachine = new CoffeMachine(10, 35);
         Integer[] mas = new Integer[]{};
-        Integer[] result = coffeMachine.iWantACapOfCoffe();
+        Integer[] result = coffeMachine.change();
         assertThat(result, is(mas));
     }
 }
