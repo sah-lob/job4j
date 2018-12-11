@@ -61,25 +61,12 @@ public class Tracker {
      * @param name имя заявки.
      * @return - найденная заявка.
      */
-    public Item[] findByName(String name) {
-
-        Item[] result;
-        int len = 0;
-
+    public ArrayList<Item> findByName(String name) {
+        ArrayList<Item> result =  new ArrayList<>();
         for (Item item: items) {
             if (item != null) {
                 if (item.getName().equals(name)) {
-                    len++;
-                }
-            }
-        }
-        result = new Item[len];
-        len = 0;
-        for (Item item: items) {
-            if (item != null) {
-                if (item.getName().equals(name)) {
-                    result[len] = item;
-                    len++;
+                    result.add(item);
                 }
             }
         }
