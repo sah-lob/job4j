@@ -105,11 +105,11 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
                 System.out.println("Существующие заявки:");
                 System.out.println();
-                Item[] items = tracker.findAll();
-                for (int i = 0; i < items.length; i++) {
+                ArrayList<Item> items = tracker.findAll();
+                for (int i = 0; i < items.size(); i++) {
                     System.out.println("Заявка номер: " + (i + 1));
                     System.out.println();
-                    showItem(items[i]);
+                    showItem(items.get(i));
                 }
         }
     }
@@ -125,7 +125,7 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            tracker.delete(input.ask("Введите имя или id заявки, которую вы хотите удалить."));
+            tracker.delete(input.ask("Введите id заявки, которую вы хотите удалить."));
         }
     }
 

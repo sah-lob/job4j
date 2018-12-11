@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -12,12 +13,13 @@ public class Tracker {
     /**
      * Массив для хранение заявок.
      */
-    private final Item[] items = new Item[100];
+    private ArrayList<Item> items = new ArrayList<>();
+//    private final Item[] items = new Item[100];
 
     /**
      * Указатель ячейки для новой заявки.
      */
-    private int position = 0;
+//    private int position = 0;
 
     /**
      * Метод реализаущий добавление заявки в хранилище
@@ -25,7 +27,8 @@ public class Tracker {
      */
     public void add(Item item) {
         item.setId(this.generateId());
-        this.items[this.position++] = item;
+        items.add(item);
+//        this.items[this.position++] = item;
     }
 
     /**
@@ -87,8 +90,8 @@ public class Tracker {
      *  Все созданные заявки.
      * @return список заявок.
      */
-    public Item[] findAll() {
-        return Arrays.copyOf(this.items, this.position);
+    public ArrayList<Item> findAll() {
+        return items;
     }
 
     /**
@@ -97,9 +100,9 @@ public class Tracker {
      * @param item - другая заявка.
      */
     public void replace(String id, Item item) {
-        for (int i = 0; i < position; i++) {
-            if (items[i].getId().equals(id)) {
-                items[i] = item;
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId().equals(id)) {
+                items.set(i, item);
                 break;
             }
         }
@@ -111,10 +114,9 @@ public class Tracker {
      * @param id - id или, которую нужно удалить.
      */
     public void delete(String id) {
-        for (int i = 0; i < position; i++) {
-            if (items[i].getId().equals(id)) {
-                System.arraycopy(items, i + 1, items, i, position - 1 - i);
-                position--;
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId().equals(id)) {
+                items.remove(i);
                 break;
             }
         }
