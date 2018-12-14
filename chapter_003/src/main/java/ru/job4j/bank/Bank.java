@@ -67,11 +67,7 @@ public class Bank {
         if (user1 != null && user2 != null) {
             Account account1 = findByRequisite(user1, srcRequisite);
             Account account2 = findByRequisite(user2, destRequisite);
-            if (account1 != null && account2 != null && account1.getValue() >= amount) {
-                account1.setValue(account1.getValue() - amount);
-                account2.setValue(account2.getValue() + amount);
-                flag = true;
-            }
+            flag = account1.transfer(amount, account2);
         }
         return flag;
     }

@@ -21,8 +21,13 @@ public class Account {
         return requisites;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public boolean transfer(double amount, Account account) {
+        boolean flag = false;
+        if (value >= amount) {
+            flag = true;
+            value -= amount;
+            account.value += amount;
+        }
+        return flag;
     }
-
 }
