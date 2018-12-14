@@ -61,14 +61,12 @@ public class Bank {
      * @return результат проведения транзакции.
      */
     public boolean transferMoney(String srcPassport, String srcRequisite, String destPassport, String destRequisite, double amount) {
-        User user1 = findByPassport(srcPassport);
-        User user2 = findByPassport(destPassport);
         boolean flag = false;
-        if (user1 != null && user2 != null) {
-            Account account1 = findByRequisite(user1, srcRequisite);
-            Account account2 = findByRequisite(user2, destRequisite);
-            flag = account1.transfer(amount, account2);
-        }
+            Account account1 = findByPassportandRequisite(srcPassport, srcRequisite);
+            Account account2 = findByPassportandRequisite(destPassport, destRequisite);
+            if (account1 != null && account2 != null) {
+                flag = account1.transfer(amount, account2);
+            }
         return flag;
     }
 
@@ -93,19 +91,21 @@ public class Bank {
     }
 
     /**
-     * Поиск аккаунта, у которого такие реквизиты.
-     * @param user пользователь, чьи аккаунты смотрим.
-     * @param requisite реквизиты.
-     * @return аккаунт
+     * Поиск аккаунта по номеру паспорта и реквизитам.
+     * @param passport номер паспорта.
+     * @param requisite номер реквизитов.
+     * @return аккаунт.
      */
-    public Account findByRequisite(User user, String requisite) {
-        Account a = null;
-        for (Account account: usersAccounts.get(user)) {
-            if (account.getRequisites().equals(requisite)) {
-                a = account;
-                break;
+    public Account findByPassportandRequisite(String passport, String requisite) {
+        Account account = null;
+        for (User user: usersAccounts.keySet()) {
+            for (Account a : usersAccounts.get(user)) {
+                if (user.getPassport().equals(passport) && a.getRequisites().equals(requisite)) {
+                    account = a;
+                    break;
+                }
             }
         }
-        return a;
+        return account;
     }
 }
