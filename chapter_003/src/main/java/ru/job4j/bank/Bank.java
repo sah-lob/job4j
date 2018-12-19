@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class Bank {
 
     private TreeMap<User, ArrayList<Account>> usersAccounts = new TreeMap<>();
-
+    
 
     /**
      * Добавление нового пользователя в список.
