@@ -2,8 +2,8 @@ package ru.job4j.tracker;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @version $Id$
@@ -14,13 +14,6 @@ public class Tracker {
      * Массив для хранение заявок.
      */
     private ArrayList<Item> items = new ArrayList<>();
-//    private final Item[] items = new Item[100];
-
-    /**
-     * Указатель ячейки для новой заявки.
-     */
-//    private int position = 0;
-
     /**
      * Метод реализаущий добавление заявки в хранилище
      * @param item новая заявка
@@ -28,7 +21,6 @@ public class Tracker {
     public void add(Item item) {
         item.setId(this.generateId());
         items.add(item);
-//        this.items[this.position++] = item;
     }
 
     /**
@@ -46,14 +38,7 @@ public class Tracker {
      * @return - найденная заявка.
      */
     public Item findById(String id) {
-        Item result = null;
-        for (Item item: items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
-                break;
-            }
-        }
-        return result;
+        return items.stream().filter(Item -> Item.getId().equals(id)).findFirst().get();
     }
 
     /**
@@ -62,15 +47,7 @@ public class Tracker {
      * @return - найденная заявка.
      */
     public ArrayList<Item> findByName(String name) {
-        ArrayList<Item> result =  new ArrayList<>();
-        for (Item item: items) {
-            if (item != null) {
-                if (item.getName().equals(name)) {
-                    result.add(item);
-                }
-            }
-        }
-        return result;
+        return (ArrayList<Item>) items.stream().filter(Item -> Item.getName().equals(name)).collect(Collectors.toList());
     }
 
     /**
@@ -87,13 +64,7 @@ public class Tracker {
      * @param item - другая заявка.
      */
     public void replace(String id, Item item) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getId().equals(id)) {
-                items.set(i, item);
-                break;
-            }
-        }
-        item.setId(id);
+        items = (ArrayList<Item>) items.stream().map(Item -> Item.getId().equals(id) ? item : Item).collect(Collectors.toList());
     }
 
     /**
@@ -101,11 +72,6 @@ public class Tracker {
      * @param id - id или, которую нужно удалить.
      */
     public void delete(String id) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getId().equals(id)) {
-                items.remove(i);
-                break;
-            }
-        }
+        items = (ArrayList<Item>) items.stream().filter(Item -> !Item.getId().equals(id)).collect(Collectors.toList());
     }
 }
