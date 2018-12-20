@@ -20,4 +20,12 @@ public class User implements Comparable<User> {
     public String toString() {
         return name + " - Имя " + age + " - возраст";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
 }
