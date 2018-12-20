@@ -80,14 +80,7 @@ public class Bank {
      * @return пользователь.
      */
     public User findByPassport(String passport) {
-        User us = null;
-        for (User user: usersAccounts.keySet()) {
-            if (passport.equals(user.getPassport())) {
-                us = user;
-                break;
-            }
-        }
-        return us;
+        return usersAccounts.keySet().stream().filter(User -> User.getPassport().equals(passport)).findFirst().get();
     }
 
     /**
@@ -97,15 +90,6 @@ public class Bank {
      * @return аккаунт.
      */
     public Account findByPassportandRequisite(String passport, String requisite) {
-        Account account = null;
-        for (User user: usersAccounts.keySet()) {
-            for (Account a : usersAccounts.get(user)) {
-                if (user.getPassport().equals(passport) && a.getRequisites().equals(requisite)) {
-                    account = a;
-                    break;
-                }
-            }
-        }
-        return account;
+        return usersAccounts.get(findByPassport(passport)).stream().filter(Account -> Account.getRequisites().equals(requisite)).findFirst().get();
     }
 }
