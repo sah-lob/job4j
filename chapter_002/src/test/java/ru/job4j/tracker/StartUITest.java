@@ -1,11 +1,9 @@
 package ru.job4j.tracker;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.function.Consumer;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -13,24 +11,21 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private final PrintStream stdout = System.out;
+    Consumer<String> consumer = new Consumer<String>() {
+        private final PrintStream printStream = new PrintStream(out);
+        @Override
+        public void accept(String s) {
+            printStream.println(s);
+        }
+    };
 
-    @Before
-    public void loadOutput() {
-        System.setOut(new PrintStream(new ByteArrayOutputStream()));
 
-    }
-
-    @After
-    public void backOutput() {
-        System.setOut(this.stdout);
-    }
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "Имя заявки", "Описание заявки", "да", "комментарий 1", "нет", "6"});
-        new StartUI(input, tracker).init();     //   создаём StartUI и вызываем метод init()
+        new StartUI(input, tracker, consumer).init();
         assertThat(tracker.findAll().get(0).getName(), is("Имя заявки"));
     }
 
@@ -38,9 +33,9 @@ public class StartUITest {
     public void whenUserAddItemThenEditItem() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "Имя заявки", "Описание заявки", "да", "комментарий 1", "нет", "0", "Имя заявки 2", "Описание заявки2", "да", "комментарий 2", "нет", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         input = new StubInput(new String[]{"2", tracker.findAll().get(0).getId(), tracker.findAll().get(1).getId(), "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         assertThat(tracker.findAll().get(0), is(tracker.findAll().get(1)));
     }
 
@@ -48,9 +43,9 @@ public class StartUITest {
     public void whenUserAddItemThenDeleteItem() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "Имя заявки", "Описание заявки", "да", "комментарий 1", "нет", "6"}); //Добавляем заявку
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         input = new StubInput(new String[]{"3", tracker.findAll().get(0).getId(), "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         assertThat(tracker.findAll().size(), is(0));
     }
 
@@ -61,12 +56,18 @@ public class StartUITest {
         String desc = "Описание заявки";
         String comment = "Комментарий";
         Input input = new StubInput(new String[]{"0", name, desc, "да", comment, "нет", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         input = new StubInput(new String[]{"1", "6"});
         System.setOut(new PrintStream(this.out));
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + System.lineSeparator()
+        pic.append(menu()
+                + System.lineSeparator()
+                + addNewItem()
+                + menu()
+                + System.lineSeparator()
+                + menu()
+                + System.lineSeparator()
                 + "Существующие заявки:" + System.lineSeparator() + System.lineSeparator()
                 + "Заявка номер: 1" + System.lineSeparator() + System.lineSeparator() + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 0)
@@ -82,12 +83,19 @@ public class StartUITest {
         String desc = "Описание заявки";
         String comment = "Комментарий";
         Input input = new StubInput(new String[]{"0", name, desc, "да", comment, "нет", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         input = new StubInput(new String[]{"4", tracker.findAll().get(0).getId(), "6"});
         System.setOut(new PrintStream(this.out));
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + System.lineSeparator() + System.lineSeparator()
+        pic.append(menu()
+                + System.lineSeparator()
+                + addNewItem()
+                + menu()
+                + System.lineSeparator()
+                + menu()
+                + System.lineSeparator()
+                + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 0)
                 + menu() + System.lineSeparator());
         String result = pic.toString();
@@ -101,13 +109,24 @@ public class StartUITest {
         String desc = "Описание заявки";
         String comment = "Комментарий";
         Input input = new StubInput(new String[]{"0", name, desc, "да", comment, "нет", "0", name, desc, "да", comment, "нет", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, consumer).init();
         input = new StubInput(new String[]{"5", name, "6"});
-        System.setOut(new PrintStream(this.out));
-        new StartUI(input, tracker).init();
+//        System.setOut(new PrintStream(this.out));
+        new StartUI(input, tracker, consumer).init();
         StringBuilder pic = new StringBuilder();
-        pic.append(menu() + System.lineSeparator() + System.lineSeparator()
-                + showItem(name, tracker, desc, comment, 0) + System.lineSeparator()
+        pic.append(menu()
+                + System.lineSeparator()
+                + addNewItem()
+                + menu()
+                + System.lineSeparator()
+                + addNewItem()
+                + menu()
+                + System.lineSeparator()
+                + menu()
+                + System.lineSeparator()
+                + System.lineSeparator()
+                + showItem(name, tracker, desc, comment, 0)
+                + System.lineSeparator()
                 + showItem(name, tracker, desc, comment, 1)
                 + menu() + System.lineSeparator());
         String result = pic.toString();
@@ -129,6 +148,12 @@ public class StartUITest {
         return pic.toString();
     }
 
+    public String addNewItem() {
+        StringBuilder pic = new StringBuilder();
+        pic.append("------------ Добавление новой заявки --------------" + System.lineSeparator());
+        return pic.toString();
+    }
+
     /**
      * Метод возвращет строку с заявкой.
      * @param name - имя заявки
@@ -142,9 +167,14 @@ public class StartUITest {
         pic.append("Заявка с именем: " + name + System.lineSeparator()
                 + "Id заявки: " + tracker.findAll().get(numOfItem).getId() + System.lineSeparator()
                 + "Описание заявки: " + desc + System.lineSeparator()
-                + String.format("Текущая дата и время: %tc", tracker.findAll().get(numOfItem).getDateOfCreation()) + System.lineSeparator() + System.lineSeparator()
-                + "Комментарии: " + System.lineSeparator() + System.lineSeparator()
-                + comment + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                + String.format("Текущая дата и время: %tc", tracker.findAll().get(numOfItem).getDateOfCreation())
+                + System.lineSeparator()
+                + System.lineSeparator()
+                + "Комментарии: " + System.lineSeparator()
+                + System.lineSeparator()
+                + comment + System.lineSeparator() + System.lineSeparator()
+                + System.lineSeparator());
         return pic.toString();
     }
+
 }

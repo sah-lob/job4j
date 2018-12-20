@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Взаимодействие с меню.
@@ -17,6 +18,7 @@ public class MenuTracker {
     private static final Integer FINDBYNAME = 5;
     private static final Integer EXIT = 6;
     private boolean exit = false;
+    private Consumer<String> output;
 
 
     private Input input;
@@ -26,9 +28,10 @@ public class MenuTracker {
     /**
      * Конструктор класса.
      */
-    public MenuTracker(Input input, Tracker tracker) {
+    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
+        this.output = output;
     }
 
     /**
@@ -67,7 +70,7 @@ public class MenuTracker {
     public void show() {
         for (UserAction action : this.actions) {
             if (action != null) {
-                System.out.println(action.info());
+                output.accept(action.info());
             }
         }
     }
@@ -83,7 +86,7 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Добавление новой заявки --------------");
+            output.accept("------------ Добавление новой заявки --------------");
             String name = input.ask("Введите имя заявки:");
             String desc = input.ask("Введите описание заявки:");
             Item item = new Item(name, desc);
@@ -103,12 +106,12 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-                System.out.println("Существующие заявки:");
-                System.out.println();
+            output.accept("Существующие заявки:");
+            output.accept("");
                 ArrayList<Item> items = tracker.findAll();
                 for (int i = 0; i < items.size(); i++) {
-                    System.out.println("Заявка номер: " + (i + 1));
-                    System.out.println();
+                    output.accept("Заявка номер: " + (i + 1));
+                    output.accept("");
                     showItem(items.get(i));
                 }
         }
@@ -202,21 +205,22 @@ public class MenuTracker {
      * @param item заявка, которую необходимо вывести на экран.
      */
     private void showItem(Item item) {
-        System.out.println();
-        System.out.println("Заявка с именем: " + item.getName());
-        System.out.println("Id заявки: " + item.getId());
-        System.out.println("Описание заявки: " + item.getDesc());
-        System.out.println(String.format("Текущая дата и время: %tc", item.getDateOfCreation()));
+        output.accept("");
+        output.accept("Заявка с именем: " + item.getName());
+        output.accept("Id заявки: " + item.getId());
+        output.accept("Описание заявки: " + item.getDesc());
+        output.accept(String.format("Текущая дата и время: %tc", item.getDateOfCreation()));
+
         if (item.getComments().size() > 0) {
-            System.out.println();
-            System.out.println("Комментарии: ");
-            System.out.println();
+            output.accept("");
+            output.accept("Комментарии: ");
+            output.accept("");
             for (String s: item.getComments()) {
-                System.out.println(s);
-                System.out.println();
+                output.accept(s);
+                output.accept("");
             }
         }
-        System.out.println();
+        output.accept("");
     }
 
     /**
