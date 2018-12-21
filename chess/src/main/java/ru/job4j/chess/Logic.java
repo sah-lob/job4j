@@ -311,14 +311,14 @@ public class Logic {
                     }
                     // Если король может
                     if (wayCheck(cell, perhapsASuitableField) && perhapsASuitableField != matesells.get(matesells.size() - 1)) {
-                        if(!attackFigures.stream().anyMatch(Figure -> wayCheck(Figure.position(), perhapsASuitableField))) {
+                        if (!attackFigures.stream().anyMatch(Figure -> wayCheck(Figure.position(), perhapsASuitableField))) {
                             availableCells.add(perhapsASuitableField);
                         }
                     }
                 }
             }
         }
-        return availableCells.size() > 0 ? true : false || !eatCheckFigure ? true : false;
+        return availableCells.size() > 0 || !eatCheckFigure;
     }
 
     /**
@@ -336,5 +336,4 @@ public class Logic {
     public void setWhiteFigureMove(boolean whiteFigureMove) {
         this.whiteFigureMove = whiteFigureMove;
     }
-
 }
