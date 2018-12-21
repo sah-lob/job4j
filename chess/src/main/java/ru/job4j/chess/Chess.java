@@ -16,6 +16,7 @@ import ru.job4j.chess.exceptions.FigureNotFoundException;
 import ru.job4j.chess.firuges.*;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Шахматы.
@@ -26,7 +27,6 @@ public class Chess extends Application {
     private ArrayList<Rectangle> rectangles = new ArrayList<>();
     private final int size = 8;
     private final Logic logic = new Logic();
-    private boolean win = false;
     public static boolean checkmate = false;
     public static boolean check = false;
     Group grid = this.buildGrid();
@@ -271,9 +271,10 @@ public class Chess extends Application {
      */
     public void gameOverImages(Group grid) {
 
-        for (Rectangle r:rectangles) {
-            r.setFill(null);
-        }
+        rectangles = (ArrayList<Rectangle>) rectangles.stream().peek(Rectangle -> Rectangle.setFill(null)).collect(Collectors.toList());
+//        for (Rectangle r:rectangles) {
+//            r.setFill(null);
+//        }
 
         if (!logic.isWhiteFigureMove()) {
             this.addGameOver(new GameOver(Cell.C4, "W"), grid);

@@ -7,6 +7,8 @@ import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Класс отвечает за логику программы.
@@ -95,15 +97,11 @@ public class Logic {
      * Метод удаляет всю логику текущей игры и начинает новую
      */
     public void clean() {
+
         for (Cell cell: Cell.values()) {
             cell.figure = null;
         }
         matesells = new ArrayList<>();
-
-        for (Figure f: figures) {
-            f = null;
-        }
-
         this.index = 0;
     }
 
@@ -129,7 +127,6 @@ public class Logic {
      * @return результат проверки.
      */
     public boolean checkControl(boolean attackColor) {
-
         ArrayList<Figure> yourfigures = new ArrayList<>();
         boolean b = false;
         Cell enemyKingCell = null;
@@ -164,7 +161,6 @@ public class Logic {
      */
     public boolean wayCheck(Cell source, Cell dest) {
         boolean rst = false;
-
         int index = this.findBy(source);
 
             if (index != -1) {
@@ -291,66 +287,38 @@ public class Logic {
      * @return
      */
     public boolean availableCellsForKing(Cell cell, ArrayList<Figure> attackFigures) {
-
-        boolean availableCellsForKing = false;
         boolean eatCheckFigure = false;
-
-
-
         // Возможные подя отъода короля.
         ArrayList<Cell> availableCells = new ArrayList<>();
-
         // Перебор полей рядом с королем.
         for (int i = cell.x - 1; i <= cell.x + 1; i++) {
             for (int j = cell.y - 1; j <= cell.y + 1; j++) {
-
                 // Поле, которое находится вокруг короля.
-
                 Cell perhapsASuitableField = Chess.findCell(i, j);
-
                 // Оставляем только существующие поля вокруг короля.
                 if (perhapsASuitableField != null && perhapsASuitableField != cell) {
                     //Проверка на то, защищают ли белую фигуру, чтобы она была съедена королем.
                     if (perhapsASuitableField.figure != null) {
                         // Проверка является ли цвет фигуры на поле сеll1 от фигуры короля.
                         if (perhapsASuitableField.figure.isWhiteColor() != cell.figure.isWhiteColor()) {
-
                             // Смена цвета фигуры, чтобы проверить защиту фигуры своими фигурами.
                             matesells.get(matesells.size() - 1).figure.setWhiteColor(!matesells.get(matesells.size() - 1).figure.isWhiteColor());
-
-                            // Перебор фигур, которые атакуют.
-                            for (Figure f:attackFigures) {
-                                // Если фигура защищина, то король ее не сможет скушать.
-                                if (wayCheck(f.position(), matesells.get(matesells.size() - 1))) {
-                                    eatCheckFigure = true;
-                                }
-                            }
+                            // фигуры, которые атакуют.
+                            eatCheckFigure = attackFigures.stream().anyMatch(Figure -> wayCheck(Figure.position(), matesells.get(matesells.size() - 1)));
                             // Смена цвета фигуры обратно.
                             matesells.get(matesells.size() - 1).figure.setWhiteColor(!matesells.get(matesells.size() - 1).figure.isWhiteColor());
                         }
                     }
                     // Если король может
-                    boolean freeCellDefend = false;
                     if (wayCheck(cell, perhapsASuitableField) && perhapsASuitableField != matesells.get(matesells.size() - 1)) {
-                        for (Figure f: attackFigures) {
-                            if (wayCheck(f.position(), perhapsASuitableField)) {
-                                freeCellDefend = true;
-                            }
-                        }
-                        if (!freeCellDefend) {
+                        if(!attackFigures.stream().anyMatch(Figure -> wayCheck(Figure.position(), perhapsASuitableField))) {
                             availableCells.add(perhapsASuitableField);
                         }
                     }
                 }
             }
         }
-        if (!eatCheckFigure) {
-            availableCellsForKing = true;
-        }
-        if (availableCells.size() > 0) {
-            availableCellsForKing = true;
-        }
-        return availableCellsForKing;
+        return availableCells.size() > 0 ? true : false || !eatCheckFigure ? true : false;
     }
 
     /**
