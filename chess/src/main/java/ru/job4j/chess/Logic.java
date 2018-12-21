@@ -5,10 +5,7 @@ import ru.job4j.chess.exceptions.FigureNotFoundException;
 import ru.job4j.chess.exceptions.OccupiedCellException;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Класс отвечает за логику программы.
@@ -320,6 +317,7 @@ public class Logic {
         }
         return availableCells.size() > 0 || !eatCheckFigure;
     }
+
 
     /**
      * Геттер, возврощает очередь хождения фигуры.

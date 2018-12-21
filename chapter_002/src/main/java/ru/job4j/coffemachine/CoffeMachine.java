@@ -12,13 +12,10 @@ public class CoffeMachine {
     }
 
     public Integer[] change() {
-
         int delivery = changes[0] - changes[1];
         ArrayList<Integer> manyCoins = new ArrayList<>();
         int[] coins = new int[]{10, 5, 2, 1};
-
-
-        for (int coin: coins) {
+        for (int coin : coins) {
             while (delivery >= coin) {
                 delivery -= coin;
                 manyCoins.add(coin);
