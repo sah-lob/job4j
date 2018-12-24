@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static jdk.nashorn.internal.objects.Global.Infinity;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -42,7 +40,7 @@ public class RangeTest {
         result = range.diapason(
                 0, 5,
                 (index) -> Math.log(index));
-        List<Double> function = Arrays.asList(-Infinity, 0.0, 0.6931471805599453, 1.0986122886681098, 1.3862943611198906, 1.6094379124341003);
+        List<Double> function = Arrays.asList(Double.POSITIVE_INFINITY * -1, 0.0, 0.6931471805599453, 1.0986122886681098, 1.3862943611198906, 1.6094379124341003);
 
         assertThat(result, is(function));
     }
