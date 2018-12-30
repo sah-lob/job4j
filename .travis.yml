@@ -15,3 +15,11 @@ notifications:
       -sah-lob@ya.ru
     on_success: never # default: change
     on_failure: always # default: always
+
+jdk:
+- openjdk11
+- openjdk-ea
+
+matrix:
+  allow_failures:
+  - jdk: openjdk-ea
