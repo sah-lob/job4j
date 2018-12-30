@@ -20,7 +20,6 @@
         <module>chapter_004</module>
         <module>puzzle</module>
         <module>chess</module>
-        <module>IntegrationSolution</module>
     </modules>
     <build>
       <plugins>
