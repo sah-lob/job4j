@@ -14,11 +14,10 @@ public class SourUserTest {
     @Test
     public void userSoring() {
         SortUser sortUser = new SortUser();
-        ArrayList<User> users = new ArrayList<>();
-        users.add(new User("Anna", 21));
-        users.add(new User("Alexander", 23));
-        users.add(new User("NoName", 12));
-        users.add(new User("Egor", 32));
+        List<User> users = List.of(new User("Anna", 21),
+                new User("Alexander", 23),
+                new User("NoName", 12),
+                new User("Egor", 32));
         TreeSet<User> setUsers = sortUser.sort(users);
         String result = users.get(2).name;
         String name = setUsers.first().name;
@@ -28,11 +27,10 @@ public class SourUserTest {
     @Test
     public void sortByNameLength() {
         SortUser sortUser = new SortUser();
-        List<User> users = new ArrayList<>();
-        users.add(new User("Anna", 21));
-        users.add(new User("Alexander", 23));
-        users.add(new User("NoName", 12));
-        users.add(new User("Egor", 32));
+        List<User> users = List.of(new User("Anna", 21),
+                new User("Alexander", 23),
+                new User("NoName", 12),
+                new User("Egor", 32));
         users = sortUser.sortNameLength(users);
         String name = users.get(0).name;
         String result = "Anna";
@@ -42,11 +40,10 @@ public class SourUserTest {
     @Test
     public void sortByAllFields() {
         SortUser sortUser = new SortUser();
-        List<User> users = new ArrayList<>();
-        users.add(new User("Сергей", 25));
-        users.add(new User("Иван", 30));
-        users.add(new User("Сергей", 20));
-        users.add(new User("Иван", 25));
+        List<User> users = List.of(new User("Сергей", 25),
+                new User("Иван", 30),
+                new User("Сергей", 20),
+                new User("Иван", 25));
         String result = users.get(3).name + users.get(3).age;
         users = sortUser.sortByAllFields(users);
         String name = users.get(0).name + users.get(0).age;
