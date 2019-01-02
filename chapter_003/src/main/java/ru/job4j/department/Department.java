@@ -1,8 +1,6 @@
 package ru.job4j.department;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 
 public class Department {
@@ -12,25 +10,7 @@ public class Department {
      * @param mas массив.
      */
     public String[] ascendingSort(String[] mas) {
-        ArrayList<ArrayList<String>> lists = masToArray(mas);
-        lists = addElement(lists);
-        lists.sort(new Comparator<ArrayList<String>>() {
-            @Override
-            public int compare(ArrayList<String> o1, ArrayList<String> o2) {
-                int result = 0;
-                for (int i = 0; i < Math.min(o1.size(), o2.size()); i++) {
-                    result = o1.get(i).compareTo(o2.get(i));
-                    if (result != 0) {
-                        break;
-                    }
-                }
-                if (result == 0) {
-                    result = Integer.compare(o1.size(), o2.size());
-                }
-                return result;
-            }
-        });
-        return arrayToMas(lists);
+        return masToSet(arrayToMas(addElement(masToArray(mas)))).toArray(new String[0]);
     }
 
     /**
@@ -38,8 +18,7 @@ public class Department {
      * @param mas массив.
      */
     public String[] descendingSort(String[] mas) {
-        ArrayList<ArrayList<String>> lists = masToArray(mas);
-        lists = addElement(lists);
+        ArrayList<ArrayList<String>> lists = addElement(masToArray(mas));
         lists.sort(new Comparator<ArrayList<String>>() {
             @Override
             public int compare(ArrayList<String> o1, ArrayList<String> o2) {
@@ -103,7 +82,13 @@ public class Department {
         }
         return lists;
     }
-
+    public TreeSet<String> masToSet(String[] mas) {
+        TreeSet<String> set = new TreeSet<>();
+        for (var n: mas) {
+            set.add(n);
+        }
+        return set;
+    }
     /**
      * Преобразовывает список в массив.
      * @param lists Список со значениями, представленными ввиде списка.
