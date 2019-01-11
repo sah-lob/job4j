@@ -101,7 +101,7 @@ public class Department {
                 if (str.equals("")) {
                     str = s;
                 } else {
-                    str = str + "\\" + s;
+                    str += "\\" + s;
                 }
             }
             mas[i] = str;
