@@ -80,6 +80,7 @@ public class TicTacToe extends Application {
                 )
         );
         return group;
+
     }
 
     private EventHandler<MouseEvent> buildMouseEvent(Group panel) {
