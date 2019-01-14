@@ -7,7 +7,6 @@ public class MatrixIterator implements Iterator {
     private final int[][] array;
     private int index = 0;
     private int indexX = 0;
-    private int indexY = 0;
 
     public MatrixIterator(int[][] array) {
         this.array = array;
@@ -15,20 +14,21 @@ public class MatrixIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        var num = 0;
-        for (var t : array) {
-            num += t.length;
+        var result = false;
+        if(indexX < array.length - 1) {
+            result = true;
+        } else if(index < array[indexX].length){
+            result = true;
         }
-        return num > index;
+        return result;
     }
 
     @Override
     public Object next() {
-        if (indexY > array[indexX].length - 1) {
-            indexY = 0;
+        if (index > array[indexX].length - 1) {
             indexX++;
+            index = 0;
         }
-        index++;
-        return array[indexX][indexY++];
+        return array[indexX][index++];
     }
 }
