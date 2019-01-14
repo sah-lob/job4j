@@ -15,9 +15,9 @@ public class MatrixIterator implements Iterator {
     @Override
     public boolean hasNext() {
         var result = false;
-        if(indexX < array.length - 1) {
+        if (indexX < array.length - 1) {
             result = true;
-        } else if(index < array[indexX].length){
+        } else if (index < array[indexX].length) {
             result = true;
         }
         return result;
