@@ -19,6 +19,7 @@ public class EvenIt implements Iterator {
         for (int i = index; i < numbers.length; i++) {
             if (numbers[i] % 2 == 0) {
                 result = true;
+                index = i;
                 break;
             }
         }
@@ -27,19 +28,10 @@ public class EvenIt implements Iterator {
 
     @Override
     public Object next() {
-        int result = 0;
-        if (hasNext()) {
-            for (int i = index; i < numbers.length; i++) {
-                if (numbers[i] % 2 == 0) {
-                    result = numbers[i];
-                    index = i;
-                    break;
-                }
-            }
-        } else {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        index++;
-        return result;
+        return numbers[index++];
     }
+
 }

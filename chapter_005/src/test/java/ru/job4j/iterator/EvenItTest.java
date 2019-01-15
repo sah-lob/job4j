@@ -27,7 +27,7 @@ public class EvenItTest {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(6));
         assertThat(it.hasNext(), is(false));
-        it.next();
+        System.out.println(it.next());
     }
 
     @Test
