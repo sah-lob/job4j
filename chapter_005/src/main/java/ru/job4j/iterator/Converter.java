@@ -15,7 +15,6 @@ public class Converter {
             }
         }
 
-
         return new Iterator<>() {
             ArrayList<Integer> list = arrayList;
             int index = 0;
@@ -27,13 +26,10 @@ public class Converter {
 
             @Override
             public Integer next() {
-                var result = 0;
-                if (hasNext()) {
-                    result = list.get(index++);
-                } else {
+                if(!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return result;
+                return list.get(index++);
             }
         };
     }
