@@ -5,12 +5,12 @@ import java.util.NoSuchElementException;
 
 public class SimpleArray<T> {
 
-    private Object[] array;
+    private T[] array;
     private int index = 0;
 
 
     public SimpleArray(int len) {
-        this.array = new Object[len];
+        this.array = (T[]) new Object[len];
     }
 
     /**
@@ -50,7 +50,7 @@ public class SimpleArray<T> {
     /**
      *  возвращает элемент, расположенный по указанному индексу;
      */
-    public Object get(int index) {
+    public T get(int index) {
         return array[index];
     }
 
