@@ -29,7 +29,7 @@ public class SimpleArray<T> {
      * заменяет указанным элементом (model) элемент, находящийся по индексу index;
      */
     public void set(int index, T model) {
-        if (index > this.index - 1 && index <= 0) {
+        if (index > this.index && index <= 0) {
             throw new NoSuchElementException();
         }
             array[index] = model;
