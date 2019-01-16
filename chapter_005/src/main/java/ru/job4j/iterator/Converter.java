@@ -1,35 +1,34 @@
 package ru.job4j.iterator;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Converter {
 
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        while (it.hasNext()) {
-            var iterator = it.next();
-            while (iterator.hasNext()) {
-                arrayList.add(iterator.next());
-            }
-        }
 
         return new Iterator<>() {
-            ArrayList<Integer> list = arrayList;
-            int index = 0;
+
+            Iterator iterator = it.next();
 
             @Override
             public boolean hasNext() {
-                return arrayList.size() > index;
+                var result = false;
+                while (it.hasNext() || iterator.hasNext()) {
+                    if (iterator.hasNext()) {
+                        result = true;
+                        break;
+                    }
+                    iterator = it.next();
+                }
+                return result;
             }
 
             @Override
             public Integer next() {
-                if(!hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return list.get(index++);
+                return (Integer) iterator.next();
             }
         };
     }
