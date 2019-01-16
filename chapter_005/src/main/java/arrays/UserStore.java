@@ -19,9 +19,6 @@ public class UserStore extends AbstractStore {
                 break;
             }
         }
-        if (result == -1) {
-            throw new NoSuchElementException();
-        }
         return result;
     }
 }

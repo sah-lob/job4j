@@ -1,6 +1,6 @@
 package arrays;
 
-public abstract class AbstractStore implements Store {
+public abstract class AbstractStore<E extends Base> implements Store<E> {
 
     SimpleArray simpleArray;
 
@@ -27,8 +27,8 @@ public abstract class AbstractStore implements Store {
     }
 
     @Override
-    public Base findById(String id) {
-        return (Base) simpleArray.get(idToIndex(id));
+    public E findById(String id) {
+        return (E) simpleArray.get(idToIndex(id));
     }
 
     public abstract int idToIndex(String id);

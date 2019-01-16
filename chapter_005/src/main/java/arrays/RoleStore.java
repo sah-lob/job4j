@@ -19,9 +19,6 @@ public class RoleStore extends AbstractStore {
                 break;
             }
         }
-        if (result == -1) {
-            throw new NoSuchElementException();
-        }
         return result;
     }
 }

@@ -34,7 +34,7 @@ public class UserStoreTest {
         assertThat(userStore.findById("103"), is(user3));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void replaceThirdUserElement() {
         User user6 = new User("999");
         userStore.replace("101", user6);
@@ -42,7 +42,7 @@ public class UserStoreTest {
         assertThat(userStore.findById("101"), is(user1));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void removeThirdElement() {
         assertThat(userStore.findById("103"), is(user3));
         userStore.delete("103");

@@ -34,7 +34,7 @@ public class RoleStoreTest {
         assertThat(roleStore.findById("103"), is(role3));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void replaceThirdUserElement() {
         Role role6 = new Role("999");
         roleStore.replace("101", role6);
@@ -42,7 +42,7 @@ public class RoleStoreTest {
         assertThat(roleStore.findById("101"), is(role1));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void removeThirdElement() {
         assertThat(roleStore.findById("103"), is(role3));
         roleStore.delete("103");
