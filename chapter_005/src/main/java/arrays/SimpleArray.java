@@ -40,11 +40,11 @@ public class SimpleArray<T> {
      * @param index индекс
      */
     public void remove(int index) {
-        if(array.length == 0) {
+        if (array.length == 0) {
             throw new NoSuchElementException();
         }
         System.arraycopy(array, index + 1, array, index, array.length - 1 - index);
-        array = Arrays.copyOfRange(array, 0, array.length-1);
+        array = Arrays.copyOfRange(array, 0, array.length - 1);
     }
 
     /**
