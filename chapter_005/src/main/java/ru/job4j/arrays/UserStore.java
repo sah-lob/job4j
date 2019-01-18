@@ -1,4 +1,4 @@
-package arrays;
+package ru.job4j.arrays;
 
 public class UserStore extends AbstractStore {
 

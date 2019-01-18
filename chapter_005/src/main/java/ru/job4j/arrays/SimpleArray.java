@@ -1,4 +1,4 @@
-package arrays;
+package ru.job4j.arrays;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

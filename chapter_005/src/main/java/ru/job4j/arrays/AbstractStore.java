@@ -1,4 +1,4 @@
-package arrays;
+package ru.job4j.arrays;
 
 public abstract class AbstractStore<E extends Base> implements Store<E> {
 
