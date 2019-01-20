@@ -20,8 +20,8 @@ public class DynamicContainer<E> implements Iterable<E> {
             Object[] objects = new Object[(index * 3) / 2];
             System.arraycopy(container, 0, objects, 0, container.length);
             container = objects;
-            modCount++;
         }
+        modCount++;
         container[index++] = value;
     }
 
