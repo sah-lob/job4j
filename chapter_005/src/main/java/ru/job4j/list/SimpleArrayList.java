@@ -22,9 +22,10 @@ public class SimpleArrayList<E> {
         if (size == 0) {
             throw new AssertionError();
         }
+        E e = first.date;
         first = first.next;
         size--;
-        return first.date;
+        return e;
     }
 
     /**

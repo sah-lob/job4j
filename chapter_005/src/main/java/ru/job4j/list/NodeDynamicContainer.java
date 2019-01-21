@@ -23,12 +23,15 @@ public class NodeDynamicContainer<E> implements Iterable<E> {
         return (E) simpleArrayList.get(simpleArrayList.getSize() - index - 1);
     }
 
-    public void delete() {
+    public E delete() {
+        E e = null;
         if (simpleArrayList.getSize() == 1) {
+            e = (E) simpleArrayList.get(0);
             simpleArrayList = new SimpleArrayList();
         } else {
-            simpleArrayList.delete();
+            e = (E) simpleArrayList.delete();
         }
+        return e;
     }
 
     public int length() {
