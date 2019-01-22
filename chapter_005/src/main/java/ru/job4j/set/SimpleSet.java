@@ -24,6 +24,7 @@ public class SimpleSet<E> {
         for (int i = 0; i < container.length(); i++) {
             if (value.equals(container.get(i))) {
                 result = true;
+                break;
             }
         }
         return result;
