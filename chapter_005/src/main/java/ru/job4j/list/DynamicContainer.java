@@ -1,5 +1,6 @@
 package ru.job4j.list;
 
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -25,6 +26,20 @@ public class DynamicContainer<E> implements Iterable<E> {
         container[index++] = value;
     }
 
+    public void remove(E value) {
+        
+        int index = -1;
+        for (int i = 0; i < container.length; i++) {
+            if (container[i] == value) {
+                index = i;
+            }
+        }
+        if (index >= 0) {
+            System.arraycopy(container, index + 1, container, index, container.length - 1 - index);
+            container = Arrays.copyOfRange(container, 0, container.length - 1);
+            this.index--;
+        }
+    }
     public E get(int index) {
         return (E) container[index];
     }
