@@ -22,7 +22,7 @@ public class SimpleSet<E> {
     public boolean contains(E value) {
         var result = false;
         for (int i = 0; i < container.length(); i++) {
-            if (value == container.get(i)) {
+            if (value.equals(container.get(i))) {
                 result = true;
             }
         }
