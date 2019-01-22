@@ -3,18 +3,14 @@ package ru.job4j.list;
 public class CyclicList {
 
     boolean hasCycle(Node first) {
-        var nodeDynamicContainer = new NodeDynamicContainer();
+        Node turtle = first;
+        Node hare = first;
         var result = false;
-        while (first.next != null) {
-            for (int i = 0; i < nodeDynamicContainer.length(); i++) {
-                if (first == nodeDynamicContainer.get(i)) {
-                    result = true;
-                    break;
-                }
-            }
-            nodeDynamicContainer.add(first);
-            first = first.next;
-            if (result) {
+        while (hare != null && hare.next != null) {
+            turtle = turtle.next;
+            hare = hare.next.next;
+            if (turtle == hare) {
+                result = true;
                 break;
             }
         }
