@@ -1,6 +1,7 @@
 package ru.job4j.map;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class User {
 
@@ -15,8 +16,16 @@ public class User {
     }
 
 
+//    @Override
+//    public int hashCode() {
+//        return name.hashCode() + children + birthday.hashCode();
+//    }
+
     @Override
-    public int hashCode() {
-        return name.hashCode() + children + birthday.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return children == user.children && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday);
     }
 }
