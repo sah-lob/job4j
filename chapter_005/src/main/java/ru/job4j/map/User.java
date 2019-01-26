@@ -16,10 +16,10 @@ public class User {
     }
 
 
-//    @Override
-//    public int hashCode() {
-//        return name.hashCode() + children + birthday.hashCode();
-//    }
+    @Override
+    public int hashCode() {
+        return name.hashCode() + children + birthday.hashCode();
+    }
 
     @Override
     public boolean equals(Object o) {
