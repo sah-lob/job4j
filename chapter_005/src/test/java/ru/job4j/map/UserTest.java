@@ -18,6 +18,8 @@ public class UserTest {
         map.put(user2, 2);
         System.out.println(map);
 
+        Map sdf = new HashMap();
+
         /**
          *  Из-за того, что хешкод одинаковый, элементы попадут в одну ячейку.
          *  Начнется сравнение по HashCode и equals.
