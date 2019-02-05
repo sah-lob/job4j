@@ -54,11 +54,11 @@ public class MyHashMapTest {
         myHashMap.insert(1, "Anna");
         myHashMap.insert(2, "Irina");
         assertThat(myHashMap.hasNext(), is(true));
-        assertThat(myHashMap.next(), is("Alexander"));
+        assertThat(myHashMap.next(), is("Anna"));
         assertThat(myHashMap.hasNext(), is(true));
         assertThat(myHashMap.next(), is("Irina"));
         assertThat(myHashMap.hasNext(), is(true));
-        assertThat(myHashMap.next(), is("Anna"));
+        assertThat(myHashMap.next(), is("Alexander"));
         assertThat(myHashMap.hasNext(), is(false));
     }
 
