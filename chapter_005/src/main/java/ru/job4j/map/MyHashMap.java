@@ -2,16 +2,16 @@ package ru.job4j.map;
 
 import java.util.Iterator;
 
-public class MyHashMap<K, V> implements Iterator {
+public class MyHashMap<K, V> implements Iterable {
 
     private Entry<K, V>[] table;
-    private int tableLength;
+    private int tablelength;
     private int index;
     private int iteratorIndex;
 
     public MyHashMap() {
-        this.tableLength = 16;
-        this.table = new Entry[tableLength];
+        this.tablelength = 16;
+        this.table = new Entry[tablelength];
         this.index = 0;
         this.iteratorIndex = 0;
     }
@@ -19,7 +19,7 @@ public class MyHashMap<K, V> implements Iterator {
     boolean insert(K key, V value) {
 
         var hash = hash(key.hashCode());
-        var indexf = indexFor(hash, tableLength);
+        var indexf = indexFor(hash, tablelength);
         var result = false;
 
         if (table[indexf] == null) {
@@ -34,7 +34,7 @@ public class MyHashMap<K, V> implements Iterator {
     V get(K key) {
         V result = null;
         var hash = hash(key.hashCode());
-        var indexf = indexFor(hash, tableLength);
+        var indexf = indexFor(hash, tablelength);
         if (table[indexf] != null) {
             result = table[indexf].getValue();
         }
@@ -44,7 +44,7 @@ public class MyHashMap<K, V> implements Iterator {
     boolean delete(K key) {
         var result = false;
         var hash = hash(key.hashCode());
-        var indexf = indexFor(hash, tableLength);
+        var indexf = indexFor(hash, tablelength);
         if (table[indexf] != null) {
             table[indexf] = null;
             index--;
@@ -57,30 +57,6 @@ public class MyHashMap<K, V> implements Iterator {
         return index;
     }
 
-    @Override
-    public boolean hasNext() {
-        var result = false;
-        if (iteratorIndex != table.length - 1) {
-            for (int i = iteratorIndex; i < table.length; i++) {
-                if (table[i] != null) {
-                    iteratorIndex = i;
-                    result = true;
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public Object next() {
-        V result = null;
-        if (hasNext()) {
-            result = table[iteratorIndex++].getValue();
-        }
-        return result;
-    }
-
     private static int hash(int h) {
         h ^= (h >>> 20) ^ (h >>> 12);
         return h ^ (h >>> 7) ^ (h >>> 4);
@@ -88,6 +64,35 @@ public class MyHashMap<K, V> implements Iterator {
 
     private static int indexFor(int h, int length) {
         return h & (length - 1);
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            @Override
+            public boolean hasNext() {
+                var result = false;
+                if (iteratorIndex != table.length - 1) {
+                    for (int i = iteratorIndex; i < table.length; i++) {
+                        if (table[i] != null) {
+                            iteratorIndex = i;
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                return result;
+            }
+
+            @Override
+            public Object next() {
+                V result = null;
+                if (hasNext()) {
+                    result = table[iteratorIndex++].getValue();
+                }
+                return result;
+            }
+        };
     }
 
     static class Entry<K, V> {

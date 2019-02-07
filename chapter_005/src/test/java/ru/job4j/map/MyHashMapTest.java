@@ -2,6 +2,8 @@ package ru.job4j.map;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -44,7 +46,8 @@ public class MyHashMapTest {
         myHashMap.insert(3, "Alexander");
         myHashMap.insert(1, "Anna");
         myHashMap.insert(2, "Irina");
-        assertThat(myHashMap.hasNext(), is(true));
+        Iterator iterator = myHashMap.iterator();
+        assertThat(iterator.hasNext(), is(true));
     }
 
     @Test
@@ -53,13 +56,14 @@ public class MyHashMapTest {
         myHashMap.insert(3, "Alexander");
         myHashMap.insert(1, "Anna");
         myHashMap.insert(2, "Irina");
-        assertThat(myHashMap.hasNext(), is(true));
-        assertThat(myHashMap.next(), is("Anna"));
-        assertThat(myHashMap.hasNext(), is(true));
-        assertThat(myHashMap.next(), is("Irina"));
-        assertThat(myHashMap.hasNext(), is(true));
-        assertThat(myHashMap.next(), is("Alexander"));
-        assertThat(myHashMap.hasNext(), is(false));
+        Iterator iterator = myHashMap.iterator();
+        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.next(), is("Anna"));
+        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.next(), is("Irina"));
+        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.next(), is("Alexander"));
+        assertThat(iterator.hasNext(), is(false));
     }
 
 
