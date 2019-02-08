@@ -7,13 +7,12 @@ public class MyHashMap<K, V> implements Iterable {
     private Entry<K, V>[] table;
     private int tablelength;
     private int index;
-    private int iteratorIndex;
 
     public MyHashMap() {
         this.tablelength = 16;
         this.table = new Entry[tablelength];
         this.index = 0;
-        this.iteratorIndex = 0;
+
     }
 
     boolean insert(K key, V value) {
@@ -69,6 +68,7 @@ public class MyHashMap<K, V> implements Iterable {
     @Override
     public Iterator iterator() {
         return new Iterator() {
+            private int iteratorIndex;
             @Override
             public boolean hasNext() {
                 var result = false;
