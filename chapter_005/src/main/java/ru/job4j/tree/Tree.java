@@ -1,10 +1,7 @@
 package ru.job4j.tree;
 
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Queue;
+import java.util.*;
 
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
@@ -18,9 +15,17 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     public boolean add(E parent, E child) {
         var result = false;
         if (!findBy(parent).isEmpty()) {
-            findBy(parent).get().add(new Node<>(child));
+            result = true;
+            for (Node<E> v: findBy(parent).get().leaves()) {
+                if (v.eqValue(child)) {
+                    result = false;
+                }
+            }
+            if (result) {
+                findBy(parent).get().add(new Node<>(child));
+            }
+            result = true;
         }
-        result = true;
         return result;
     }
 
@@ -44,6 +49,40 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+
+        ArrayList<Node<E>> nodes = new ArrayList<>();
+        nodes.add(root);
+        nodes = addChildNodes(nodes);
+        ArrayList<Node<E>> finalNodes = nodes;
+
+        return new Iterator<>() {
+            int index = 0;
+            @Override
+            public boolean hasNext() {
+                var result = false;
+                if (index != finalNodes.size()) {
+                    result = true;
+                }
+                return result;
+            }
+
+            @Override
+            public E next() {
+                return finalNodes.get(index++).getValue();
+            }
+        };
+    }
+
+    public ArrayList<Node<E>> addChildNodes(ArrayList<Node<E>> list) {
+        ArrayList<Node<E>> childList = new ArrayList<>();
+        for (Node<E> node : list) {
+            if (node.leaves() != null) {
+                childList.addAll(node.leaves());
+            }
+        }
+        if (!childList.isEmpty()) {
+            list.addAll(addChildNodes(childList));
+        }
+        return list;
     }
 }
