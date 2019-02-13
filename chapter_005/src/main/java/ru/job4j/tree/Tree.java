@@ -47,66 +47,39 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return rsl;
     }
 
+
     public boolean isBinary() {
-
-        var level = -1;
-        var size = 1;
-        var thisSize = 1;
-        var nextSize = 0;
-        var iterator = iterator();
-
-        while (iterator.hasNext()) {
-            var node = findBy(iterator.next()).get();
-            nextSize += node.leaves().size();
-            if (size == thisSize) {
-                thisSize = nextSize;
-                nextSize = 0;
-                level++;
-                size = 1;
-            } else {
-                size++;
+        var result = true;
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (queue.size() > 0) {
+            if (queue.peek().leaves().size() > 2) {
+                result = false;
+                break;
             }
+            queue.addAll(queue.poll().leaves());
         }
-
-        return level <= 2;
+        return result;
     }
 
     @Override
     public Iterator<E> iterator() {
-
-        ArrayList<Node<E>> nodes = new ArrayList<>();
-        nodes.add(root);
-        nodes = addChildNodes(nodes);
-        ArrayList<Node<E>> finalNodes = nodes;
-
+        Queue<Node> queue  = new LinkedList<>();
+        queue.add(root);
         return new Iterator<>() {
-            int index = 0;
             @Override
             public boolean hasNext() {
-                var result = false;
-                if (index != finalNodes.size()) {
-                    result = true;
-                }
-                return result;
+                return !queue.isEmpty();
             }
-
             @Override
             public E next() {
-                return finalNodes.get(index++).getValue();
+                Node<E> node = null;
+                if (hasNext()) {
+                    node = queue.poll();
+                    queue.addAll(node.leaves());
+                }
+                return node.getValue();
             }
         };
-    }
-
-    public ArrayList<Node<E>> addChildNodes(ArrayList<Node<E>> list) {
-        ArrayList<Node<E>> childList = new ArrayList<>();
-        for (Node<E> node : list) {
-            if (node.leaves() != null) {
-                childList.addAll(node.leaves());
-            }
-        }
-        if (!childList.isEmpty()) {
-            list.addAll(addChildNodes(childList));
-        }
-        return list;
     }
 }
