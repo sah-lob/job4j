@@ -6,6 +6,7 @@ import java.util.*;
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     private Node<E> root;
+    private int modCount = 0;
 
     public Tree(E root) {
         this.root = new Node(root);
@@ -25,6 +26,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
                 findBy(parent).get().add(new Node<>(child));
             }
             result = true;
+            modCount++;
         }
         return result;
     }
@@ -64,21 +66,29 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public Iterator<E> iterator() {
+
         Queue<Node> queue  = new LinkedList<>();
         queue.add(root);
         return new Iterator<>() {
+
+            int expectedModCount = modCount;
+
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return !queue.isEmpty();
             }
+
             @Override
             public E next() {
-                Node<E> node = null;
-                if (hasNext()) {
-                    node = queue.poll();
-                    queue.addAll(node.leaves());
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
-                return node.getValue();
+                var node = queue.poll();
+                queue.addAll(node.leaves());
+                return (E) node.getValue();
             }
         };
     }
