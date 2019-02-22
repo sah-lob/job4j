@@ -1,33 +1,32 @@
 package ru.job4j.analize;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Analize {
 
+
+
     public Info diff(List<User> previous, List<User> current) {
 
         var info = new Info();
-        var in = true;
 
-        for (int i = 0; i < current.size(); i++) {
-            for (int j = 0; j < previous.size(); j++) {
-                if (current.get(i).id == previous.get(j).id) {
-                    in = false;
-                    if (!current.get(i).name.equals(previous.get(j).name)) {
-                        info.changed++;
-                    }
-                   previous.remove(j);
-                }
-            }
-            if (in) {
-                info.added++;
-            } else {
-                in = true;
-            }
+        HashMap<Integer, User> map = new HashMap<>();
+
+        for (var user : previous) {
+            map.put(user.id, user);
         }
 
-        info.deleted = previous.size();
-
+        for (var user : current) {
+            var u = map.get(user.id);
+            if (u == null) {
+                info.added++;
+            } else if (!u.name.equals(user.name)) {
+                info.changed++;
+            }
+            map.remove(user.id);
+        }
+        info.deleted = map.size();
 
         return info;
     }

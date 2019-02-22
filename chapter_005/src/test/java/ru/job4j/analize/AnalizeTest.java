@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class AnalizeTest {
 
     @Test
-    public void test() {
+    public void analizeTest() {
 
         var previous = createToMassiv();
         var current = createToMassiv();
