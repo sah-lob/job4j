@@ -16,7 +16,7 @@ public class Check {
             var secondMas = secondWord.toCharArray();
 
             for (char c : firstWord.toCharArray()) {
-                if (firstMap.get(c) != null) {
+                if (firstMap.containsKey(c)) {
                     firstMap.put(c, firstMap.get(c) + 1);
                 } else {
                     firstMap.put(c, 1);
@@ -24,7 +24,7 @@ public class Check {
             }
 
             for (char c : secondMas) {
-                if (firstMap.get(c) == null) {
+                if (!firstMap.containsKey(c)) {
                     result = false;
                     break;
                 } else if (firstMap.get(c) == 1) {
