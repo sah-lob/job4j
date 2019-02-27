@@ -1,6 +1,5 @@
 package ru.job4j.inputoutput;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputOutput {
