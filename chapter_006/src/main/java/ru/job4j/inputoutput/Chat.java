@@ -10,7 +10,7 @@ public class Chat {
 
     public static void main(String[] args) {
         Chat chat = new Chat();
-        chat.chatMaintenance("/Users/alexanderlobachev/Desktop/test.txt");
+        chat.chatMaintenance("chapter_006/src/main/resources/test.txt");
     }
 
     private Logger logger = LoggerFactory.getLogger(Chat.class);
