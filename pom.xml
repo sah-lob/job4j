@@ -19,10 +19,10 @@
         <module>chapter_003</module>
         <module>chapter_004</module>
         <module>chapter_005</module>
+        <module>chapter_006</module>
         <module>chess</module>
         <module>puzzle</module>
         <module>ticTacToe</module>
-        <module>chapter_006</module>
     </modules>
     <build>
       <plugins>
@@ -79,6 +79,20 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.8.0-alpha0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.23</version>
         </dependency>
 
         <dependency>
