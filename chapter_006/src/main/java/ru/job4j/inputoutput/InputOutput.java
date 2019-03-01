@@ -1,5 +1,6 @@
 package ru.job4j.inputoutput;
 import java.io.*;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class InputOutput {
@@ -12,44 +13,21 @@ public class InputOutput {
         return result;
     }
 
-
-    public void dropAbuses(InputStream in, OutputStream out, String[] abuse) throws IOException {
-
-        int q;
-        var word = new StringBuilder();
-        while (true) {
-            q = in.read();
-            if (q == -1) {
-                abuseTest(word.toString(), abuse, out, true);
-                break;
-            } else if (q != 32) {
-                word.append((char) q);
-            } else {
-                abuseTest(word.toString(), abuse, out, false);
-                word = new StringBuilder();
-            }
-        }
-    }
-
-
-    public void abuseTest(String word, String[] abuse, OutputStream out, boolean end) throws IOException {
-        var result = true;
-        if (abuse.length != 0) {
-            for (var w : abuse) {
-                if (w.toUpperCase().equals(word.toUpperCase())) {
-                    result = false;
-                    break;
+    public void dropAbuses(InputStream in, OutputStream out, HashSet<String> abuse) {
+        try {
+            var line = new BufferedReader(new InputStreamReader(in)).readLine();
+            var strings = line.split(" ");
+            abuse.forEach(x -> x.toLowerCase());
+            line = "";
+            for (int i = 0; i < strings.length; i++) {
+                if (!abuse.contains(strings[i].toLowerCase())) {
+                    line += strings[i] + " ";
                 }
             }
-        }
-        if (result) {
-            for (var c : word.toCharArray()) {
-                out.write(c);
-            }
-            if (!end) {
-                out.write(32);
-            }
+            line = line.substring(0, line.length() - 1);
+            out.write(line.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 }

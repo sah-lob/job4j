@@ -3,6 +3,7 @@ package ru.job4j.inputoutput;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.HashSet;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,8 +29,12 @@ public class InputOutputTest {
     }
 
     @Test
-    public void filteredOutput() throws IOException {
-        var strings = new String[]{"hello", "name"};
+    public void filteredOutput() {
+        HashSet<String> strings = new HashSet<>();
+        strings.add("hello");
+        strings.add("name");
+
+//        var strings = new String[]{"hello", "name"};
         var string = "my is Alexander Lobachev. And I'm 23 year's old.";
         var byteArrayOutputStream = new ByteArrayOutputStream();
         var byteArrayInputStream = new ByteArrayInputStream("Hello my name is Alexander Lobachev. And I'm 23 year's old.".getBytes());
