@@ -9,22 +9,21 @@ import java.util.Scanner;
 public class Chat {
 
     public static void main(String[] args) {
-        Chat chat = new Chat();
-        chat.chatMaintenance("chapter_006/src/main/resources/test.txt");
+        var chat = new Chat();
+        chat.chatMaintenance("test.txt");
     }
 
     private Logger logger = LoggerFactory.getLogger(Chat.class);
 
-    public void chatMaintenance(String filePath) {
+    public void chatMaintenance(String fileName) {
 
         logger.info("Чат бот запущен.");
 
         var flag = true;
         var word = new Scanner(new InputStreamReader(System.in)).next();
-        var phrases = readLines(filePath);
+        var phrases = readLines(fileName);
 
         while (!word.equals("закончить")) {
-
             logger.info("Вы: " + word);
             if (word.equals("стоп")) {
                 logger.info("Бот: Была введена команда стоп.");
@@ -44,14 +43,15 @@ public class Chat {
         logger.info("Чат бот остановлен.");
     }
 
-    public ArrayList<String> readLines(String filePath) {
+    public ArrayList<String> readLines(String fileName) {
         Scanner sc = null;
         try {
-            sc = new Scanner(new File(filePath));
-        } catch (FileNotFoundException e) {
+            var classLoader = Chat.class.getClassLoader();
+            sc = new Scanner(classLoader.getResourceAsStream(fileName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        ArrayList<String> splitted = new ArrayList<>();
+        var splitted = new ArrayList<String>();
         while (sc.hasNext()) {
             splitted.add(sc.nextLine());
         }
