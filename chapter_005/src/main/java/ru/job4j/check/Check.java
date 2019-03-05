@@ -16,21 +16,17 @@ public class Check {
             var secondMas = secondWord.toCharArray();
 
             for (char c : firstWord.toCharArray()) {
-                if (firstMap.containsKey(c)) {
-                    firstMap.put(c, firstMap.get(c) + 1);
-                } else {
-                    firstMap.put(c, 1);
-                }
+                firstMap.computeIfPresent(c, (x, z) -> z = firstMap.get(x) + 1);
+                firstMap.putIfAbsent(c, 1);
             }
 
             for (char c : secondMas) {
                 if (!firstMap.containsKey(c)) {
                     result = false;
                     break;
-                } else if (firstMap.get(c) == 1) {
-                    firstMap.remove(c);
                 } else {
-                    firstMap.put(c, firstMap.get(c) - 1);
+                    firstMap.remove(c, 1);
+                    firstMap.computeIfPresent(c, (x, z) -> z = firstMap.get(x) - 1);
                 }
             }
 
