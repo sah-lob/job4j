@@ -14,47 +14,50 @@ public class Archive {
 
     public static void main(String[] args) {
 
-        Option option1 = new Option("d", "directory", true, "Directory");
-        option1.setArgs(1);
-        option1.setOptionalArg(false);
-        option1.setArgName("Directory ");
-
-//        java -jar archive.jar -d /Users/alexanderlobachev/Desktop/testing -e java.xml -o project.zip
-
-
-
-
-        Option option2 = new Option("e", "formats", true, "Formats");
-        option2.setArgs(1);
-        option2.setOptionalArg(false);
-        option2.setArgName("Formats");
-
-        Option option3 = new Option("o", "zipName", true, "zimName");
-        option3.setArgs(1);
-        option3.setOptionalArg(false);
-        option3.setArgName("zipName");
-
-        Options options = new Options();
-        options.addOption(option1);
-        options.addOption(option2);
-        options.addOption(option3);
-
-        CommandLineParser cmdLinePosixParser = new PosixParser();
-        CommandLine commandLine = null;
-
-        try {
-            commandLine = cmdLinePosixParser.parse(options,args);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String address = commandLine.getOptionValue("directory");
-        String formats = commandLine.getOptionValue("formats");
-        String zipName = commandLine.getOptionValue("zipName");
-
+//        Option option1 = new Option("d", "directory", true, "Directory");
+//        option1.setArgs(1);
+//        option1.setOptionalArg(false);
+//        option1.setArgName("Directory ");
+//
+////        java -jar archive.jar -d /Users/alexanderlobachev/Desktop/testing -e java.xml -o project.zip
+//
+//
+//
+//
+//        Option option2 = new Option("e", "formats", true, "Formats");
+//        option2.setArgs(1);
+//        option2.setOptionalArg(false);
+//        option2.setArgName("Formats");
+//
+//        Option option3 = new Option("o", "zipName", true, "zimName");
+//        option3.setArgs(1);
+//        option3.setOptionalArg(false);
+//        option3.setArgName("zipName");
+//
+//        Options options = new Options();
+//        options.addOption(option1);
+//        options.addOption(option2);
+//        options.addOption(option3);
+//
+//        CommandLineParser cmdLinePosixParser = new PosixParser();
+//        CommandLine commandLine = null;
+//
+//        try {
+//            commandLine = cmdLinePosixParser.parse(options,args);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String address = commandLine.getOptionValue("directory");
+//        String formats = commandLine.getOptionValue("formats");
+//        String zipName = commandLine.getOptionValue("zipName");
+//
         HashSet<String> keys = new HashSet<>();
         keys.addAll(Arrays.asList("jpg", "pdf", "png"));
         Archive archive = new Archive();
+        String address = "";
+//        String keys = "";
+        String zipName = "";
         archive.archiveProject(address, keys, zipName);
     }
 

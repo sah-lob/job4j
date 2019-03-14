@@ -32,7 +32,6 @@ public class Server {
         var out = new PrintWriter(socket.getOutputStream(), true);
         var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         var answers = readingFile();
-
         String ask;
         do {
             System.out.println("wait command ...");
