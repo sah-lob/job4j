@@ -14,55 +14,47 @@ public class Archive {
 
     public static void main(String[] args) {
 
-//        Option option1 = new Option("d", "directory", true, "Directory");
-//        option1.setArgs(1);
-//        option1.setOptionalArg(false);
-//        option1.setArgName("Directory ");
-//
-////        java -jar archive.jar -d /Users/alexanderlobachev/Desktop/testing -e java.xml -o project.zip
-//
-//
-//
-//
-//        Option option2 = new Option("e", "formats", true, "Formats");
-//        option2.setArgs(1);
-//        option2.setOptionalArg(false);
-//        option2.setArgName("Formats");
-//
-//        Option option3 = new Option("o", "zipName", true, "zimName");
-//        option3.setArgs(1);
-//        option3.setOptionalArg(false);
-//        option3.setArgName("zipName");
-//
-//        Options options = new Options();
-//        options.addOption(option1);
-//        options.addOption(option2);
-//        options.addOption(option3);
-//
-//        CommandLineParser cmdLinePosixParser = new PosixParser();
-//        CommandLine commandLine = null;
-//
-//        try {
-//            commandLine = cmdLinePosixParser.parse(options,args);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String address = commandLine.getOptionValue("directory");
-//        String formats = commandLine.getOptionValue("formats");
-//        String zipName = commandLine.getOptionValue("zipName");
-//
-        HashSet<String> keys = new HashSet<>();
-        keys.addAll(Arrays.asList("jpg", "pdf", "png"));
-        Archive archive = new Archive();
-        String address = "";
-//        String keys = "";
-        String zipName = "";
+        Option option1 = new Option("d", "directory", true, "Directory");
+        option1.setArgs(1);
+        option1.setOptionalArg(false);
+        option1.setArgName("Directory ");
+
+//        java -jar archive.jar -d /Users/alexanderlobachev/Desktop/testing -e java.xml -o project.zip
+
+        Option option2 = new Option("e", "formats", true, "Formats");
+        option2.setArgs(1);
+        option2.setOptionalArg(false);
+        option2.setArgName("Formats");
+
+        Option option3 = new Option("o", "zipName", true, "zimName");
+        option3.setArgs(1);
+        option3.setOptionalArg(false);
+        option3.setArgName("zipName");
+
+        Options options = new Options();
+        options.addOption(option1);
+        options.addOption(option2);
+        options.addOption(option3);
+
+        CommandLineParser cmdLinePosixParser = new PosixParser();
+        CommandLine commandLine = null;
+
+        try {
+            commandLine = cmdLinePosixParser.parse(options, args);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        var arguments = new Args(args);
+        var address = arguments.directory();
+        var keys = arguments.excule();
+        var zipName = arguments.output();
+        var archive = new Archive();
         archive.archiveProject(address, keys, zipName);
     }
 
     public void archiveProject(String address, HashSet<String> keys, String nameOfProject) {
-
         try (var fout = new FileOutputStream(address + nameOfProject + ".zip")) {
             var zout = new ZipOutputStream(fout);
             var fileSource = new File(address);
@@ -85,7 +77,7 @@ public class Archive {
                 addDirectory(zout, files[i], keys);
                 continue;
             }
-            if (keys.contains(files[i].toString().substring(files[i].toString().lastIndexOf(".") + 1))) {
+            if (!keys.contains(files[i].toString().substring(files[i].toString().lastIndexOf(".") + 1))) {
                 System.out.println("Добавление файла <" + files[i].getName() + ">");
                 try {
                     var fis = new FileInputStream(files[i]);
@@ -104,4 +96,25 @@ public class Archive {
 
         }
     }
+}
+
+ class Args {
+    String[] args;
+
+     public Args(String[] args) {
+         this.args = args;
+     }
+
+     public String directory() {
+         return this.args[0];
+     }
+     public HashSet<String> excule() {
+         String[] sd = args[1].split(",");
+         HashSet<String> hashSet = new HashSet<>();
+         hashSet.addAll(Arrays.asList(sd));
+         return hashSet;
+     }
+     public String output() {
+         return this.args[2];
+     }
 }
