@@ -23,12 +23,12 @@ public class Chat {
         var word = new Scanner(new InputStreamReader(System.in)).next();
         var phrases = readLines(fileName);
 
-        while (!word.equals("закончить")) {
+        while (!"закончить".equals(word)) {
             logger.info("Вы: " + word);
-            if (word.equals("стоп")) {
+            if ("стоп".equals(word)) {
                 logger.info("Бот: Была введена команда стоп.");
                 flag = false;
-            } else if (word.equals("продолжить")) {
+            } else if ("продолжить".equals(word)) {
                 logger.info("Бот: Была введена команда продолжить.");
                 flag = true;
             }
@@ -44,16 +44,15 @@ public class Chat {
     }
 
     public ArrayList<String> readLines(String fileName) {
-        Scanner sc = null;
+        var splitted = new ArrayList<String>();
         try {
             var classLoader = Chat.class.getClassLoader();
-            sc = new Scanner(classLoader.getResourceAsStream(fileName));
+            var sc = new Scanner(classLoader.getResourceAsStream(fileName));
+            while (sc.hasNext()) {
+                splitted.add(sc.nextLine());
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        var splitted = new ArrayList<String>();
-        while (sc.hasNext()) {
-            splitted.add(sc.nextLine());
         }
         return  splitted;
     }
