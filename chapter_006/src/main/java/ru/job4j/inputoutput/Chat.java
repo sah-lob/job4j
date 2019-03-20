@@ -22,7 +22,6 @@ public class Chat {
         var flag = true;
         var word = new Scanner(new InputStreamReader(System.in)).next();
         var phrases = readLines(fileName);
-
         while (!"закончить".equals(word)) {
             logger.info("Вы: " + word);
             if ("стоп".equals(word)) {

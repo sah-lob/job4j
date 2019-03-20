@@ -19,8 +19,6 @@ public class Archive {
         option1.setOptionalArg(false);
         option1.setArgName("Directory ");
 
-//        java -jar archive.jar -d /Users/alexanderlobachev/Desktop/testing -e java.xml -o project.zip
-
         Option option2 = new Option("e", "formats", true, "Formats");
         option2.setArgs(1);
         option2.setOptionalArg(false);
@@ -100,21 +98,23 @@ public class Archive {
 
  class Args {
     String[] args;
-
      public Args(String[] args) {
          this.args = args;
      }
 
      public String directory() {
+         System.out.println("Выбрана дерриктория " + args[0]);
          return this.args[0];
      }
      public HashSet<String> excule() {
+         System.out.println("Все нормально");
          String[] sd = args[1].split(",");
          HashSet<String> hashSet = new HashSet<>();
          hashSet.addAll(Arrays.asList(sd));
          return hashSet;
      }
      public String output() {
+         System.out.println("Выбран файл.");
          return this.args[2];
      }
 }

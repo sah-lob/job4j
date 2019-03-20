@@ -30,68 +30,15 @@ public class Server {
             ask = in.readLine();
             System.out.println(ask);
             if ("1".equals(ask)) {
-                out.println("Вы выбрали команду номер 1. Список каталога.");
-                ask = in.readLine();
-                System.out.println(ask);
-                out.println("Список файлов:");
-                String[] strings = getPath(ask);
-                for (String st : strings) {
-                    out.println(st);
-                }
-                out.println();
+                filePath(out, in);
             } else if ("2".equals(ask)) {
-                if (file == null) {
-                   out.println("Cначала нужно выбрать коталог в пункте 1.");
-                } else {
-                    out.println("Вы выбрали команду номер 2. Перейти в подкаталог.");
-                    ask = in.readLine();
-                    System.out.println(ask);
-                    out.println("Список файлов:");
-                    String[] strings = goToChild(ask);
-                    for (String st : strings) {
-                        out.println(st);
-                    }
-                }
-                out.println();
+                subDirectory(out, in);
             } else if ("3".equals(ask)) {
-                out.println("Вы выбрали команду номер 3. Спуститься в родительский католог.");
-                file = file.getParentFile();
-                out.println("Список файлов:");
-                String[] strings = getPath(file.getPath());
-                for (String st : strings) {
-                    out.println(st);
-                }
-                out.println();
+                parentDirectory(out);
             } else if ("4".equals(ask)) {
-                ask = in.readLine();
-                var f = new File(file.getPath() + "/" + ask);
-                System.out.println();
-                var fiss = new FileInputStream(f.getPath());
-                long len = f.length();
-                out.println(len);
-                int c;
-                while ((c = fiss.read()) >= 0) {
-                    out.write((char) c);
-                    out.flush();
-                }
-                System.out.println("Файлик загружен.");
-                out.println("Файл загружен.");
-                out.println();
+               downloadFile(out, in);
             } else if ("5".equals(ask)) {
-                int c;
-                int i = 0;
-                int len = Integer.parseInt(in.readLine());
-                var name = in.readLine();
-                var fous = new FileOutputStream(file.getPath() + "/" + name);
-                while (i < len) {
-                    i++;
-                    c = in.read();
-                    fous.write(c);
-                    fous.flush();
-                }
-                System.out.println("Файл загружен.");
-                out.println("Все ок!");
-                out.println();
+                uploadFile(out, in);
             } else if (!"exit".equals(ask)) {
                 out.println("Такой команды не существует выберете команду еще раз.");
                 out.println();
@@ -126,4 +73,79 @@ public class Server {
         }
         return strings;
     }
+
+
+    public void filePath(PrintWriter out, BufferedReader in) throws IOException {
+        out.println("Вы выбрали команду номер 1. Список каталога.");
+        String ask = in.readLine();
+        System.out.println(ask);
+        out.println("Список файлов:");
+        String[] strings = getPath(ask);
+        for (String st : strings) {
+            out.println(st);
+        }
+        out.println();
+    }
+
+    public void subDirectory(PrintWriter out, BufferedReader in) throws IOException {
+        if (file == null) {
+            out.println("Cначала нужно выбрать коталог в пункте 1.");
+        } else {
+            out.println("Вы выбрали команду номер 2. Перейти в подкаталог.");
+            var ask = in.readLine();
+            System.out.println(ask);
+            out.println("Список файлов:");
+            String[] strings = goToChild(ask);
+            for (String st : strings) {
+                out.println(st);
+            }
+        }
+        out.println();
+    }
+
+    public void parentDirectory(PrintWriter out) {
+        out.println("Вы выбрали команду номер 3. Спуститься в родительский католог.");
+        file = file.getParentFile();
+        out.println("Список файлов:");
+        String[] strings = getPath(file.getPath());
+        for (String st : strings) {
+            out.println(st);
+        }
+        out.println();
+    }
+
+    public void downloadFile(PrintWriter out, BufferedReader in) throws IOException {
+        var ask = in.readLine();
+        var f = new File(file.getPath() + "/" + ask);
+        System.out.println();
+        var fiss = new FileInputStream(f.getPath());
+        long len = f.length();
+        out.println(len);
+        int c;
+        while ((c = fiss.read()) >= 0) {
+            out.write((char) c);
+            out.flush();
+        }
+        System.out.println("Файлик загружен.");
+        out.println("Файл загружен.");
+        out.println();
+    }
+
+    public void uploadFile(PrintWriter out, BufferedReader in) throws IOException {
+        int c;
+        int i = 0;
+        int len = Integer.parseInt(in.readLine());
+        var name = in.readLine();
+        var fous = new FileOutputStream(file.getPath() + "/" + name);
+        while (i < len) {
+            i++;
+            c = in.read();
+            fous.write(c);
+            fous.flush();
+        }
+        System.out.println("Файл загружен.");
+        out.println("Все ок!");
+        out.println();
+    }
+
 }
