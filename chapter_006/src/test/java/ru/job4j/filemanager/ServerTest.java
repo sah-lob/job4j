@@ -81,6 +81,7 @@ public class ServerTest {
                         ".DS_Store",
                         "oracleSaysTest.txt",
                         "dialog.log",
+                        "config.properties",
                         "fileManager",
                         "oracleSays.txt",
                         "test.txt",
