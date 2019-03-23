@@ -1,5 +1,7 @@
 package ru.job4j.search;
 
+import org.apache.commons.cli.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -12,58 +14,93 @@ public class Search {
     private final int type;
     private final String writeFileName;
 
-//            1. Создать программу для поиска файла.
-//            2. Программа должна искать данные в заданном каталоге и подкаталогах.
-//            3. Имя файла может задаваться, целиком, по маске, по регулярному выражение(не обязательно).
-//            4. Программа должна собираться в jar и запускаться через java -jar find.jar -d c:/ -n *.txt -m -o log.txt
-//            Ключи
-//                -d - директория в которая начинать поиск.
-//                -n - имя файл, маска, либо регулярное выражение.
-//                -m - искать по макс, либо -f - полное совпадение имени. -r регулярное выражение.
-//                -o - результат записать в файл.
-//            5. Программа должна записывать результат в файл.
-//            6. В программе должна быть валидация ключей и подсказка.
 
-
-    public Search(String nameOfFile, String path, int type, String writeFileName) {
+    public Search(String nameOfFile, String path, String type, String writeFileName) {
         this.nameOfFile = nameOfFile;
         this.path = path;
-        this.type = type;
+        this.type = typeConverter(type);
         this.writeFileName = writeFileName;
     }
 
     public static void main(String[] args) throws IOException {
-        Search search = new Search("1.png", "/Users/alexanderlobachev/Desktop/testing", 1, "2.txt");
+
+        Option option1 = new Option("d", "directory", true, "Directory");
+        option1.setArgs(1);
+        option1.setOptionalArg(false);
+        option1.setArgName("Directory ");
+
+        Option option2 = new Option("-n", "name", true, "NameOfSearchingFile");
+        option2.setArgs(1);
+        option2.setOptionalArg(false);
+        option2.setArgName("Name");
+
+        Option option3 = new Option("-m", "type", true, "type");
+        option3.setArgs(0);
+        option3.setOptionalArg(false);
+        option3.setArgName("type");
+
+        Option option4 = new Option("-o", "newFile", true, "nameOfNewFile");
+        option3.setArgs(1);
+        option3.setOptionalArg(false);
+        option3.setArgName("nameOfNewFile");
+
+        Options options = new Options();
+        options.addOption(option1);
+        options.addOption(option2);
+        options.addOption(option3);
+        options.addOption(option4);
+
+        var  cmdLinePosixParser = new PosixParser();
+
+        try {
+            var commandLine = cmdLinePosixParser.parse(options, args);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        var arguments = new Args(args);
+        var nameOfFile = arguments.fileName();
+        var path = arguments.directory();
+        var type = arguments.type();
+        var writeFileName = arguments.outputFileName();
+
+
+        Search search = new Search(nameOfFile, path, type, writeFileName);
         search.start();
     }
 
     public void start() throws IOException {
-        File file = new File(path);
+        var file = new File(path);
         ArrayList<String> listOfFiles = new ArrayList<>();
         listOfFiles = searchInDirectory(file, listOfFiles);
-        try (FileWriter fos = new FileWriter(writeFileName)) {
+        try (var fos = new FileWriter(writeFileName)) {
             for (var ss : listOfFiles) {
                 fos.write(ss);
             }
         }
     }
 
-    public ArrayList<String> searchInDirectory(File file, ArrayList<String> info) throws IOException {
-        for (File f : file.listFiles()) {
-            if (f.isDirectory()) {
-                searchInDirectory(f, info);
-            } else {
-                if (type == 0) {
-                    if (f.getName().equals(nameOfFile)) {
-                        info.add(f.getName() + " - имя файла. Его путь: " + f.getAbsolutePath() + "\n");
-                    }
-                } else if (type == 1) {
-                    if (maskValidate(f)) {
-                        info.add(f.getName() + " - имя файла. Его путь: " + f.getAbsolutePath() + "\n");
-                    }
-                } else if (type == 2) {
-                    if (regexValidate(f)) {
-                        info.add(f.getName() + " - имя файла. Его путь: " + f.getAbsolutePath() + "\n");
+    public ArrayList<String> searchInDirectory(File file, ArrayList<String> info) {
+        if (file.listFiles().length > 0) {
+            for (File f : file.listFiles()) {
+                if (f.isDirectory()) {
+                    searchInDirectory(f, info);
+                } else {
+                    switch (type) {
+                        case (0):
+                            if (f.getName().equals(nameOfFile)) {
+                                info.add(info(f));
+                            }
+                        case (1):
+                            if (maskValidate(f)) {
+                                info.add(info(f));
+                            }
+                        case (2):
+                            if (regexValidate(f)) {
+                                info.add(info(f));
+                            }
+                        default:
+                            System.out.println("Ошибка");
                     }
                 }
             }
@@ -87,8 +124,26 @@ public class Search {
         return m.matches();
     }
 
+    public String info(File f) {
+        return f.getName() + " - имя файла. Его путь: " + f.getAbsolutePath() + "\n";
+    }
 
-    class Args {
+    public int typeConverter(String type) {
+        int result;
+        switch (type) {
+            case ("-f"): result = 0;
+                break;
+            case ("-m"): result = 1;
+                break;
+            case ("-r"): result = 2;
+                break;
+            default: result = -1;
+                break;
+        }
+        return result;
+    }
+
+    static class Args {
         String[] args;
 
         public Args(String[] args) {
