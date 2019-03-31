@@ -4,14 +4,19 @@ import java.util.Properties;
 
 public class Config {
 
-    Properties property = new Properties();
 
-    public Config(String propertiesFileName) {
+    private String propertyPath;
+    private Properties property = new Properties();
+    private String propertiesFileName;
+
+
+    public Config(String propertiesFileName, String propertyPath) {
+        this.propertyPath = propertyPath;
+        this.propertiesFileName = propertiesFileName;
         try {
             var classLoader = Config.class.getClassLoader();
             InputStream path = classLoader.getResourceAsStream(propertiesFileName);
             property.load(path);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -25,7 +30,7 @@ public class Config {
 
     public void put(String key, String value) {
         try {
-            var out = new FileOutputStream("src/main/resources/config.properties");
+            var out = new FileOutputStream(propertyPath + propertiesFileName);
             property.setProperty(key, value);
             property.store(out, "You change value");
         } catch (FileNotFoundException e) {
