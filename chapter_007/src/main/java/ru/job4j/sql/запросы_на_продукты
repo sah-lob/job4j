@@ -1,0 +1,22 @@
+-- 1. Написать запрос получение всех продуктов с типом "СЫР"
+select * from product p  INNER JOIN type t ON p.type_id = t.id
+where t.name = 'СЫР'
+-- 2. Написать запрос получения всех продуктов, у кого в имени есть слово "мороженное"
+select * from product where name = 'мороженное'
+-- 3. Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
+select * from product where expired_date < now() + interval '1 month'
+-- 4. Написать запрос, который выводит самый дорогой продукт.
+SELECT * FROM product where price = (select MAX(price) from product)
+-- 5. Написать запрос, который выводит количество всех продуктов определенного типа.
+select count(p.type_id) as count, t.name 
+FROM product p INNER JOIN type t ON p.type_id = t.id
+group by t.id
+-- 6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
+select * from product p INNER JOIN type t ON p.type_id = t.id
+where t.name = ('СЫР') or t.name = 'МОЛОКО';
+-- 7. Написать запрос, который выводит тип продуктов, которых осталось меньше 10 штук.  
+select t.name
+FROM product p INNER JOIN type t ON p.type_id = t.id
+group by t.id HAVING count(*) < 10;
+-- 8. Вывести все продукты и их тип.
+select p.name, t.name from product p INNER JOIN type t ON p.type_id = t.id
