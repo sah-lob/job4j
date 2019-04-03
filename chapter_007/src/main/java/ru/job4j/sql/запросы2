@@ -1,0 +1,60 @@
+create table if not exists users (
+	id serial primary key,
+	description text
+);
+
+create table if not exists states (
+	id serial primary key,
+	description text
+);
+
+create table if not exists categorys (
+	id serial primary key,
+	description text
+);
+
+create table if not exists states (
+	id serial primary key,
+	description text
+);
+
+create table if not exists roles (
+	id serial primary key,
+	description text
+);
+
+create table if not exists rules (
+	id serial primary key,
+	description text
+);
+
+create table if not exists items (
+	id serial primary key,
+	description text,
+	user_id int,
+	state_id int,
+	category_id int,
+	foreign key (user_id) REFERENCES  users(id),
+	foreign key (state_id) REFERENCES states(id),
+	foreign key (category_id) REFERENCES categorys(id)
+);
+create table if not exists role_to_rule (
+	id serial primary key,
+	role_id int,
+	rule_id int,
+	foreign key (role_id) REFERENCES roles(id),
+	foreign key (rule_id) REFERENCES rules(id)
+);
+create table if not exists attachs (
+	id serial primary key,
+	description text,
+	item_id int,
+	foreign key (item_id) REFERENCES items(id)
+);
+
+create table if not exists commentss (
+	id serial primary key,
+	description text,
+	item_id int,
+	foreign key (item_id) REFERENCES items(id)
+);
