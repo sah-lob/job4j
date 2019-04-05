@@ -4,7 +4,7 @@ import org.slf4j.*;
 import java.sql.*;
 
 public class SQLStorage {
-    private static final Logger log = LoggerFactory.getLogger(SQLStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SQLStorage.class);
 
     public static void main(String[] args) {
         var url = "jdbc:postgresql://localhost:5432/machine_storage";
@@ -23,13 +23,13 @@ public class SQLStorage {
             rs.close();
             st.close();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    log.error(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                 }
             }
         }

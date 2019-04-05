@@ -13,7 +13,7 @@ public class ConfigTest {
 
     @Test
     public void getValueFromConfigProperties() {
-        var config = new Config("config.properties");
+        var config = new Config("config.properties", "src/main/resources/");
         var value = "Alex" + new Random().nextInt();
         var key = "name";
         config.put(key, value);
@@ -22,7 +22,7 @@ public class ConfigTest {
 
     @Test
     public void getValueThanPutNewValue() {
-        Config config = new Config("config.properties");
+        Config config = new Config("config.properties", "src/main/resources/");
         String name = config.get("name");
         var value = "testValue";
         config.put("name", value);

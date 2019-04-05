@@ -21,6 +21,7 @@ public class ServerTest {
             "",
             "");
 
+
     @Test
     public void whenYouChooseFirstOption() throws IOException {
         var socket = mock(Socket.class);
