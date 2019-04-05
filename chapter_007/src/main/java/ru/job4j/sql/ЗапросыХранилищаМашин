@@ -1,0 +1,22 @@
+--Вывести список всех машин и все привязанные к ним детали.
+	Select c.id, c.description as Название_машины, e.description as Двигатель, b.description as Кузов, t.description as Коробка_передач
+	FROM car c 
+	INNER JOIN bodywork b ON b.id = c.bodywork_id
+	INNER JOIN engine e ON e.id = c.engine_id
+	INNER JOIN transmission t ON t.id = c.transmission_id
+ --Вывести отдельно детали, которые не используются в машине: кузова, двигатели, коробки передач.
+ --Кузов
+	Select b.description as Кузов
+	FROM bodywork as b 
+	LEFT OUTER JOIN car as c on c.bodywork_id = b.id
+	WHERE c.bodywork_id is null
+ -- Двигатели. 
+	SELECT e.description as Двигатель
+	FROM engine as e
+	LEFT OUTER JOIN car as c on c.engine_id = e.id
+	WHERE c.engine_id is null
+ -- Коробки передач.
+ SELECT t.description as коробка_передач
+ FROM transmission as t
+ LEFT OUTER JOIN car as c on c.transmission_id = t.id
+ WHERE c.transmission_id is null
