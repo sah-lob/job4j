@@ -167,7 +167,7 @@ public class StartUITest {
         pic.append("Заявка с именем: " + name + System.lineSeparator()
                 + "Id заявки: " + tracker.findAll().get(numOfItem).getId() + System.lineSeparator()
                 + "Описание заявки: " + desc + System.lineSeparator()
-                + String.format("Текущая дата и время: %tc", tracker.findAll().get(numOfItem).getDateOfCreation())
+                + String.format("Текущая дата и время: " + tracker.findAll().get(numOfItem).getDateOfCreation())
                 + System.lineSeparator()
                 + System.lineSeparator()
                 + "Комментарии: " + System.lineSeparator()

@@ -20,10 +20,10 @@
         <module>chapter_004</module>
         <module>chapter_005</module>
         <module>chapter_006</module>
+        <module>chapter_007</module>
         <module>chess</module>
         <module>puzzle</module>
         <module>ticTacToe</module>
-        <module>chapter_007</module>
     </modules>
     <build>
       <plugins>

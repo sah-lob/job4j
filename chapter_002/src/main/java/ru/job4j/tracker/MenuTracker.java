@@ -22,13 +22,13 @@ public class MenuTracker {
 
 
     private Input input;
-    private Tracker tracker;
+    private ITracker tracker;
     private List<UserAction> actions = new ArrayList<>();
 
     /**
      * Конструктор класса.
      */
-    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
+    public MenuTracker(Input input, ITracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
         this.output = output;
@@ -85,7 +85,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             output.accept("------------ Добавление новой заявки --------------");
             String name = input.ask("Введите имя заявки:");
             String desc = input.ask("Введите описание заявки:");
@@ -105,7 +105,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             output.accept("Существующие заявки:");
             output.accept("");
                 ArrayList<Item> items = tracker.findAll();
@@ -127,7 +127,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             tracker.delete(input.ask("Введите id заявки, которую вы хотите удалить."));
         }
     }
@@ -142,7 +142,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             showItem(tracker.findById(input.ask("Ведите Id: ")));
         }
     }
@@ -157,7 +157,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             for (Item item : tracker.findByName(input.ask("Ведите Имя: "))) {
                 showItem(item);
             }
@@ -175,7 +175,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             exit = true;
         }
     }
@@ -209,7 +209,7 @@ public class MenuTracker {
         output.accept("Заявка с именем: " + item.getName());
         output.accept("Id заявки: " + item.getId());
         output.accept("Описание заявки: " + item.getDesc());
-        output.accept(String.format("Текущая дата и время: %tc", item.getDateOfCreation()));
+        output.accept(String.format("Текущая дата и время: " + item.getDateOfCreation()));
 
         if (item.getComments().size() > 0) {
             output.accept("");
@@ -241,7 +241,7 @@ class EditItem extends BaseAction {
     }
 
     @Override
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         String changingId = input.ask("Введите имя или id заявки, которую вы хотите заменить.");
         String id = input.ask("Введите имя или id заявки, на которую вы хотите заменить.");
         tracker.replace(changingId, tracker.findById(id));

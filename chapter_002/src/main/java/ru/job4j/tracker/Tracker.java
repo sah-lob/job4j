@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * @version $Id$
  * @since 0.1
  */
-public class Tracker {
+public class Tracker implements ITracker {
     /**
      * Массив для хранение заявок.
      */
@@ -18,9 +18,10 @@ public class Tracker {
      * Метод реализаущий добавление заявки в хранилище
      * @param item новая заявка
      */
-    public void add(Item item) {
+    public int add(Item item) {
         item.setId(this.generateId());
         items.add(item);
+        return Integer.parseInt(item.getId());
     }
 
     /**

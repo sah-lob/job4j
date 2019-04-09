@@ -11,14 +11,14 @@ import java.util.function.Consumer;
 public class StartUI {
 
     private final Input input;
-    private final Tracker tracker;
+    private final ITracker tracker;
     Consumer<String> output;
 
 
     /**
      * Конструктор.
      */
-    public StartUI(Input input, Tracker tracker, Consumer output) {
+    public StartUI(Input input, ITracker tracker, Consumer output) {
         this.input = input;
         this.tracker = tracker;
         this.output = output;

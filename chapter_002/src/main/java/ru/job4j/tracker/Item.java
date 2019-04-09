@@ -13,12 +13,15 @@ import java.util.Date;
  * dateOfCreation - дата создания заявки
  * commtnts - комментарии, оставленные к заявке.
  */
+
+
+
 public class Item {
 
     private String id;
     private String name;
     private String desc;
-    private Date dateOfCreation;
+    private String dateOfCreation;
     private ArrayList<String> comments;
 
     /**
@@ -27,7 +30,7 @@ public class Item {
     public Item(String name, String desc) {
         this.name = name;
         this.desc = desc;
-        this.dateOfCreation = new Date();
+        this.dateOfCreation = String.valueOf(new Date());
         this.comments = new ArrayList<>();
     }
 
@@ -40,6 +43,22 @@ public class Item {
         id = generateId;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setComments(ArrayList<String> comments) {
+        this.comments = comments;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public void setDateOfCreation(String dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
+
     public String getId() {
         return id;
     }
@@ -48,9 +67,6 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDesc() {
         return desc;
@@ -60,11 +76,8 @@ public class Item {
         return comments;
     }
 
-    public void setComments(ArrayList<String> comments) {
-        this.comments = comments;
-    }
 
-    public Date getDateOfCreation() {
+    public String getDateOfCreation() {
         return dateOfCreation;
     }
 }
