@@ -3,11 +3,8 @@ package ru.job4j.tracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.sql.SQLStorage;
-
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class TrackerSQL implements ITracker, AutoCloseable {
 
@@ -16,24 +13,27 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     private final String username;
     private final String password;
     private Connection conn;
-
+    private PreparedStatement st;
+    private ResultSet rs;
+    private String sql;
 
     public TrackerSQL(String propertiesFileName) {
-        var classLoader = TrackerSQL.class.getClassLoader();
-        var path = classLoader.getResourceAsStream(propertiesFileName);
-        var property = new Properties();
+        var config = new Config(propertiesFileName);
+        config.init();
+        url = config.get("url");
+        username = config.get("username");
+        password = config.get("password");
         try {
-            property.load(path);
-        } catch (IOException e) {
-            e.printStackTrace();
+            conn = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
         }
-        url = property.getProperty("url");
-        username = property.getProperty("username");
-        password = property.getProperty("password");
     }
 
     @Override
     public void close() throws Exception {
+        rs.close();
+        st.close();
         conn.close();
     }
 
@@ -44,12 +44,11 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         var comments = item.getComments();
         int idOfItem = -1;
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var sql = "INSERT into items (name, description) values (?,?) RETURNING ID";
-            var st = conn.prepareStatement(sql);
+            sql = "INSERT into items (name, description) values (?,?) RETURNING ID";
+            st = conn.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, description);
-            var rs = st.executeQuery();
+            rs = st.executeQuery();
             rs.next();
             idOfItem = rs.getInt("id");
             for (var comment : comments) {
@@ -59,18 +58,8 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 st.setInt(2, idOfItem);
                 st.executeUpdate();
             }
-            st.close();
-            rs.close();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return idOfItem;
     }
@@ -81,10 +70,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         var desc = item.getDesc();
         var comments = item.getComments();
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var sql = "DELETE FROM comments WHERE item_id = ?;"
+            sql = "DELETE FROM comments WHERE item_id = ?;"
                     + "UPDATE items SET name = ?, description = ?, date_of_creation = now() WHERE id = ?";
-            var st = conn.prepareStatement(sql);
+            st = conn.prepareStatement(sql);
             st.setInt(1, Integer.parseInt(id));
             st.setString(2,  name);
             st.setString(3, desc);
@@ -97,40 +85,22 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 st.setInt(2, Integer.parseInt(id));
                 st.executeUpdate();
             }
-            st.close();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
     @Override
     public void delete(String id) {
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var sql = "DELETE from comments where item_id = ?;"
+            sql = "DELETE from comments where item_id = ?;"
                     + "DELETE from items where id = ?; ";
-            var st = conn.prepareStatement(sql);
+            st = conn.prepareStatement(sql);
             st.setInt(1, Integer.parseInt(id));
             st.setInt(2, Integer.parseInt(id));
             st.executeQuery();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
@@ -138,18 +108,14 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public ArrayList<Item> findAll() {
         var items = new ArrayList<Item>();
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var st = conn.prepareStatement("SELECT * FROM items");
-            var rs = st.executeQuery();
-            // Если надо добавить данные, то вместо executeQuery надо будет написать executeUpdate();
+            st = conn.prepareStatement("SELECT * FROM items");
+            rs = st.executeQuery();
             while (rs.next()) {
                 var item = new Item(rs.getString("name"), rs.getString("description"));
                 item.setId(rs.getString("id"));
                 item.setDateOfCreation(rs.getString("date_of_creation"));
                 items.add(item);
             }
-            rs.close();
-            st.close();
             for (var item : items) {
                 var comments = new ArrayList<String>();
                 st = conn.prepareStatement("SELECT * FROM comments c INNER JOIN items i ON i.id = c.item_id where i.id = ?");
@@ -160,19 +126,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                     comments.add(rs.getString("comment"));
                 }
                 item.setComments(comments);
-                rs.close();
-                st.close();
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return items;
     }
@@ -181,20 +137,16 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public ArrayList<Item> findByName(String key) {
         var items = new ArrayList<Item>();
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var st = conn.prepareStatement("SELECT * FROM items WHERE name = ?");
+            st = conn.prepareStatement("SELECT * FROM items WHERE name = ?");
             st.setString(1, key);
-            var rs = st.executeQuery();
-            // Если надо добавить данные, то вместо executeQuery надо будет написать executeUpdate();
+            rs = st.executeQuery();
             while (rs.next()) {
                 var item = new Item(rs.getString("name"), rs.getString("description"));
                 item.setId(rs.getString("id"));
                 item.setDateOfCreation(rs.getString("date_of_creation"));
                 items.add(item);
             }
-            rs.close();
-            st.close();
-            for (Item item : items) {
+            for (var item : items) {
                 var comments = new ArrayList<String>();
                 st = conn.prepareStatement("SELECT * FROM comments c INNER JOIN items i ON i.id = c.item_id where i.id = ?");
                 st.setInt(1, Integer.parseInt(item.getId()));
@@ -204,19 +156,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                     comments.add(rs.getString("comment"));
                 }
                 item.setComments(comments);
-                rs.close();
-                st.close();
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return items;
     }
@@ -225,67 +167,41 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public Item findById(String id) {
         Item item = null;
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var st = conn.prepareStatement("SELECT * FROM items WHERE id = ?");
+            st = conn.prepareStatement("SELECT * FROM items WHERE id = ?");
             st.setInt(1, Integer.parseInt(id));
-            var rs = st.executeQuery();
-            // Если надо добавить данные, то вместо executeQuery надо будет написать executeUpdate();
+            rs = st.executeQuery();
             while (rs.next()) {
                 item = new Item(rs.getString("name"), rs.getString("description"));
                 item.setId(rs.getString("id"));
                 item.setDateOfCreation(rs.getString("date_of_creation"));
             }
-            rs.close();
-            st.close();
             var comments = new ArrayList<String>();
-            st = conn.prepareStatement("SELECT * FROM comments c INNER JOIN items i ON i.id = c.item_id where i.id = ?");
+            sql = "SELECT * FROM comments c INNER JOIN items i ON i.id = c.item_id where i.id = ?";
+            st = conn.prepareStatement(sql);
             st.setInt(1, Integer.parseInt(id));
             rs = st.executeQuery();
-
             while (rs.next()) {
                 comments.add(rs.getString("comment"));
             }
             if (item != null) {
                 item.setComments(comments);
             }
-            rs.close();
-            st.close();
-
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return item;
     }
 
     public int countOfItems() {
-        int count = -1;
+        var count = -1;
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            var sql = "select count(*) from items";
-            var st = conn.prepareStatement(sql);
-            var rs = st.executeQuery();
+            sql = "select count(*) from items";
+            st = conn.prepareStatement(sql);
+            rs = st.executeQuery();
             rs.next();
             count = rs.getInt(1);
-            st.close();
-            rs.close();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return count;
     }
