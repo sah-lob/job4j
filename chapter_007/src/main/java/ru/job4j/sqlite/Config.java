@@ -1,5 +1,6 @@
 package ru.job4j.sqlite;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 

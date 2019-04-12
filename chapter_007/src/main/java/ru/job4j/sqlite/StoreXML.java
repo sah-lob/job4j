@@ -29,9 +29,8 @@ public class StoreXML {
         Entries entries = new Entries();
         entries.setEntries(list);
         System.out.println(entries.getEntries().size());
-        JAXBContext context = null;
         try {
-            context = JAXBContext.newInstance(Entries.class);
+            JAXBContext context = JAXBContext.newInstance(Entries.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(entries, this.target);
