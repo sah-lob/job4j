@@ -9,25 +9,13 @@ import java.util.ArrayList;
 public class TrackerSQL implements ITracker, AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(SQLStorage.class);
-    private final String url;
-    private final String username;
-    private final String password;
     private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
     private String sql;
 
-    public TrackerSQL(String propertiesFileName) {
-        var config = new Config(propertiesFileName);
-        config.init();
-        url = config.get("url");
-        username = config.get("username");
-        password = config.get("password");
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
-        }
+    public TrackerSQL(Connection conn) {
+        this.conn = conn;
     }
 
     @Override

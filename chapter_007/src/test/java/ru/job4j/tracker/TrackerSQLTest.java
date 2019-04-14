@@ -1,7 +1,10 @@
 package ru.job4j.tracker;
 
+
 import org.junit.Test;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
@@ -9,9 +12,24 @@ import static org.junit.Assert.*;
 
 public class TrackerSQLTest {
 
+
+    public Connection init() {
+        try {
+            Config config = new Config("trackerSQL.properties");
+            config.init();
+            return DriverManager.getConnection(
+                    config.get("url"),
+                    config.get("username"),
+                    config.get("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     @Test
     public void whenAddNewItemThenTrackerHasSameItemById() {
-        var tracker = new TrackerSQL("trackerSQL.properties");
+        var tracker = new TrackerSQL(ConnectionRollback.create(this.init()));
         var item = new Item("test1", "testDescription");
         var id = tracker.add(item);
         assertThat(tracker.findById(String.valueOf(id)).getId() + tracker.findById(String.valueOf(id)).getName(), is(id + item.getName()));
@@ -19,7 +37,7 @@ public class TrackerSQLTest {
 
     @Test
     public void whenAddNewItemThenTrackerHasSameItemByName() {
-        var tracker = new TrackerSQL("trackerSQL.properties");
+        var tracker = new TrackerSQL(ConnectionRollback.create(this.init()));
         var item = new Item("test1", "testDescription");
         var id = tracker.add(item);
         ArrayList<Item> items = tracker.findByName(item.getName());
@@ -28,7 +46,7 @@ public class TrackerSQLTest {
 
     @Test
     public void whenFindAll() {
-        var tracker = new TrackerSQL("trackerSQL.properties");
+        var tracker = new TrackerSQL(ConnectionRollback.create(this.init()));
         var count = tracker.countOfItems();
         var item = new Item("test1", "testDescription1");
         var item2 = new Item("test2", "testDescription2");
@@ -43,7 +61,7 @@ public class TrackerSQLTest {
 
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        var tracker = new TrackerSQL("trackerSQL.properties");
+        var tracker = new TrackerSQL(ConnectionRollback.create(this.init()));
         var previous = new Item("old_Test1", "testDescription");
         var next = new Item("new_Test2", "testDescription2");
         var id = tracker.add(previous);
@@ -53,7 +71,7 @@ public class TrackerSQLTest {
 
     @Test
     public void whenAddNewItemThenDelete() {
-        var tracker = new TrackerSQL("trackerSQL.properties");
+        var tracker = new TrackerSQL(ConnectionRollback.create(this.init()));
         var size = tracker.countOfItems();
         var item = new Item("test1", "testDescription");
         var id = tracker.add(item);
