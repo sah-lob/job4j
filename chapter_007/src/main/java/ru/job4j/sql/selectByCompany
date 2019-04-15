@@ -1,0 +1,16 @@
+--1) Retrieve in a single query:
+-- - names of all persons that are NOT in the company with id = 5
+SELECT p.name 
+FROM person p INNER JOIN company c ON p.company_id = c.id
+WHERE c.id != 5;
+-- - company name for each person
+SELECT p.name, c.name
+FROM person p INNER JOIN company c ON p.company_id = c.id;
+-- 2) Select the name of the company with the maximum number of persons + number of persons in this company
+SELECT MAX(count_num), c.name FROM (
+	SELECT count(*) as count_num, c.name
+	FROM person p INNER JOIN company c ON p.company_id = c.id
+ 	GROUP BY c.name, p.company_id
+	) c 
+GROUP BY c.name, c.count_num
+limit 1
