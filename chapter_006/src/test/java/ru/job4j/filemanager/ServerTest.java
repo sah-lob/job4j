@@ -31,7 +31,7 @@ public class ServerTest extends Mockito {
 
         String s = "Вы выбрали команду номер 1. Список каталога.\nСписок файлов:\n";
 
-        for (var f: files){
+        for (var f: files) {
             s += f + "\n";
         }
         s += "\n";
