@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -45,7 +47,7 @@ public class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        Input input = new ValidateInput(new ConsoleInput());
-        new StartUI(input, new Tracker(), x -> System.out.println(x)).init();
+            Input input = new ValidateInput(new ConsoleInput());
+            new StartUI(input, new Tracker(), x -> System.out.println(x)).init();
     }
 }

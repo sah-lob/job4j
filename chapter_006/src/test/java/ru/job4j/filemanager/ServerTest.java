@@ -28,9 +28,7 @@ public class ServerTest extends Mockito {
         var out = new ByteArrayOutputStream();
         var in = new ByteArrayInputStream((firstPath + "exit").getBytes());
         var files = new File(path).list();
-
         String s = "Вы выбрали команду номер 1. Список каталога.\nСписок файлов:\n";
-
         for (var f: files) {
             s += f + "\n";
         }
