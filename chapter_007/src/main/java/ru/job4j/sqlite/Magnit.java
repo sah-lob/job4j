@@ -4,23 +4,21 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
-import java.io.IOException;
 
 public class Magnit {
 
 
     public static void main(String[] args) {
         var magnit = new Magnit();
-        magnit.init(23, "file_one.xml", "file_two.xml", "change.xsl");
+        magnit.init(23, "magnit_file_one.xml", "magnit_file_two.xml", "magnit_change.xsl");
     }
 
-    public void init(int size, String fileOnePath, String fileTwoPath, String schemeFilePath) {
-        var fileOne = new File("chapter_007/src/main/resources/" + fileOnePath);
-        var fileTwo = new File("chapter_007/src/main/resources/" + fileTwoPath);
-        var schemeFile = new File("chapter_007/src/main/resources/" + schemeFilePath);
+    public void init(int size, String fileOneName, String fileTwoName, String schemeFileName) {
+        var fileOne = new File(fileOneName);
+        var fileTwo = new File(fileTwoName);
+        var schemeFile = new File(schemeFileName);
         var config = new Config();
         config.init();
         var storeSQL = new StoreSQL(config);
@@ -38,24 +36,20 @@ public class Magnit {
 
 
     public int sum(File file) {
-        var myHandler = new MyHandler();
+        var handler = new Handler();
         try {
             var saxParserFactory = SAXParserFactory.newInstance();
             var saxParser = saxParserFactory.newSAXParser();
             var xmlReader = saxParser.getXMLReader();
-            xmlReader.setContentHandler(myHandler);
+            xmlReader.setContentHandler(handler);
             xmlReader.parse(file.getPath());
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return myHandler.getSum();
+        return handler.getSum();
     }
 
-    private static class MyHandler extends DefaultHandler {
+    private static class Handler extends DefaultHandler {
 
         private int sum = 0;
         private static final String ENTRY_TAG = "entry";
