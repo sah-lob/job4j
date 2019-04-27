@@ -1,4 +1,4 @@
-package ru.job4j.foodStorage;
+package ru.job4j.foodstorage;
 
 import java.util.Date;
 

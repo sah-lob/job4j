@@ -1,9 +1,8 @@
-package ru.job4j.foodStorage;
+package ru.job4j.foodstorage;
 
-import ru.job4j.foodStorage.storage.Shop;
-import ru.job4j.foodStorage.storage.Storage;
-import ru.job4j.foodStorage.storage.Trash;
-import ru.job4j.foodStorage.storage.Warehouse;
+import ru.job4j.foodstorage.storage.Shop;
+import ru.job4j.foodstorage.storage.Trash;
+import ru.job4j.foodstorage.storage.Warehouse;
 
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.Date;
 public class ControllQuality {
 
     private Shop shop = new Shop();
-    private Storage storage = new Storage();
     private Trash trash = new Trash();
     private Warehouse warehouse = new Warehouse();
 
@@ -47,7 +45,7 @@ public class ControllQuality {
         return (daysPassed * 100) / allDays;
     }
 
-    public int daysBetween(Date d1, Date d2){
-        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    public int daysBetween(Date d1, Date d2) {
+        return (int) (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
     }
 }
