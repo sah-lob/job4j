@@ -12,9 +12,11 @@ public class SqlRuParser implements Job {
 
     public static void main(String[] args) {
 
-        var name = args[0];
+//        var name = args[0];
+        var name = "app.properties";
         Config config = new Config(name);
         config.init();
+//        System.out.println("asf");
             JobDetail job = JobBuilder.newJob(SqlRuParser.class)
                     .withIdentity("myJob")
                     .usingJobData("jdbc.driver", config.get("jdbc.driver"))
@@ -40,24 +42,16 @@ public class SqlRuParser implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("Start schedule");
-        JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-        String driver = dataMap.getString("jdbc.driver");
-        String url = dataMap.getString("jdbc.url");
-        String name = dataMap.getString("jdbc.username");
-        String pass = dataMap.getString("jdbc.password");
-        Postgreas postgreas = new Postgreas(new Config("app.properties").create());
-        Parsing parsing = new Parsing();
-        var vacancies = parsing.startParsing(postgreas.getLastDate());
+        LOG.info("Start schedule");
+        var dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        var driver = dataMap.getString("jdbc.driver");
+        var url = dataMap.getString("jdbc.url");
+        var name = dataMap.getString("jdbc.username");
+        var pass = dataMap.getString("jdbc.password");
+        var postgreas = new Postgreas(new Config("app.properties").create());
+        var parsing = new Parsing(postgreas.getLastDate());
+        var vacancies = parsing.startParsing();
         postgreas.add(vacancies);
-//            try (Connection connection = DriverManager.getConnection(url, name.isEmpty() ? null : name, pass.isEmpty() ? null : pass)) {
-//                WebParser parser = new WebParser(new VacancyDAO(connection));
-//                parser.addVacanciesFromWebToDB();
-//                parser.resultToLog();
-//            } catch (SQLException e) {
-//                LOG.error(e.getMessage(), e);
-//                e.printStackTrace();
-//            }
-        System.out.println("Finish schedule");
+        LOG.info("Finish schedule");
     }
 }

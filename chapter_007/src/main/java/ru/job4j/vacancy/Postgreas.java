@@ -16,14 +16,12 @@ public class Postgreas {
     private Connection conn;
     private String sql;
 
-
     public Postgreas(Connection conn) {
         this.conn = conn;
     }
 
-
     public void add(ArrayList<Vacancy> vacancies) {
-        System.out.println("Добавляем вакансии в постгрес в количестве: " + vacancies.size());
+        LOG.info("Добавляем вакансии в постгрес в количестве: " + vacancies.size());
         if (vacancies.size() > 0) {
             for (var v : vacancies) {
                 System.out.println(v.getData());
@@ -49,11 +47,10 @@ public class Postgreas {
                 LOG.error(e.getMessage(), e);
             }
         }
-        System.out.println("Вакансии добавлены.");
+        LOG.info("Вакансии добавлены.");
     }
 
     public Date getLastDate() {
-        System.out.println("Узнаем дату последней загрузки.");
         Date date = null;
         if (countOfVacancy() < 1) {
             Calendar cal = Calendar.getInstance();
@@ -71,7 +68,7 @@ public class Postgreas {
                 LOG.error(e.getMessage(), e);
             }
         }
-        System.out.println("Дата последней загрузки: " + date);
+        LOG.info("Дата последней загрузки: " + date);
         return date;
     }
 

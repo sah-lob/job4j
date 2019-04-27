@@ -2,7 +2,7 @@ package ru.job4j.calculator;
 
 public class Calculator {
 
-    private double result;
+    protected double result;
 
     /**
      * Сложение двух чисел.

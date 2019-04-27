@@ -2,6 +2,8 @@ package ru.job4j.vacancy;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -15,51 +17,62 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Parsing {
 
-    public ArrayList<Vacancy> startParsing(Date date) {
-        System.out.println("Начинаем парсинг сайта.");
-        var vacancies = new ArrayList<Vacancy>();
-        var dateFlag = new AtomicReference<>(true);
-        var numberOfPages = new AtomicInteger(1);
-        while (dateFlag.get()) {
-            Document document = null;
-            try {
-                document = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + numberOfPages.toString()).get();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            var h2elements = document.getElementsByTag("tr");
-            for (int i = 0; i < 7; i++) {
-                h2elements.remove(0);
-                if (i < 3) {
-                    h2elements.remove(h2elements.last());
-                }
-            }
-            h2elements.forEach(h2element -> {
-                var aElement = h2element.child(1);
-                var title = aElement.child(0).text();
-                var data = stringToDate(h2element.child(5).text());
-                if (date.before(data)) {
-                    if (javaTest(title)) {
-                        var url = aElement.child(0).attr("href");
-                        var text = "";
-                        try {
-                            var document1 = Jsoup.connect(url).get();
-                            var element = document1.getElementsByAttributeValue("class", "msgBody").get(1);
-                            text = element.text();
+    private static final Logger LOG = LoggerFactory.getLogger(Parsing.class);
+    private ArrayList<Vacancy> vacancies = new ArrayList<>();
+    private AtomicReference<Boolean> dateFlag = new AtomicReference<>(true);
+    private AtomicInteger numberOfPages = new AtomicInteger(1);
+    private final Date date;
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        vacancies.add(new Vacancy(title, text, url, data));
-                    }
-                } else {
-                    dateFlag.set(false);
-                }
-            });
-            numberOfPages.getAndIncrement();
+    public Parsing(Date date) {
+        this.date = date;
+    }
+
+    public ArrayList<Vacancy> startParsing() {
+        LOG.info("Начинаем парсинг сайта.");
+        while (dateFlag.get()) {
+            pageParsing();
         }
-        System.out.println("Парсинг сайта завершен.");
+        LOG.info("Парсинг сайта завершен.");
         return vacancies;
+    }
+
+    private void pageParsing() {
+        Document document = null;
+        try {
+            document = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + numberOfPages.toString()).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        var h2elements = document.getElementsByTag("tr");
+        for (int i = 0; i < 7; i++) {
+            h2elements.remove(0);
+            if (i < 3) {
+                h2elements.remove(h2elements.last());
+            }
+        }
+        h2elements.forEach(h2element -> {
+            var aElement = h2element.child(1);
+            var title = aElement.child(0).text();
+            var data = stringToDate(h2element.child(5).text());
+            if (date.before(data)) {
+                if (javaTest(title)) {
+                    var url = aElement.child(0).attr("href");
+                    var text = "";
+                    try {
+                        var document1 = Jsoup.connect(url).get();
+                        var element = document1.getElementsByAttributeValue("class", "msgBody").get(1);
+                        text = element.text();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    vacancies.add(new Vacancy(title, text, url, data));
+                }
+            } else {
+                dateFlag.set(false);
+            }
+        });
+        numberOfPages.getAndIncrement();
     }
 
     private Date stringToDate(String str) {
@@ -119,40 +132,5 @@ public class Parsing {
             }
         }
         return flag;
-    }
-}
-
-class Vacancy {
-    private String name;
-    private String text;
-    private String link;
-    private Date data;
-
-    public Vacancy(String name, String text, String link, Date data) {
-        this.name = name;
-        this.text = text;
-        this.link = link;
-        this.data = data;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    @Override
-    public String toString() {
-        return "Заголовок: " + name + "\nСсылка: " + link + "\nОписание: " + text + "\nДата: " + data + "\n\n";
     }
 }

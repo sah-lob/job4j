@@ -3,13 +3,13 @@ import java.util.Scanner;
 
 public class InteractCalc {
 
-    private final Calculator calculator;
-    private Scanner scanner = new Scanner(System.in);
+    protected Calculator calculator;
+    protected Scanner scanner = new Scanner(System.in);
     private double result;
     public boolean isResult = false;
 
     public InteractCalc() {
-        calculator = new Calculator();
+        calculator = new IngCalculator();
     }
 
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class InteractCalc {
         }
     }
 
-    private double calculate(double first, double second, String operation) {
+    protected double calculate(double first, double second, String operation) {
         double result;
         switch (operation) {
             case ("+") : calculator.add(first, second);
@@ -51,7 +51,7 @@ public class InteractCalc {
     }
 
 
-    private void info() {
+    protected void info() {
         System.out.println("Введите первое число, знак, второе число.");
         System.out.println("Чтобы выйти из калькулятора введите 'Конец' вместо первого числа.");
         if (isResult) {
@@ -59,7 +59,7 @@ public class InteractCalc {
         }
     }
 
-    private String input(int num) {
+    protected String input(int num) {
         if (num == 1) {
             System.out.println("Введите первое число.");
         } else if (num ==  2) {
