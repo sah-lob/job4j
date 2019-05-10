@@ -9,7 +9,7 @@ public class InteractCalc {
     public boolean isResult = false;
 
     public InteractCalc() {
-        calculator = new IngCalculator();
+        calculator = new Calculator();
     }
 
     public static void main(String[] args) {
