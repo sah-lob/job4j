@@ -1,9 +1,4 @@
 package ru.job4j.foodstorage;
-import ru.job4j.foodstorage.storage.Shop;
-import ru.job4j.foodstorage.storage.Trash;
-import ru.job4j.foodstorage.storage.Warehouse;
-
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ControllQuality {

@@ -10,7 +10,7 @@ public abstract class Storage {
     ControllQuality controllQuality = new ControllQuality();
     Storage next = null;
     protected ArrayList<Food> foods = new ArrayList<>();
-    ArrayList<Food> remainingFood = new ArrayList<Food>();
+    protected ArrayList<Food> remainingFood = new ArrayList<>();
 
     public void setNext(Storage next) {
         this.next = next;
@@ -20,6 +20,7 @@ public abstract class Storage {
         if (newFood.size() > 0) {
             for (var f : newFood) {
                 var procent = controllQuality.percentageOfLife(f.getCreateDate(), f.getExpaireDate());
+//                System.out.println(procent + f.getName() + f.getCreateDate() + f.getExpaireDate());
                 productRequirements(procent, f);
             }
             if (next != null) {
@@ -29,7 +30,7 @@ public abstract class Storage {
     }
 
 
-    abstract void productRequirements(int procent, Food f);
+    public abstract void productRequirements(int procent, Food f);
 
     public void takeAway(String name) {
         for (int i = 0; i < foods.size() - 1; i++) {

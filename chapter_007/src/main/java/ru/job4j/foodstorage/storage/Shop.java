@@ -8,13 +8,18 @@ public class Shop extends Storage {
     public void productRequirements(int procent, Food f) {
         if (procent >= 25 && procent < 75) {
             foods.add(f);
-            System.out.println("добавляем " + f.getName() + " в магазин");
+            System.out.println("добавляем " + f.getName() + " в " + this.toString());
         } else if (procent >= 75 && procent < 100) {
             f.setDisscount(procent - 50);
             foods.add(f);
-            System.out.println("добавляем " + f.getName() + " в магазин со скидкой " + f.getDisscount() + "%");
+            System.out.println("добавляем " + f.getName() + " в " + this.toString() + " со скидкой " + f.getDisscount() + "%");
         } else {
             remainingFood.add(f);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "магазин";
     }
 }
