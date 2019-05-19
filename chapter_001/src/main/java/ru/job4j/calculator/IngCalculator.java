@@ -25,7 +25,7 @@ public class IngCalculator {
         result = Math.pow(first, second);
     }
     public void root(double first, double second) {
-        result = Math.pow( first, 1.0 / second );
+        result = Math.pow(first, 1.0 / second);
     }
     public double getResult() {
         return this.result;
