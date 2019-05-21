@@ -20,7 +20,6 @@ public abstract class Storage {
         if (newFood.size() > 0) {
             for (var f : newFood) {
                 var procent = controllQuality.percentageOfLife(f.getCreateDate(), f.getExpaireDate());
-//                System.out.println(procent + f.getName() + f.getCreateDate() + f.getExpaireDate());
                 productRequirements(procent, f);
             }
             if (next != null) {
@@ -43,5 +42,10 @@ public abstract class Storage {
 
     public ArrayList<Food> getFoods() {
         return foods;
+    }
+
+    public void deleteAllFoods() {
+        foods = new ArrayList<>();
+        remainingFood = new ArrayList<>();
     }
 }

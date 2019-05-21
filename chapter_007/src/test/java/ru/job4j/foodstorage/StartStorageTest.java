@@ -39,7 +39,7 @@ public class StartStorageTest {
 
     @Test
     public void newFoodStorageTest() {
-        var foods = newFoods();
+        ArrayList<Food> foods = newFoods();
         var shop = new Shop();
         var warehouse = new Warehouse();
         var freeseWarehouse = new FreeseWarehouse();
