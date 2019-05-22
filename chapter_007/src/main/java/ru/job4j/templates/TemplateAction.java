@@ -10,25 +10,16 @@ public class TemplateAction implements Template {
         var pattern = Pattern.compile("(\\$\\{).*?(})");
         var matcher = pattern.matcher(template);
         while (matcher.find()) {
-            var key = matcher.group().substring(2, matcher.group().length() - 1);
-            if (map.containsKey(key)) {
-                var matcher1 = Pattern.compile("(\\$\\{)" + key + "(})").matcher(template);
-                template = matcher1.replaceAll(map.get(key));
-                map.remove(key);
-            } else {
-                try {
-                    throw new Exception();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            var word =  matcher.group();
+            var key = word.substring(2, matcher.group().length() - 1);
+            if (!map.containsKey(key)) {
+                throw new NullPointerException();
             }
+            template = template.replace(word, map.get(key));
+            map.remove(key);
         }
         if (map.size() > 0) {
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            throw new NullPointerException();
         }
         return template;
     }
