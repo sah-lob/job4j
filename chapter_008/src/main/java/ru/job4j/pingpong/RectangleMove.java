@@ -7,9 +7,6 @@ public class RectangleMove implements Runnable {
     private final Rectangle rect;
     private final int limitX;
     private final int limitY;
-    private boolean right = true;
-    private boolean up = true;
-    private int speedY = 1;
 
     public RectangleMove(Rectangle rect, int limitX, int limitY) {
         this.rect = rect;
@@ -19,11 +16,21 @@ public class RectangleMove implements Runnable {
 
     @Override
     public void run() {
+        var right = true;
+        var down = true;
+        var speedY = 1;
+        var speedX = 1;
         while (true) {
-            xMove();
-            yMove();
+            if (right != move(right, true, speedX)) {
+                right = !right;
+                speedX++;
+            }
+            if (down != move(down, false, speedY)) {
+                down = !down;
+                speedY++;
+            }
             try {
-                Thread.sleep(10);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -31,53 +38,26 @@ public class RectangleMove implements Runnable {
 
     }
 
-    public void xMove() {
-        int speedX = 1;
-        if (right) {
-            if (rect.getX() + rect.getWidth() + speedX < limitX) {
-                this.rect.setX(this.rect.getX() + speedX);
-            } else {
-                this.rect.setX(this.rect.getX() - speedX);
-                right = false;
-                if (speedX < 3) {
-                    speedX++;
-                }
+    public boolean move(boolean rightDown, boolean isX, int speed) {
+        double p = isX ? this.rect.getX() : this.rect.getY();
+        if (rightDown) {
+            p += speed;
+            if (p + (isX ? rect.getWidth() : rect.getHeight()) > (isX ? limitX : limitY)) {
+                p = isX ? limitX - rect.getWidth() : limitY - rect.getHeight();
+                rightDown = false;
             }
         } else {
-            if (rect.getX() - speedX > 0) {
-                this.rect.setX(this.rect.getX() - speedX);
-            } else {
-                this.rect.setX(this.rect.getX() - speedX);
-                right = true;
-                if (speedX < 3) {
-                    speedX++;
-                }
+            p -= speed;
+            if (p < 0) {
+                p = p * (-1);
+                rightDown = true;
             }
         }
-    }
-
-
-    public void yMove() {
-        if (!up) {
-            if (rect.getY() + rect.getHeight() < limitY) {
-                this.rect.setY(this.rect.getY() + speedY);
-            } else {
-                this.rect.setY(this.rect.getY() - speedY);
-                up = true;
-                if (speedY < 3) {
-                    speedY++;
-                }
-            }
+        if (isX) {
+            this.rect.setX(p);
         } else {
-            if (rect.getY() > 0) {
-                this.rect.setY(this.rect.getY() - speedY);
-            } else {
-                this.rect.setY(this.rect.getY() + speedY);
-                up = false;
-                if (speedY < 3) {
-                    speedY++;
-                }
-            }
+            this.rect.setY(p);
         }
+        return rightDown;
     }
 }

@@ -19,7 +19,7 @@ public class PingPong extends Application {
         int y = (int) (Math.random() * (limitY - 10));
         Rectangle rect = new Rectangle(x, y, 10, 10);
         group.getChildren().add(rect);
-        new Thread(new RectangleMove(rect, limitX, limitY + 20)).start();
+        new Thread(new RectangleMove(rect, limitX, limitY)).start();
         stage.setScene(new Scene(group, limitX, limitY));
         stage.setTitle(JOB4J);
         stage.setResizable(false);
