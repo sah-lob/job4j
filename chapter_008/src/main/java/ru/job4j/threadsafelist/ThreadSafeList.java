@@ -8,7 +8,6 @@ import java.util.Iterator;
 @ThreadSafe
 public class ThreadSafeList<E> extends DynamicContainerDecorator<E> {
 
-
     public ThreadSafeList() {
         super();
     }

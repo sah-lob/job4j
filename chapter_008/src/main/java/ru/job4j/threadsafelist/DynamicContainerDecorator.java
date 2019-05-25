@@ -36,9 +36,4 @@ public class DynamicContainerDecorator<E> extends DynamicContainer<E> {
     public void remove(E value) {
         this.container.remove(value);
     }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
