@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 public class DynamicContainer<E> implements Iterable<E> {
 
-    private Object[] container;
+    public Object[] container;
     private int index = 0;
     private int modCount = 0;
 
@@ -27,7 +27,7 @@ public class DynamicContainer<E> implements Iterable<E> {
     }
 
     public void remove(E value) {
-        
+
         int index = -1;
         for (int i = 0; i < container.length; i++) {
             if (container[i] == value) {
@@ -50,8 +50,7 @@ public class DynamicContainer<E> implements Iterable<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<E>() {
-
+        return new Iterator<>() {
             int expectedModCount = modCount;
             Object[] obj = container;
             int ind = 0;
@@ -76,5 +75,10 @@ public class DynamicContainer<E> implements Iterable<E> {
                 return (E) obj[ind++];
             }
         };
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
