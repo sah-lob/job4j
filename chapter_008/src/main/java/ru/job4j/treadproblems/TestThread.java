@@ -1,8 +1,6 @@
 package ru.job4j.treadproblems;
 
-public class TestThread extends Thread{
-
-
+public class TestThread extends Thread {
 
     Swapclass swapclass;
 
