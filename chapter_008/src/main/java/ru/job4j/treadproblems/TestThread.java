@@ -1,10 +1,8 @@
 package ru.job4j.treadproblems;
 
-public class TestThread extends Thread{
+public class TestThread extends Thread {
 
-
-
-    Swapclass swapclass;
+    private Swapclass swapclass;
 
     public TestThread(Swapclass swapclass) {
         this.swapclass = swapclass;
@@ -20,7 +18,6 @@ public class TestThread extends Thread{
         tread3.start();
 
     }
-
 
     @Override
     public void run() {
