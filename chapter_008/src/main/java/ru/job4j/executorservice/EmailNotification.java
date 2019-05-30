@@ -20,7 +20,7 @@ public class EmailNotification {
         send(subject, body, user.getEmail());
     }
 
-    private synchronized void send(String subject, String body, String email) {
+    private void send(String subject, String body, String email) {
         System.out.println(email);
         System.out.println(subject);
         System.out.println(body);
