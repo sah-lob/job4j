@@ -52,7 +52,10 @@ public class SimpleBlockingQueue<T> {
         }
     }
 
+    @GuardedBy("lock")
     public boolean isEmpty() {
-        return size() == 0 ? true : false;
+        synchronized (lock) {
+        return queue.isEmpty();
+        }
     }
 }
