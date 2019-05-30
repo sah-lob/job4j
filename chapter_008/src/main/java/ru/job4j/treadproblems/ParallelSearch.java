@@ -4,23 +4,19 @@ import ru.job4j.blocking.SimpleBlockingQueue;
 
 public class ParallelSearch {
 
-    private volatile boolean finish = false;
-
     public static void main(String[] args) {
-        ParallelSearch parallelSearch = new ParallelSearch();
         var queue = new SimpleBlockingQueue<>();
-
-         new Thread(() -> {
-            while (!parallelSearch.finish) {
+        var t =  new Thread(() -> {
+             while (!Thread.currentThread().isInterrupted()) {
                 System.out.println(queue.poll());
             }
-        }).start();
-
+        });
+        t.start();
         new Thread(() -> {
             int maxIndex = 5;
             for (int index = 0; index < maxIndex; index++) {
                 if (index == maxIndex - 1) {
-                    parallelSearch.finish = true;
+                    t.interrupt();
                 }
                 queue.offer(index);
                 try {
