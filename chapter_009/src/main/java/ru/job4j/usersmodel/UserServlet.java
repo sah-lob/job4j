@@ -17,9 +17,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //создание нового пользователя.
-        // обновление пользователя.
-        // удаление пользователя.
         resp.setContentType("text/html");
         var action = req.getParameter("action");
         if (action != null) {
@@ -30,7 +27,7 @@ public class UserServlet extends HttpServlet {
                             req.getParameter("email"), createDate);
                     break;
                 case ("update") :
-                    validateService.update(req.getParameter("id"), req.getParameter("login"));
+                    validateService.update(req.getParameter("id"), req.getParameter("login"), req.getParameter("name"), req.getParameter("email"));
                     break;
                 case ("delete") :
                     validateService.delete(req.getParameter("id"));
@@ -48,10 +45,10 @@ public class UserServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-        List<String> list = validateService.findAll();
+        List<User> list = validateService.findAll();
         writer.append("usersList:");
         for (var v: list) {
-            writer.append(v);
+            writer.append(v.toString());
             writer.append("\n");
         }
         writer.flush();

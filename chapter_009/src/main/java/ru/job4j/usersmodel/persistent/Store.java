@@ -1,12 +1,14 @@
 package ru.job4j.usersmodel.persistent;
 
+import ru.job4j.usersmodel.User;
+
 import java.util.List;
 
 public interface Store {
 
-    public void add(String name, String login, String email, String createDate);
-    public void update(String id, String login);
-    public void delete(String id);
-    public List<String> findAll();
-    public void findById(String id);
+    void add(String name, String login, String email, String createDate);
+    void update(String id, String name, String login, String email);
+    void delete(String id);
+    List<User> findAll();
+    User findById(String id);
 }

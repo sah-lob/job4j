@@ -27,8 +27,10 @@ public class MemoryStore implements Store {
     }
 
     @Override
-    public void update(String id, String login) {
+    public void update(String id, String name, String login, String email) {
         users.get(Integer.parseInt(id)).setLogin(login);
+        users.get(Integer.parseInt(id)).setName(name);
+        users.get(Integer.parseInt(id)).setEmail(email);
     }
 
     @Override
@@ -37,17 +39,17 @@ public class MemoryStore implements Store {
     }
 
     @Override
-    public List<String> findAll() {
-        List<String> arrayList = new CopyOnWriteArrayList<>();
+    public List<User> findAll() {
+        List<User> arrayList = new CopyOnWriteArrayList<>();
         for (var v: users.values()) {
-            arrayList.add(v.toString());
+            arrayList.add(v);
         }
         return arrayList;
     }
 
     @Override
-    public void findById(String id) {
-        users.get(Integer.parseInt(id));
+    public User findById(String id) {
+        return users.get(Integer.parseInt(id));
     }
 
     public boolean isExists(String id) {
