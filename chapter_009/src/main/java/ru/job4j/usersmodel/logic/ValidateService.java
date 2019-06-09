@@ -1,5 +1,6 @@
 package ru.job4j.usersmodel.logic;
 
+import ru.job4j.usersmodel.User;
 import ru.job4j.usersmodel.persistent.MemoryStore;
 import java.util.List;
 
@@ -20,9 +21,9 @@ public class ValidateService {
         memoryStore.add(name, login, email, createDate);
     }
 
-    public void update(String id, String login) {
+    public void update(String id, String name, String login, String email) {
         if (memoryStore.isExists(id)) {
-            memoryStore.update(id, login);
+            memoryStore.update(id, name, login, email);
         }
     }
 
@@ -32,13 +33,15 @@ public class ValidateService {
         }
     }
 
-    public List<String> findAll() {
+    public List<User> findAll() {
         return memoryStore.findAll();
     }
 
-    public void findById(String id) {
+    public User findById(String id) {
+        User result = null;
         if (memoryStore.isExists(id)) {
-            memoryStore.findById(id);
+            result = memoryStore.findById(id);
         }
+        return result;
     }
 }
