@@ -12,9 +12,15 @@ public class UserUpdateServlet extends HttpServlet {
     private final ValidateService validateService = ValidateService.getInstance();
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("user", validateService.findById(req.getParameter("id")));
+        req.getRequestDispatcher("/WEB-INF/views/upd.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         validateService.update(req.getParameter("id"), req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

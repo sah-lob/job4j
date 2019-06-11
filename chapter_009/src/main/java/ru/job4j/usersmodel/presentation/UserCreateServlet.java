@@ -13,12 +13,18 @@ public class UserCreateServlet extends HttpServlet {
 
     private final ValidateService validateService = ValidateService.getInstance();
 
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/cre.jsp").forward(req, resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         var createDate = new Date().toString();
         validateService.add(req.getParameter("name"), req.getParameter("login"),
                 req.getParameter("email"), createDate);
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }
