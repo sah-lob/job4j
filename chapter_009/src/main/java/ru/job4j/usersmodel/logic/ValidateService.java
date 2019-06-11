@@ -1,20 +1,21 @@
 package ru.job4j.usersmodel.logic;
 
 import ru.job4j.usersmodel.User;
+import ru.job4j.usersmodel.persistent.DBStore;
 import ru.job4j.usersmodel.persistent.MemoryStore;
 import java.util.List;
 
 public class ValidateService {
 
     private static final ValidateService VALIDATE_SERVICE = new ValidateService();
-    private final MemoryStore memoryStore;
+    private final DBStore memoryStore;
 
     public static ValidateService getInstance() {
         return VALIDATE_SERVICE;
     }
 
     public ValidateService() {
-        memoryStore = MemoryStore.getInstance();
+        memoryStore = DBStore.getInstance();
     }
 
     public void add(String name, String login, String email, String createDate) {

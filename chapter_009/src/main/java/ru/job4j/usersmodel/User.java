@@ -19,6 +19,14 @@ public class User {
         this.createDate = createDate;
     }
 
+    public User(String id, String name, String login, String email, String createDate) {
+        this.id = Integer.parseInt(id);
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+    }
+
     public int getId() {
         return id;
     }
@@ -50,6 +58,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 
     @Override
     public String toString() {
