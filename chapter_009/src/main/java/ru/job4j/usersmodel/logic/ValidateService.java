@@ -2,15 +2,15 @@ package ru.job4j.usersmodel.logic;
 
 import ru.job4j.usersmodel.User;
 import ru.job4j.usersmodel.persistent.DBStore;
-import ru.job4j.usersmodel.persistent.MemoryStore;
+
 import java.util.List;
 
-public class ValidateService {
+public class ValidateService implements Validate {
 
-    private static final ValidateService VALIDATE_SERVICE = new ValidateService();
+    private static final Validate VALIDATE_SERVICE = new ValidateService();
     private final DBStore memoryStore;
 
-    public static ValidateService getInstance() {
+    public static Validate getInstance() {
         return VALIDATE_SERVICE;
     }
 
@@ -18,26 +18,31 @@ public class ValidateService {
         memoryStore = DBStore.getInstance();
     }
 
+    @Override
     public void add(String name, String login, String email, String createDate, boolean admin, String password) {
         memoryStore.add(name, login, email, createDate, admin, password);
     }
 
+    @Override
     public void update(String id, String name, String login, String email, boolean admin, String password) {
         if (memoryStore.isExists(id)) {
             memoryStore.update(id, name, login, email, admin, password);
         }
     }
 
+    @Override
     public void delete(String id) {
         if (memoryStore.isExists(id)) {
             memoryStore.delete(id);
         }
     }
 
+    @Override
     public List<User> findAll() {
         return memoryStore.findAll();
     }
 
+    @Override
     public User findById(String id) {
         User result = null;
         if (memoryStore.isExists(id)) {
@@ -46,7 +51,7 @@ public class ValidateService {
         return result;
     }
 
-
+//    @Override
     public int isCredentional(String email, String password) {
         var result = -1;
         for (var u : findAll()) {

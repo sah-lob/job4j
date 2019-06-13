@@ -1,5 +1,6 @@
 package ru.job4j.usersmodel.presentation;
 
+import ru.job4j.usersmodel.logic.Validate;
 import ru.job4j.usersmodel.logic.ValidateService;
 
 import javax.servlet.ServletException;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 public class UserCreateServlet extends HttpServlet {
 
-    private final ValidateService validateService = ValidateService.getInstance();
+    private final Validate validateService = ValidateService.getInstance();
 
 
     @Override

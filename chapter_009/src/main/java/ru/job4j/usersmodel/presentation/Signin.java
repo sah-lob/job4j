@@ -22,7 +22,7 @@ public class Signin extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var email = req.getParameter("email");
         var password = req.getParameter("password");
-        var id = ValidateService.getInstance().isCredentional(email, password);
+        int id = ValidateService.getInstance().isCredentional(email, password);
         if (id  != -1) {
             var session = req.getSession();
             synchronized (session) {

@@ -1,5 +1,6 @@
 package ru.job4j.usersmodel;
 
+import ru.job4j.usersmodel.logic.Validate;
 import ru.job4j.usersmodel.logic.ValidateService;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
-    private final ValidateService validateService = ValidateService.getInstance();
+    private final Validate validateService = ValidateService.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
