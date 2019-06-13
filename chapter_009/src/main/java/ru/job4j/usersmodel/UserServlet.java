@@ -17,27 +17,27 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        var action = req.getParameter("action");
-        if (action != null) {
-            switch (action) {
-                case ("add") :
-                    var createDate = new Date().toString();
-                    validateService.add(req.getParameter("name"), req.getParameter("login"),
-                            req.getParameter("email"), createDate);
-                    break;
-                case ("update") :
-                    validateService.update(req.getParameter("id"), req.getParameter("login"), req.getParameter("name"), req.getParameter("email"));
-                    break;
-                case ("delete") :
-                    validateService.delete(req.getParameter("id"));
-                    break;
-                default :
-                    System.out.println("Вы ввели неверную команду.");
-                    break;
-            }
-        }
-        doGet(req, resp);
+//        resp.setContentType("text/html");
+//        var action = req.getParameter("action");
+//        if (action != null) {
+//            switch (action) {
+//                case ("add") :
+//                    var createDate = new Date().toString();
+//                    validateService.add(req.getParameter("name"), req.getParameter("login"),
+//                            req.getParameter("email"), createDate);
+//                    break;
+//                case ("update") :
+//                    validateService.update(req.getParameter("id"), req.getParameter("login"), req.getParameter("name"), req.getParameter("email"));
+//                    break;
+//                case ("delete") :
+//                    validateService.delete(req.getParameter("id"));
+//                    break;
+//                default :
+//                    System.out.println("Вы ввели неверную команду.");
+//                    break;
+//            }
+//        }
+//        doGet(req, resp);
 
     }
 

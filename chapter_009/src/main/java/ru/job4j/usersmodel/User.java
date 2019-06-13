@@ -9,22 +9,28 @@ public class User {
     private String name;
     private String login;
     private String email;
+    private boolean admin;
+    private String password;
 
 
-    public User(int id, String name, String login, String email, String createDate) {
+    public User(int id, String name, String login, String email, String createDate, boolean admin, String password) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = createDate;
+        this.admin = admin;
+        this.password = password;
     }
 
-    public User(String id, String name, String login, String email, String createDate) {
+    public User(String id, String name, String login, String email, String createDate, boolean admin, String password) {
         this.id = Integer.parseInt(id);
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = createDate;
+        this.admin = admin;
+        this.password = password;
     }
 
     public int getId() {
@@ -59,7 +65,21 @@ public class User {
         this.email = email;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String toString() {

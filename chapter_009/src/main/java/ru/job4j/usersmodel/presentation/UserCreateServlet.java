@@ -24,7 +24,7 @@ public class UserCreateServlet extends HttpServlet {
         resp.setContentType("text/html");
         var createDate = new Date().toString();
         validateService.add(req.getParameter("name"), req.getParameter("login"),
-                req.getParameter("email"), createDate);
+                req.getParameter("email"), createDate, req.getParameter("admin").equals("yes"), req.getParameter("password"));
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }

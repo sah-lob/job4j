@@ -17,6 +17,21 @@
                     Name : <input type = 'text' value='<c:out value="${user.name}"/>' name='name'/>
                     Login : <input type = 'text' value='<c:out value="${user.login}"/>' name='login'/>
                     Email : <input type = 'text' value='<c:out value="${user.email}"/>' name='email'/>
+                    Password : <input type = 'password' value='<c:out value="${user.password}"/>' name='password'/>
+                    <c:if test="${admin}">
+                        <c:if test="${user.admin}">
+                    admin : <select name="admin">
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                    </select>
+                        </c:if>
+                        <c:if test="${!user.admin}">
+                            admin : <select name="admin">
+                            <option value="no">no</option>
+                            <option value="yes">yes</option>
+                        </select>
+                        </c:if>
+                    </c:if>
                     <button name='id' type='hidden' value='<c:out value="${user.id}"/>'>Продолжить
                     </button>
                 </form>
@@ -25,6 +40,3 @@
     </table>
 </body>
 </html>
-
-
-

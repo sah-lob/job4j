@@ -22,15 +22,18 @@ public class MemoryStore implements Store {
     }
 
     @Override
-    public void add(String name, String login, String email, String createDate) {
-        users.put(id.get(), new User(id.getAndIncrement(), name, login, email, createDate));
+    public void add(String name, String login, String email, String createDate, boolean admin, String password) {
+        users.put(id.get(), new User(id.getAndIncrement(), name, login, email, createDate, admin, password));
     }
 
     @Override
-    public void update(String id, String name, String login, String email) {
-        users.get(Integer.parseInt(id)).setLogin(login);
-        users.get(Integer.parseInt(id)).setName(name);
-        users.get(Integer.parseInt(id)).setEmail(email);
+    public void update(String id, String name, String login, String email, boolean admin, String password) {
+        int id1 = Integer.parseInt(id);
+        users.get(id1).setLogin(login);
+        users.get(id1).setName(name);
+        users.get(id1).setEmail(email);
+        users.get(id1).setAdmin(admin);
+        users.get(id1).setPassword(password);
     }
 
     @Override
