@@ -14,8 +14,9 @@ public class ValidateStub implements Validate {
 
 
     @Override
-    public void add(String name, String login, String email, String createDate, boolean admin, String password) {
-        users.put(id, new User(id++, name, login, email, createDate, admin, password));
+    public void add(User user) {
+        user.setId(id);
+        users.put(id++, user);
     }
 
     @Override

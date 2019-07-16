@@ -1,5 +1,6 @@
 package ru.job4j.usersmodel.presentation;
 
+import ru.job4j.usersmodel.User;
 import ru.job4j.usersmodel.logic.Validate;
 import ru.job4j.usersmodel.logic.ValidateService;
 
@@ -24,8 +25,9 @@ public class UserCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         var createDate = new Date().toString();
-        validateService.add(req.getParameter("name"), req.getParameter("login"),
+        User user = new User(req.getParameter("name"), req.getParameter("login"),
                 req.getParameter("email"), createDate, req.getParameter("admin").equals("yes"), req.getParameter("password"));
+        validateService.add(user);
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }

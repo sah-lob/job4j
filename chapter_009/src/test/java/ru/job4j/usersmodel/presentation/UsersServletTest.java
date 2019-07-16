@@ -53,8 +53,7 @@ public class UsersServletTest {
         var createDate = "date";
         var admin = false;
         var password = "password";
-
-        validate.add(name, login, email, createDate, admin, password);
+        validate.add(new User(name, login, email, createDate, admin, password));
         PowerMockito.mockStatic(ValidateService.class);
         when(ValidateService.getInstance()).thenReturn(validate);
         var req = mock(HttpServletRequest.class);
@@ -66,13 +65,13 @@ public class UsersServletTest {
         when(req.getParameter("admin")).thenReturn(String.valueOf(admin));
         when(req.getParameter("password")).thenReturn(password);
         new UserUpdateServlet().doPost(req, resp);
-        var user = validate.findAll().iterator().next();
+        var newUser = validate.findAll().iterator().next();
 
-        assertThat(user.getName(), is(name));
-        assertThat(user.getLogin(), is(login));
-        assertThat(user.getPassword(), is(password));
-        assertThat(user.getEmail(), is(email));
-        assertThat(user.isAdmin(), is(false));
+        assertThat(newUser.getName(), is(name));
+        assertThat(newUser.getLogin(), is(login));
+        assertThat(newUser.getPassword(), is(password));
+        assertThat(newUser.getEmail(), is(email));
+        assertThat(newUser.isAdmin(), is(false));
     }
 
     @Test
@@ -84,7 +83,7 @@ public class UsersServletTest {
         var createDate = "date";
         var admin = false;
         var password = "password";
-        validate.add(name, login, email, createDate, admin, password);
+        validate.add(new User(name, login, email, createDate, admin, password));
         PowerMockito.mockStatic(ValidateService.class);
         when(ValidateService.getInstance()).thenReturn(validate);
         var req = mock(HttpServletRequest.class);
