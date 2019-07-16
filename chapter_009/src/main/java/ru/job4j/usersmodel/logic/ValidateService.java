@@ -19,8 +19,8 @@ public class ValidateService implements Validate {
     }
 
     @Override
-    public void add(String name, String login, String email, String createDate, boolean admin, String password) {
-        memoryStore.add(name, login, email, createDate, admin, password);
+    public void add(User user) {
+        memoryStore.add(user);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class ValidateService implements Validate {
         return result;
     }
 
-//    @Override
     public int isCredentional(String email, String password) {
         var result = -1;
         for (var u : findAll()) {

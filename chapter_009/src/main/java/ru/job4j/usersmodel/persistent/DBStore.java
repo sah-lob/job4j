@@ -23,17 +23,17 @@ public class DBStore implements Store {
     }
 
     @Override
-    public void add(String name, String login, String email, String createDate, boolean admin, String password) {
+    public void add(User user) {
         var sql = "INSERT into users (name, login, email, createDate, admin, password) values (?, ?, ?, ?, ?, ?)";
-        String adm = admin ? "yes" : "no";
+        String adm = user.isAdmin() ? "yes" : "no";
         try (var connection = SOURCE.getConnection()) {
             var st = connection.prepareStatement(sql);
-            st.setString(1, name);
-            st.setString(2, login);
-            st.setString(3, email);
-            st.setString(4, createDate);
+            st.setString(1, user.getName());
+            st.setString(2, user.getLogin());
+            st.setString(3, user.getEmail());
+            st.setString(4, user.getCreateDate());
             st.setString(5, adm);
-            st.setString(6, password);
+            st.setString(6, user.getPassword());
             st.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

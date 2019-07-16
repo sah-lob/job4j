@@ -1,30 +1,22 @@
-package ru.job4j.usersmodel.persistent;
+package ru.job4j.usersmodel.logic;
+
 import ru.job4j.usersmodel.User;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class MemoryStore implements Store {
+public class ValidateStub implements Validate {
 
-    private static final MemoryStore MEMORY_STORE = new MemoryStore();
-    private final Map<Integer, User> users = new ConcurrentHashMap<>();
-    private volatile AtomicInteger id = new AtomicInteger(0);
+    private final Map<Integer, User> users = new HashMap<>();
+    private int id = 0;
 
-
-    public static MemoryStore getInstance() {
-        return MEMORY_STORE;
-    }
-
-    public MemoryStore() {
-
-    }
 
     @Override
     public void add(User user) {
-        user.setId(id.get());
-        users.put(id.getAndIncrement(), user);
+        user.setId(id);
+        users.put(id++, user);
     }
 
     @Override
@@ -56,7 +48,15 @@ public class MemoryStore implements Store {
         return users.get(Integer.parseInt(id));
     }
 
-    public boolean isExists(String id) {
-        return users.containsKey(Integer.parseInt(id));
+//    @Override
+    public int isCredentional(String email, String password) {
+        var result = -1;
+        for (var u : findAll()) {
+            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+                result = u.getId();
+                break;
+            }
+        }
+        return result;
     }
 }

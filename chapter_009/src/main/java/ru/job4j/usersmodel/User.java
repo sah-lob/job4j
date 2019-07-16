@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class User {
 
-    private final int id;
+    private int id;
     private final String createDate;
     private String name;
     private String login;
@@ -13,8 +13,7 @@ public class User {
     private String password;
 
 
-    public User(int id, String name, String login, String email, String createDate, boolean admin, String password) {
-        this.id = id;
+    public User(String name, String login, String email, String createDate, boolean admin, String password) {
         this.name = name;
         this.login = login;
         this.email = email;
@@ -23,7 +22,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String id, String name, String login, String email, String createDate, boolean admin, String password) {
+    public User (String id, String name, String login, String email, String createDate, boolean admin, String password) {
         this.id = Integer.parseInt(id);
         this.name = name;
         this.login = login;
@@ -79,6 +78,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
