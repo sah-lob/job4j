@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            var message = '';
+            var result = (($('#name').val() != '') && ($('#surname').val() != '') && ($('#desc').val() != ''));
+            message += (($('#name').val() == '') ? "Field 'Name' empty.\n" : "");
+            message += (($('#surname').val() == '') ? "Field 'Surname' empty.\n" : "");
+            message += (($('#desc').val() == '') ? "Field 'Description' empty.\n" : "");
+            if (!result) {
+                alert(message);
+            }
+            return result;
+        }
+    </script>
     <style>
         body {
             background-color: gainsboro;
@@ -32,6 +45,7 @@
         <label for="desc">Description :</label>
         <textarea class="form-control" rows="3" id="desc"></textarea>
     </div>
+    <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
 </form>
 <table class="table table-striped">
     <thead>
