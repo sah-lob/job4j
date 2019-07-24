@@ -19,6 +19,21 @@
             }
             return result;
         }
+        function addRow() {
+            if (validate()) {
+                var name = $('#name').val();
+                var surname = $('#surname').val();
+                var gender = $("input[name='gender']:checked").val();
+                var desc = $('#desc').val();
+                var row = '<tr>'
+                    + '<td>' + name + '</td>'
+                    + '<td>' + surname + '</td>'
+                    + '<td>' + gender + '</td>'
+                    + '<td>' + desc + '</td>'
+                '</tr>';
+                $('#table tr:last').after(row);
+            }
+        }
     </script>
     <style>
         body {
@@ -36,18 +51,20 @@
         <label for="surname">Surname :</label>
         <input type="text" name="surname" class="form-control" id="surname">
     </div>
-    <div class="form-group">
-        <label for="gender">Gender :</label>
-        <label class="radio-inline"><input type="radio" name="gender" id="gender" checked>Male</label>
-        <label class="radio-inline"><input type="radio" name="gender">Female</label>
+    <div class="form-check form-check-inline">
+        <label for="gender1">Gender :</label>
+        <input class="form-check-input" type="radio" name="gender" id="gender1" value="Male">
+        <label class="form-check-label">Male</label>
+        <input class="form-check-input" type="radio" name="gender" id="gender2" value="Female">
+        <label class="form-check-label">Female</label>
     </div>
     <div class="form-group">
         <label for="desc">Description :</label>
         <textarea class="form-control" rows="3" id="desc"></textarea>
     </div>
-    <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+    <button type="button" class="btn btn-default" onclick="return addRow();">add row</button>
 </form>
-<table class="table table-striped">
+<table class="table table-striped" id="table">
     <thead>
     <tr>
         <th>Name</th>
@@ -56,14 +73,6 @@
         <th>Description</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td>My name</td>
-        <td>My surname</td>
-        <td>My male</td>
-        <td>My description</td>
-    </tr>
-    </tbody>
 </table>
 </body>
 </html>
