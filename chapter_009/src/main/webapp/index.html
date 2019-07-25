@@ -34,45 +34,97 @@
                 $('#table tr:last').after(row);
             }
         }
-    </script>
-    <style>
-        body {
-            background-color: gainsboro;
+        function sendData() {
+            if (validate()) {
+                var data = {
+                    "name": $('#name').val(),
+                    "surname": $('#surname').val(),
+                    "gender": $("[name='gender']:checked").val(),
+                    "desc": $('#desc').val()
+                };
+                $.ajax({
+                    method: "post",
+                    url: "json",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    complete: function () {
+                        readData();
+                    }
+                });
+            }
         }
-    </style>
+        function cleatTable() {
+            $("#table").find("tr:gt(0)").remove();
+        }
+        function readData() {
+            $.ajax({
+                method: "get",
+                url: "json",
+                contentType: "text/json",
+                complete: function (data) {
+                    cleatTable();
+                    var users = JSON.parse(data.responseText);
+                    for (var i = 0; i !== users.length; ++i) {
+                        var name = users[i].name;
+                        var surname = users[i].surname;
+                        var gender = users[i].gender;
+                        var desc = users[i].desc;
+                        $('#table tr:last')
+                            .after('<tr><td>' + name + '</td><td>' + surname + '</td><td>' + gender + '</td><td>' + desc + '</td></tr>');
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 <body>
-<form>
-    <div class="form-group">
-        <label for="name">Name :</label>
-        <input type="text" name="name" class="form-control" id="name">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-8">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="name">Name :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="surname">Surname :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="surname" class="form-control" id="surname" placeholder="Enter surname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Gender :</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline"><input type="radio" name="gender" value="Male" checked>Male</label>
+                        <label class="radio-inline"><input type="radio" name="gender" value="Female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="desc">Description :</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" id="desc" placeholder="Description"></textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" onclick="return addRow();">add row</button>
+                <button type="button" class="btn btn-default" value="Ajax" onclick="sendData();">Ajax</button>
+
+            </form>
+            <table class="table table-striped" id="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Gender</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-sm-1"></div>
     </div>
-    <div class="form-group">
-        <label for="surname">Surname :</label>
-        <input type="text" name="surname" class="form-control" id="surname">
-    </div>
-    <div class="form-check form-check-inline">
-        <label for="gender1">Gender :</label>
-        <input class="form-check-input" type="radio" name="gender" id="gender1" value="Male">
-        <label class="form-check-label">Male</label>
-        <input class="form-check-input" type="radio" name="gender" id="gender2" value="Female">
-        <label class="form-check-label">Female</label>
-    </div>
-    <div class="form-group">
-        <label for="desc">Description :</label>
-        <textarea class="form-control" rows="3" id="desc"></textarea>
-    </div>
-    <button type="button" class="btn btn-default" onclick="return addRow();">add row</button>
-</form>
-<table class="table table-striped" id="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Gender</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-</table>
+</div>
 </body>
 </html>
