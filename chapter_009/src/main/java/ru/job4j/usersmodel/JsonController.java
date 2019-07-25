@@ -6,38 +6,37 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class JsonController extends HttpServlet {
 
     private final Map<Integer, Person> persons = new ConcurrentHashMap();
-    private int id = 0;
+    private final AtomicInteger id = new AtomicInteger(0);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        ObjectMapper mapper = new ObjectMapper();
+        var writer = new PrintWriter(resp.getOutputStream());
+        var mapper = new ObjectMapper();
         mapper.writeValue(writer, persons);
         writer.flush();
     }
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = req.getReader()) {
+        var sb = new StringBuilder();
+        try (var reader = req.getReader()) {
             if (reader != null) {
                 sb.append(reader.readLine());
             }
         }
-        ObjectMapper mapper = new ObjectMapper();
-        Person person = mapper.readValue(sb.toString(), Person.class);
-        this.persons.put(this.id++, person);
+        var mapper = new ObjectMapper();
+        var person = mapper.readValue(sb.toString(), Person.class);
+        this.persons.put(id.getAndIncrement(), person);
     }
 }
