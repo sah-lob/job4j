@@ -22,7 +22,7 @@ public class User {
         this.password = password;
     }
 
-    public User (String id, String name, String login, String email, String createDate, boolean admin, String password) {
+    public User(String id, String name, String login, String email, String createDate, boolean admin, String password) {
         this.id = Integer.parseInt(id);
         this.name = name;
         this.login = login;

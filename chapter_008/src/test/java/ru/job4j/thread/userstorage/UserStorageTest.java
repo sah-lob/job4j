@@ -10,7 +10,7 @@ public class UserStorageTest {
     @Test
     public void whenAddNewUser() {
         var userStorage = new UserStorage();
-        var user = new User(1,1_000);
+        var user = new User(1, 1_000);
         userStorage.add(user);
         assertThat(userStorage.getUsers().size(), is(1));
     }
@@ -18,7 +18,7 @@ public class UserStorageTest {
     @Test
     public void whenUpdateSelectedUser() {
         var userStorage = new UserStorage();
-        var user = new User(1,1_000);
+        var user = new User(1, 1_000);
         userStorage.add(user);
         user.setAmount(2_000);
         userStorage.update(user);
@@ -28,7 +28,7 @@ public class UserStorageTest {
     @Test
     public void whenAddNewUserThenDeleteIt() {
         var userStorage = new UserStorage();
-        var user = new User(1,1_000);
+        var user = new User(1, 1_000);
         userStorage.add(user);
         userStorage.delete(user);
         assertThat(userStorage.getUsers().size(), is(0));
@@ -37,11 +37,11 @@ public class UserStorageTest {
     @Test
     public void whenAddTwoNewUsersThenTransferIt() {
         var userStorage = new UserStorage();
-        var user = new User(1,1_000);
-        var user2 = new User(2,5_000);
+        var user = new User(1, 1_000);
+        var user2 = new User(2, 5_000);
         userStorage.add(user);
         userStorage.add(user2);
-        userStorage.transfer(1,2, 9_000);
+        userStorage.transfer(1, 2, 9_000);
         assertThat(userStorage.getUsers().get(2).getAmount(), is(9_000));
         assertThat(userStorage.getUsers().get(1).getAmount(), is(5_000));
     }
