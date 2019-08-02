@@ -5,15 +5,18 @@
 
 Гид по репозиторию. 
 
-chapter 1 - базовый синтаксис. 
-chapter 2 - ООП(Наследование, инкапсуляция, полиоморфизм, абстрактные и анонимные классы и тд.)
-chapter 3 - Collections lite (базовый функционал.)
-chapter 4 - Lambda, Stream IP, JDK 1.9 - 1.10 
-chapter 5 - Collections Pro (Собственноручно написанные: list, set, map, iterator, tree и тд.)
-chapter 6 - Socket
-chapter 7 - SQL, JDBC, PostgreSQL
-chapter 8 - Многопоточность.
-chapter 9 - Servlets.
+1. chapter 1 - базовый синтаксис. 
+2. chapter 2 - ООП(Наследование, инкапсуляция, полиоморфизм, абстрактные и анонимные классы и тд.)
+3. chapter 3 - Collections lite (базовый функционал.)
+4. chapter 4 - Lambda, Stream IP, JDK 1.9 - 1.10 
+5. chapter 5 - Collections Pro (Собственноручно написанные: list, set, map, iterator, tree и тд.)
+6. chapter 6 - Socket
+7. chapter 7 - SQL, JDBC, PostgreSQL
+8. chapter 8 - Многопоточность.
+9. chapter 9 - Servlets.
+10. chess - Написание программы "шахматы".
+11. puzzle - Написание программы "пазлы".
+12. cinema - Написание программы, которая позволяет купить билеты. (html, js, postgreSQL, Servlets и тд.)
 
 Изученные темы в ходе курса:
 1. Инструменты: Maven, jUnit, Git, IntelliJ Idea, Checkstyle.
